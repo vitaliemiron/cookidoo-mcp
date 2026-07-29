@@ -244,6 +244,19 @@ def test_localized_marketing_pages_are_complete_and_current() -> None:
     assert not (SITE / "se").exists()
 
 
+def test_browser_language_is_used_until_the_visitor_chooses_one() -> None:
+    script = (SITE / "assets" / "site.js").read_text(encoding="utf-8")
+
+    assert 'const languageStorageKey = "cookidoo-mcp-language"' in script
+    assert 'new Set(["en", "de", "sv", "ro", "ru"])' in script
+    assert "navigator.languages" in script
+    assert "savedLanguage() ?? browserLanguage()" in script
+    assert "window.location.replace(targetUrl.href)" in script
+    assert "rememberLanguage(link.dataset.language)" in script
+    assert "targetUrl.search = window.location.search" in script
+    assert "targetUrl.hash = window.location.hash" in script
+
+
 def test_use_case_pages_have_search_and_authorship_metadata() -> None:
     pages = sorted((SITE / "use-cases").rglob("index.html"))
     assert len(pages) == 7
