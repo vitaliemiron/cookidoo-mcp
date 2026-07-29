@@ -53,6 +53,17 @@ def test_release_version_check_rejects_wrong_tag() -> None:
         check("2.0.0")
 
 
+def test_release_workflow_can_republish_an_existing_tag() -> None:
+    workflow = (
+        ROOT / ".github" / "workflows" / "release.yml"
+    ).read_text(encoding="utf-8")
+
+    assert "workflow_dispatch:" in workflow
+    assert "RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}" in workflow
+    assert workflow.count("ref: ${{ env.RELEASE_TAG }}") == 2
+    assert 'document["serialNumber"]' in workflow
+
+
 def fake_server(monkeypatch) -> SimpleNamespace:
     run = SimpleNamespace(called=False)
     run.run = lambda: setattr(run, "called", True)

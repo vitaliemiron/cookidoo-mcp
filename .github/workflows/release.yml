@@ -4,6 +4,12 @@ on:
   push:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing version tag to publish (for example, v1.1.0)
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -11,6 +17,9 @@ permissions:
 concurrency:
   group: package-release
   cancel-in-progress: false
+
+env:
+  RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
 
 jobs:
   build:
@@ -26,6 +35,8 @@ jobs:
     steps:
       - name: Check out tagged source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.RELEASE_TAG }}
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
@@ -38,8 +49,6 @@ jobs:
         run: python -m pip install --upgrade pip build twine
 
       - name: Match package metadata to the tag
-        env:
-          RELEASE_TAG: ${{ github.ref_name }}
         run: python scripts/check_release_metadata.py "${RELEASE_TAG#v}"
 
       - name: Run offline tests
@@ -54,8 +63,6 @@ jobs:
         run: python -m twine check --strict dist/*
 
       - name: Generate a CycloneDX SBOM
-        env:
-          RELEASE_TAG: ${{ github.ref_name }}
         run: |
           sbom_environment="${RUNNER_TEMP}/sbom-environment"
           python -m venv "$sbom_environment"
@@ -70,6 +77,28 @@ jobs:
             --output-reproducible \
             --output-format JSON \
             --output-file "sbom/cookidoo-mcp-${RELEASE_TAG}.cdx.json"
+          python - \
+            "sbom/cookidoo-mcp-${RELEASE_TAG}.cdx.json" \
+            "https://github.com/${GITHUB_REPOSITORY}@${RELEASE_TAG}" <<'PY'
+          import json
+          from pathlib import Path
+          import sys
+          import uuid
+
+          path = Path(sys.argv[1])
+          document = json.loads(path.read_text(encoding="utf-8"))
+          if document.get("bomFormat") != "CycloneDX":
+              raise ValueError("SBOM must declare bomFormat as CycloneDX")
+          if not document.get("specVersion"):
+              raise ValueError("CycloneDX SBOM must declare specVersion")
+          document["serialNumber"] = (
+              f"urn:uuid:{uuid.uuid5(uuid.NAMESPACE_URL, sys.argv[2])}"
+          )
+          path.write_text(
+              json.dumps(document, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          PY
 
       - name: Attest distribution build provenance
         uses: actions/attest@f7c74d28b9d84cb8768d0b8ca14a4bac6ef463e6 # v4.2.0
@@ -80,7 +109,7 @@ jobs:
         uses: actions/attest@f7c74d28b9d84cb8768d0b8ca14a4bac6ef463e6 # v4.2.0
         with:
           subject-path: dist/*
-          sbom-path: sbom/cookidoo-mcp-${{ github.ref_name }}.cdx.json
+          sbom-path: sbom/cookidoo-mcp-${{ env.RELEASE_TAG }}.cdx.json
 
       - name: Upload distributions
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -135,10 +164,10 @@ jobs:
     steps:
       - name: Check out tagged source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.RELEASE_TAG }}
 
       - name: Wait for the package to become visible on PyPI
-        env:
-          RELEASE_TAG: ${{ github.ref_name }}
         run: |
           version="${RELEASE_TAG#v}"
           for attempt in {1..12}; do
@@ -178,8 +207,6 @@ jobs:
           "$RUNNER_TEMP/mcp-publisher" publish server.json
 
       - name: Verify the published registry version
-        env:
-          RELEASE_TAG: ${{ github.ref_name }}
         run: |
           python scripts/verify_registry_publication.py \
             "${RELEASE_TAG#v}" \
@@ -211,7 +238,6 @@ jobs:
         env:
           GH_REPO: ${{ github.repository }}
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.ref_name }}
         run: |
           if gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
             gh release upload "$RELEASE_TAG" dist/* sbom/* --clobber
