@@ -1,5 +1,8 @@
 # Cookidoo MCP Server
 
+[![Unit tests](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/unit-tests.yml)
+[![Cookidoo live API](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/live-api.yml/badge.svg)](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/live-api.yml)
+
 An MCP (Model Context Protocol) server for interacting with the Thermomix Cookidoo platform, built with `fastmcp`.
 
 > **Disclaimer:** This is an unofficial project. The developers are not affiliated with, endorsed by, or connected to Cookidoo, Vorwerk, Thermomix, or any of their subsidiaries or trademarks.
@@ -20,6 +23,8 @@ An MCP (Model Context Protocol) server for interacting with the Thermomix Cookid
   cooking, mixing, chopping, and kneading actions
 
 ## Setup
+
+Python 3.12 or newer is required by the Cookidoo API dependency.
 
 1. **Clone the repository and navigate to the project directory**
 
@@ -68,6 +73,30 @@ See [`examples/guided_recipe.json`](examples/guided_recipe.json) for a verified
 ingredient-weighing, TTS, temperature, reverse-speed, and Dough mode payload.
 The server requires ingredient annotations and machine-action annotations to be
 placed in separate consecutive steps.
+
+## Testing and API monitoring
+
+Install the development dependencies and run the unit suite:
+
+```bash
+pip install -r requirements-dev.txt
+pytest -m "not live"
+```
+
+The `Cookidoo live API` GitHub Actions workflow runs daily, after relevant
+changes reach `main`, and on manual dispatch. It checks authenticated login,
+official recipe details, the shopping list, meal planning, image-upload
+signatures, and a temporary custom-recipe copy/PATCH/delete lifecycle.
+
+Configure these GitHub Actions repository secrets:
+
+- `COOKIDOO_EMAIL`
+- `COOKIDOO_PASSWORD`
+
+The write test always deletes its temporary custom recipe in a `finally`
+cleanup. If a live run fails, the workflow opens or updates a
+`Cookidoo live API regression` issue. It closes that issue automatically after
+the API tests recover.
 
 ## Acknowledgments
 
