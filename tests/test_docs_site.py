@@ -1,5 +1,6 @@
 import ast
 import json
+import re
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlparse
@@ -123,11 +124,22 @@ def test_ai_resources_cover_every_documentation_area() -> None:
         "/docs/guided-cooking/",
         "/docs/automation/",
         "/docs/testing/",
+        "/use-cases/",
         "/tools.json",
     ):
         assert path in llms
     for rule in ("Required step separation", "UTF-16", "16. upload_custom_recipe"):
         assert rule in full
+    for guide in (
+        "translate-cookidoo-recipe",
+        "create-thermomix-guided-recipe",
+        "automate-cookidoo-meal-plan",
+        "cookidoo-shopping-list-by-recipe",
+        "mcp-vs-browser-automation",
+        "guided-cooking-annotation-research",
+    ):
+        assert guide in llms
+        assert guide in full
 
 
 def test_homepage_uses_a_clear_consumer_journey() -> None:
@@ -193,7 +205,7 @@ def test_sitemap_pages_exist() -> None:
     namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
     urls = [node.text for node in tree.findall("s:url/s:loc", namespace)]
 
-    assert len(urls) == 7
+    assert len(urls) == 14
     for url in urls:
         assert url is not None
         parsed = urlparse(url)
@@ -203,3 +215,33 @@ def test_sitemap_pages_exist() -> None:
         if parsed.path.endswith("/"):
             target /= "index.html"
         assert target.exists(), f"sitemap target does not exist: {url}"
+
+
+def test_use_case_pages_have_search_and_authorship_metadata() -> None:
+    pages = sorted((SITE / "use-cases").rglob("index.html"))
+    assert len(pages) == 7
+
+    for page in pages:
+        html = page.read_text(encoding="utf-8")
+        assert '<link rel="canonical"' in html
+        assert 'property="og:title"' in html
+        assert 'property="og:description"' in html
+        assert 'property="og:image"' in html
+        assert 'type="application/ld+json"' in html
+        assert "Cookidoo MCP maintainers" in html
+        assert 'datetime="2026-07-29"' in html
+        structured_data = re.findall(
+            r'<script type="application/ld\+json">\s*(.*?)\s*</script>',
+            html,
+            flags=re.DOTALL,
+        )
+        assert len(structured_data) == 1
+        assert json.loads(structured_data[0])["@context"] == "https://schema.org"
+
+
+def test_homepage_contains_google_search_console_verification() -> None:
+    homepage = (SITE / "index.html").read_text(encoding="utf-8")
+    assert (
+        '<meta name="google-site-verification" '
+        'content="zUXNAhs4gOSJq1AA2QkBhj57cO892lJTUyS6bfln_70">'
+    ) in homepage

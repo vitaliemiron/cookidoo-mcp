@@ -7,6 +7,7 @@ Cookidoo MCP connects an AI assistant to a user's own Cookidoo account. It can i
 ## Start here
 
 - [Documentation](https://vitaliemiron.github.io/cookidoo-mcp/docs/): overview and quick start
+- [Practical use cases](https://vitaliemiron.github.io/cookidoo-mcp/use-cases/): task-focused guides for recipe translation, guided cooking, planning, shopping, and API research
 - [Tool reference](https://vitaliemiron.github.io/cookidoo-mcp/docs/tools/): all 16 MCP tools and signatures
 - [Guided cooking](https://vitaliemiron.github.io/cookidoo-mcp/docs/guided-cooking/): TTS, INGREDIENT, VOLUME, MODE, and UTF-16 positions
 - [Planning and shopping](https://vitaliemiron.github.io/cookidoo-mcp/docs/automation/): seven-day plans and shopping-list data
@@ -18,6 +19,13 @@ Cookidoo MCP connects an AI assistant to a user's own Cookidoo account. It can i
 ## Raw Markdown
 
 - [Overview](https://vitaliemiron.github.io/cookidoo-mcp/raw/overview.md)
+- [Use-case index](https://vitaliemiron.github.io/cookidoo-mcp/raw/use-cases/index.md)
+- [Translate a Cookidoo recipe](https://vitaliemiron.github.io/cookidoo-mcp/raw/use-cases/translate-cookidoo-recipe.md)
+- [Create a Thermomix guided recipe](https://vitaliemiron.github.io/cookidoo-mcp/raw/use-cases/create-thermomix-guided-recipe.md)
+- [Automate Cookidoo My Week](https://vitaliemiron.github.io/cookidoo-mcp/raw/use-cases/automate-cookidoo-meal-plan.md)
+- [Shopping-list ingredients by recipe](https://vitaliemiron.github.io/cookidoo-mcp/raw/use-cases/cookidoo-shopping-list-by-recipe.md)
+- [MCP vs browser automation](https://vitaliemiron.github.io/cookidoo-mcp/raw/use-cases/mcp-vs-browser-automation.md)
+- [Guided-cooking annotation research](https://vitaliemiron.github.io/cookidoo-mcp/raw/use-cases/guided-cooking-annotation-research.md)
 - [Tools](https://vitaliemiron.github.io/cookidoo-mcp/raw/tools.md)
 - [Guided cooking](https://vitaliemiron.github.io/cookidoo-mcp/raw/guided-cooking.md)
 - [Planning and shopping](https://vitaliemiron.github.io/cookidoo-mcp/raw/automation.md)

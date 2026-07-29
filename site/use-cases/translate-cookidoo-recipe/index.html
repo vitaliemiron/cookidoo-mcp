@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fffaf2">
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="Learn how to translate a Cookidoo recipe with AI, preserve Thermomix settings, separate ingredient and machine steps, and safely save a private copy.">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/use-cases/translate-cookidoo-recipe/">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="How to translate a Cookidoo recipe with AI">
+    <meta property="og:description" content="A safe, verified workflow for clear translated recipes with structured Thermomix steps.">
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/use-cases/translate-cookidoo-recipe/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta property="og:image:alt" content="Five steps from an AI meal idea through Cookidoo recipe and week planning to a store MCP order.">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>How to translate a Cookidoo recipe with AI</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "TechArticle",
+            "headline": "How to translate a Cookidoo recipe with AI",
+            "description": "A safe workflow for translating a Cookidoo recipe while preserving clear Thermomix actions.",
+            "url": "https://vitaliemiron.github.io/cookidoo-mcp/use-cases/translate-cookidoo-recipe/",
+            "datePublished": "2026-07-29",
+            "dateModified": "2026-07-29",
+            "author": {"@type": "Organization", "name": "Cookidoo MCP maintainers", "url": "https://github.com/vitaliemiron/cookidoo-mcp"},
+            "isPartOf": {"@type": "WebSite", "name": "Cookidoo MCP", "url": "https://vitaliemiron.github.io/cookidoo-mcp/"}
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://vitaliemiron.github.io/cookidoo-mcp/"},
+              {"@type": "ListItem", "position": 2, "name": "Use cases", "item": "https://vitaliemiron.github.io/cookidoo-mcp/use-cases/"},
+              {"@type": "ListItem", "position": 3, "name": "Translate a Cookidoo recipe", "item": "https://vitaliemiron.github.io/cookidoo-mcp/use-cases/translate-cookidoo-recipe/"}
+            ]
+          }
+        ]
+      }
+    </script>
+    <script>
+      document.documentElement.classList.add("js");
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      let initialTheme = systemTheme;
+      try { const saved = localStorage.getItem("cookidoo-mcp-theme"); if (saved === "light" || saved === "dark") initialTheme = saved; } catch {}
+      document.documentElement.dataset.theme = initialTheme;
+      document.querySelector('meta[name="theme-color"]').content = initialTheme === "light" ? "#fffaf2" : "#020617";
+    </script>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script defer src="../../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to translation guide</a>
+    <header class="site-header"><div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Cookidoo MCP home"><span class="brand-mark" aria-hidden="true">CM</span><span class="brand-name">Cookidoo MCP</span></a>
+      <nav class="primary-nav" data-navigation aria-label="Primary navigation"><a href="../../">Home</a><a href="../" aria-current="page">Use cases</a><a href="../../presentation/">Story</a><a href="../../docs/">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a></nav>
+      <div class="header-actions"><button class="nav-button" type="button" data-theme-toggle aria-label="Theme follows this device">System</button><button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button></div>
+    </div></header>
+    <main id="main">
+      <div class="container docs-hero"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../">Home</a><span aria-hidden="true">/</span><a href="../">Use cases</a><span aria-hidden="true">/</span><span>Translate a recipe</span></nav></div>
+      <div class="container docs-shell">
+        <aside class="docs-sidebar" aria-label="Guide sections"><strong>In this guide</strong><a href="#answer">Short answer</a><a href="#workflow">Workflow</a><a href="#example">Example request</a><a href="#preserve">What to preserve</a><a href="#limits">Limits</a><a href="#related">Related guides</a></aside>
+        <article class="docs-content">
+          <p class="eyebrow">Recipes / Translation</p>
+          <h1>Translate a Cookidoo recipe with AI.</h1>
+          <p class="lead">Create a private translated version with clearer wording, correctly positioned Thermomix settings, and separate steps for ingredients and machine actions.</p>
+          <ul class="use-case-meta"><li>By Cookidoo MCP maintainers</li><li><time datetime="2026-07-29">Last verified 29 July 2026</time></li><li>8 min read</li></ul>
+          <div class="answer-box" id="answer">
+            <p class="section-kicker">Short answer</p>
+            <p><strong>Copy the official recipe into the account’s private recipes, translate the final text, rebuild guided-cooking annotations against that text, validate, then update ingredients and steps separately.</strong> Copying is necessary because Cookidoo’s official recipe-details response does not contain preparation instructions.</p>
+          </div>
+          <section id="workflow">
+            <p class="section-kicker">Safe sequence</p>
+            <h2>From recipe ID to verified private copy</h2>
+            <ol class="flow-list">
+              <li><div><strong>Connect and identify the exact recipe.</strong><p>Use its Cookidoo ID, such as <code>r460132</code>, rather than relying only on a title.</p></div></li>
+              <li><div><strong>Copy it to private recipes.</strong><p><code>copy_recipe_to_custom</code> creates an editable copy that includes the full ingredient list and preparation instructions.</p></div></li>
+              <li><div><strong>Read the copied recipe.</strong><p>Use <code>get_custom_recipe_details</code> and retain servings, tools, timings, hints, and the new private recipe ID.</p></div></li>
+              <li><div><strong>Translate for cooking, not word for word.</strong><p>Keep quantities and food-safety meaning precise. Explain unfamiliar actions in ordinary language for beginners.</p></div></li>
+              <li><div><strong>Split mixed instructions.</strong><p>A weighing or adding step contains only <code>INGREDIENT</code> annotations. Put mixing, heating, chopping, or another machine action in the following step with <code>TTS</code> or <code>MODE</code>.</p></div></li>
+              <li><div><strong>Recalculate every text range.</strong><p>Positions refer to the translated text in JavaScript UTF-16 units. Use <code>calculate_annotation_position</code>; ordinary Python indexes can be wrong when emoji appear.</p></div></li>
+              <li><div><strong>Validate before writing.</strong><p>Run <code>validate_guided_recipe_structure</code>, show the proposed wording and settings to the user, then PATCH ingredients and steps separately.</p></div></li>
+              <li><div><strong>Read it back.</strong><p>Reload the private recipe and confirm its name, quantities, step order, settings, servings, and URL.</p></div></li>
+            </ol>
+          </section>
+          <section id="example">
+            <p class="section-kicker">Example request</p>
+            <h2>Tell the assistant what “clear” means.</h2>
+            <div class="prompt-example">Translate Cookidoo recipe r460132 into Russian for four servings. Keep quantities exact. Explain each action for a first-time Thermomix user. Always put weighing or adding ingredients in its own step, followed by a separate machine step. Preserve time, temperature, speed, reverse, and supported modes. Show me the translation before saving.</div>
+            <p>If the source is a web recipe rather than Cookidoo, the assistant can create a new private recipe instead of copying an official one. You should provide the recipe content or a link the assistant is allowed to read.</p>
+          </section>
+          <section id="preserve">
+            <p class="section-kicker">Quality checklist</p>
+            <h2>What must survive translation</h2>
+            <table class="reference-table">
+              <thead><tr><th>Keep exact</th><th>Adapt carefully</th></tr></thead>
+              <tbody>
+                <tr><td>Ingredient quantities and units</td><td>Ingredient names familiar in the target language</td></tr>
+                <tr><td>Time, temperature, speed, and reverse</td><td>Sentence order and beginner explanations</td></tr>
+                <tr><td>Servings and Thermomix model/tool context</td><td>Safe substitutions explicitly approved by the user</td></tr>
+                <tr><td>The ingredient/action separation rule</td><td>Readable setting phrases used by annotations</td></tr>
+              </tbody>
+            </table>
+            <div class="callout callout-herb"><strong>Translate first, annotate second.</strong><p>Any wording change can move a text range. Calculate annotation positions only after the translated sentence is final.</p></div>
+          </section>
+          <section id="limits">
+            <p class="section-kicker">Boundaries</p>
+            <h2>What the workflow does not assume</h2>
+            <ul>
+              <li>An official recipe image cannot simply be reused on the private copy. Upload only a local image the account owner may use.</li>
+              <li>Translation does not make an unsafe recipe safe. Preserve temperatures and cooking times unless a knowledgeable user approves a change.</li>
+              <li>Do not overwrite an existing private recipe unless the user identifies it and asks for that exact update.</li>
+              <li>Cookidoo endpoints are undocumented and can change; re-read the saved result.</li>
+            </ul>
+          </section>
+          <section id="related">
+            <p class="section-kicker">Continue</p><h2>Related guides</h2>
+            <div class="related-grid">
+              <a class="related-card" href="../create-thermomix-guided-recipe/"><span class="meta">Next step</span><h3>Create guided-cooking steps</h3><p>Understand weighing, manual settings, and supported modes.</p></a>
+              <a class="related-card" href="../guided-cooking-annotation-research/"><span class="meta">Evidence</span><h3>How the annotation contract was verified</h3><p>See the browser observation and API round trip behind the schemas.</p></a>
+            </div>
+          </section>
+          <p class="verification-note">Authored by the Cookidoo MCP maintainers. Workflow and limitations checked against <code>server.py</code>, <code>cookidoo_service.py</code>, schemas, and tests on 29 July 2026.</p>
+        </article>
+      </div>
+    </main>
+    <footer class="site-footer"><div class="container footer-grid"><p class="footer-copy">Cookidoo recipe translation guide · Unofficial integration</p><nav class="footer-links" aria-label="Footer navigation"><a href="../">All use cases</a><a href="../../docs/guided-cooking/">Technical reference</a><a href="../../raw/use-cases/translate-cookidoo-recipe.md">Raw Markdown</a></nav></div></footer>
+  </body>
+</html>

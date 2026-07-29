@@ -1,0 +1,66 @@
+name: Feature request
+description: Propose a focused improvement to Cookidoo MCP
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Explain the user problem before the implementation. Early or open-ended
+        ideas are often better suited to GitHub Discussions.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues, discussions, and the roadmap.
+          required: true
+        - label: This request stays within the user's Cookidoo permissions and data ownership.
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the person, workflow, and current friction.
+    validations:
+      required: true
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe what success looks like without prescribing internal code.
+    validations:
+      required: true
+
+  - type: textarea
+    id: example
+    attributes:
+      label: Example conversation or workflow
+      placeholder: |
+        User: ...
+        Assistant: ...
+        Cookidoo result: ...
+
+  - type: textarea
+    id: safety
+    attributes:
+      label: Account and safety considerations
+      description: Note mutations, cleanup, permissions, credentials, copyrighted images, or private data involved.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I may be able to help implement or test this.

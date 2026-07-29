@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#fffaf2">
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="Safely automate Cookidoo My Week with AI: read a seven-day window, add or move official and private recipes, then verify every calendar change.">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/use-cases/automate-cookidoo-meal-plan/">
+    <meta property="og:type" content="article"><meta property="og:title" content="Automate Cookidoo My Week with AI"><meta property="og:description" content="A read-first workflow for adding, moving, and removing exact recipes in the Cookidoo meal planner."><meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/use-cases/automate-cookidoo-meal-plan/"><meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png"><meta property="og:image:alt" content="Five steps from an AI meal idea through Cookidoo recipe and week planning to a store MCP order."><meta name="twitter:card" content="summary_large_image">
+    <title>Automate Cookidoo My Week with AI</title>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@graph":[
+        {"@type":"TechArticle","headline":"Automate Cookidoo My Week with AI","description":"A read-first workflow for managing a rolling seven-day Cookidoo meal plan.","url":"https://vitaliemiron.github.io/cookidoo-mcp/use-cases/automate-cookidoo-meal-plan/","datePublished":"2026-07-29","dateModified":"2026-07-29","author":{"@type":"Organization","name":"Cookidoo MCP maintainers","url":"https://github.com/vitaliemiron/cookidoo-mcp"},"isPartOf":{"@type":"WebSite","name":"Cookidoo MCP","url":"https://vitaliemiron.github.io/cookidoo-mcp/"}},
+        {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vitaliemiron.github.io/cookidoo-mcp/"},{"@type":"ListItem","position":2,"name":"Use cases","item":"https://vitaliemiron.github.io/cookidoo-mcp/use-cases/"},{"@type":"ListItem","position":3,"name":"Automate My Week","item":"https://vitaliemiron.github.io/cookidoo-mcp/use-cases/automate-cookidoo-meal-plan/"}]}
+      ]}
+    </script>
+    <script>document.documentElement.classList.add("js"); const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; let initialTheme = systemTheme; try { const saved = localStorage.getItem("cookidoo-mcp-theme"); if (saved === "light" || saved === "dark") initialTheme = saved; } catch {} document.documentElement.dataset.theme = initialTheme; document.querySelector('meta[name="theme-color"]').content = initialTheme === "light" ? "#fffaf2" : "#020617";</script>
+    <link rel="stylesheet" href="../../assets/styles.css"><script defer src="../../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to meal-planning guide</a>
+    <header class="site-header"><div class="container nav-shell"><a class="brand" href="../../" aria-label="Cookidoo MCP home"><span class="brand-mark" aria-hidden="true">CM</span><span class="brand-name">Cookidoo MCP</span></a><nav class="primary-nav" data-navigation aria-label="Primary navigation"><a href="../../">Home</a><a href="../" aria-current="page">Use cases</a><a href="../../presentation/">Story</a><a href="../../docs/">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a></nav><div class="header-actions"><button class="nav-button" type="button" data-theme-toggle aria-label="Theme follows this device">System</button><button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button></div></div></header>
+    <main id="main">
+      <div class="container docs-hero"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../">Home</a><span aria-hidden="true">/</span><a href="../">Use cases</a><span aria-hidden="true">/</span><span>Automate My Week</span></nav></div>
+      <div class="container docs-shell">
+        <aside class="docs-sidebar" aria-label="Guide sections"><strong>In this guide</strong><a href="#answer">Short answer</a><a href="#window">Seven-day window</a><a href="#workflow">Safe workflow</a><a href="#tools">Available actions</a><a href="#example">Example request</a><a href="#limits">Limits</a></aside>
+        <article class="docs-content">
+          <p class="eyebrow">Planning / My Week</p><h1>Automate Cookidoo My Week with AI.</h1>
+          <p class="lead">Let an assistant place the recipes you chose into your Cookidoo calendar while preserving dates, recipe sources, and the ability to verify every change.</p>
+          <ul class="use-case-meta"><li>By Cookidoo MCP maintainers</li><li><time datetime="2026-07-29">Last verified 29 July 2026</time></li><li>6 min read</li></ul>
+          <div class="answer-box" id="answer"><p class="section-kicker">Short answer</p><p><strong>Read the current seven-day plan first, identify an exact recipe ID and ISO date, make one scoped add, move, or remove operation, then read the plan again.</strong> This prevents the assistant from treating a title match or an old calendar view as current state.</p></div>
+          <section id="window">
+            <p class="section-kicker">Know what you are reading</p><h2>The API returns a rolling seven-day window</h2>
+            <p><code>get_meal_plan_week("2026-07-29")</code> returns seven consecutive dates beginning on 29 July. It is not automatically a Monday-to-Sunday week. The service fills empty days so the assistant sees the complete window rather than only dates containing recipes.</p>
+            <div class="callout"><strong>Use explicit ISO dates.</strong><p>“Next Tuesday” depends on today and timezone. The assistant can interpret it, but it should confirm the resolved <code>YYYY-MM-DD</code> date before changing the calendar.</p></div>
+          </section>
+          <section id="workflow">
+            <p class="section-kicker">Safe sequence</p><h2>Read, change, confirm</h2>
+            <ol class="flow-list">
+              <li><div><strong>Connect to the account.</strong><p>Authentication uses the configured Cookidoo login stored outside the repository.</p></div></li>
+              <li><div><strong>Read the relevant window.</strong><p>Inspect every day, recipe ID, name, and source before proposing a change.</p></div></li>
+              <li><div><strong>Resolve the user’s intent.</strong><p>Translate a phrase such as “move the curry to Friday” into one exact source date, target date, and recipe ID.</p></div></li>
+              <li><div><strong>Show the proposed change.</strong><p>For example: “Move private recipe 01K… from 2026-07-30 to 2026-08-01.”</p></div></li>
+              <li><div><strong>Apply one scoped operation.</strong><p>Use the add, remove, or move tool. Keep <code>recipe_source="auto"</code> unless the ID cannot be inferred safely.</p></div></li>
+              <li><div><strong>Read the window again.</strong><p>Confirm the target contains the recipe and, for a move, the source no longer does.</p></div></li>
+            </ol>
+          </section>
+          <section id="tools">
+            <p class="section-kicker">Available actions</p><h2>Official and private recipes are supported</h2>
+            <table class="reference-table">
+              <thead><tr><th>Goal</th><th>Tool</th><th>Safety behavior</th></tr></thead>
+              <tbody>
+                <tr><td>Read a window</td><td><code>get_meal_plan_week</code></td><td>Returns all seven dates and resolves private recipe details where possible.</td></tr>
+                <tr><td>Add one or more</td><td><code>add_recipes_to_meal_plan</code></td><td>Partitions mixed official and private IDs into the correct API calls.</td></tr>
+                <tr><td>Remove one</td><td><code>remove_recipe_from_meal_plan</code></td><td>Uses the exact date, ID, and inferred or explicit source.</td></tr>
+                <tr><td>Move one</td><td><code>move_recipe_in_meal_plan</code></td><td>Adds to the target before removing from the source and rolls back the new target entry if removal fails.</td></tr>
+              </tbody>
+            </table>
+            <p>Official IDs normally look like <code>r460132</code>. Private customer recipe IDs are 26-character ULIDs. The default <code>auto</code> source recognizes those verified forms.</p>
+          </section>
+          <section id="example">
+            <p class="section-kicker">Example request</p><h2>Give dates and approval boundaries</h2>
+            <div class="prompt-example">Read my Cookidoo plan starting 2026-07-29. Suggest where the lentil curry would fit, but do not change anything yet. After I choose a day, add the exact recipe ID, read the week again, and confirm the result.</div>
+          </section>
+          <section id="limits">
+            <p class="section-kicker">Boundaries</p><h2>The calendar organizes choices; it does not make them for you</h2>
+            <ul>
+              <li>Cookidoo MCP can manage dates and recipes, but nutrition, allergies, budget, and household schedules still need user context.</li>
+              <li>A calendar read can include account-specific private information. Do not publish or log it.</li>
+              <li>Use an explicit confirmation before deleting or replacing an entry when the user’s wording is ambiguous.</li>
+              <li>Undocumented API behavior can change; daily contract checks make failures visible but cannot prevent them.</li>
+            </ul>
+            <div class="actions"><a class="button button-primary" href="../../docs/automation/">Planning API details <span aria-hidden="true">→</span></a><a class="button button-secondary" href="../cookidoo-shopping-list-by-recipe/">Prepare ingredients next</a></div>
+          </section>
+          <section id="related"><p class="section-kicker">Continue</p><h2>Related guides</h2><div class="related-grid"><a class="related-card" href="../cookidoo-shopping-list-by-recipe/"><span class="meta">Shopping</span><h3>Retrieve ingredients by recipe</h3><p>Keep the shopping handoff grouped and traceable.</p></a><a class="related-card" href="../mcp-vs-browser-automation/"><span class="meta">Architecture</span><h3>Why the API is the normal path</h3><p>Compare reliable tool calls with browser investigation.</p></a></div></section>
+          <p class="verification-note">Authored by the Cookidoo MCP maintainers. Rolling-window, source inference, and move rollback behavior checked against service code and unit tests on 29 July 2026.</p>
+        </article>
+      </div>
+    </main>
+    <footer class="site-footer"><div class="container footer-grid"><p class="footer-copy">Cookidoo My Week automation guide · Read before write</p><nav class="footer-links" aria-label="Footer navigation"><a href="../">All use cases</a><a href="../../docs/automation/">Technical reference</a><a href="../../raw/use-cases/automate-cookidoo-meal-plan.md">Raw Markdown</a></nav></div></footer>
+  </body>
+</html>

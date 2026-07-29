@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Setup and usage questions
+    url: https://github.com/vitaliemiron/cookidoo-mcp/discussions/categories/q-a
+    about: Get help connecting a client or choosing a Cookidoo MCP workflow.
+  - name: Early ideas
+    url: https://github.com/vitaliemiron/cookidoo-mcp/discussions/categories/ideas
+    about: Explore a problem or design before opening a focused feature request.
+  - name: Documentation
+    url: https://vitaliemiron.github.io/cookidoo-mcp/docs/
+    about: Read setup, tool, guided-cooking, automation, and testing guides.
+  - name: Private security report
+    url: https://github.com/vitaliemiron/cookidoo-mcp/security/advisories/new
+    about: Report vulnerabilities without exposing sensitive details publicly.

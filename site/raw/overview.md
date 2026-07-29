@@ -20,4 +20,13 @@ This is not an official Vorwerk integration. It relies on undocumented endpoints
 
 ## Start
 
-Read the repository README for installation and MCP client configuration, then use the [tool reference](../docs/tools/) for available operations.
+Python 3.12 or newer is required. With `uv` installed, keep credentials in a
+private local file and start the published stdio server without cloning:
+
+```bash
+uvx cookidoo-mcp --env-file /absolute/path/to/cookidoo-mcp.env
+```
+
+Use the same command and arguments in an MCP client. Read the repository README
+for source-development setup, then use the [tool reference](../docs/tools/) for
+available operations.

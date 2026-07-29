@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fffaf2">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="Practical Cookidoo MCP workflows for AI recipe translation, Thermomix guided cooking, weekly meal planning, shopping lists, and reliable API automation.">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/use-cases/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Cookidoo AI automation guides and use cases">
+    <meta property="og:description" content="See exactly how AI can help turn a recipe idea into a clear Cookidoo recipe, a weekly plan, and an ingredient list.">
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/use-cases/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta property="og:image:alt" content="Five steps from an AI meal idea through Cookidoo recipe and week planning to a store MCP order.">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Cookidoo AI automation guides and use cases</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "CollectionPage",
+            "@id": "https://vitaliemiron.github.io/cookidoo-mcp/use-cases/#page",
+            "url": "https://vitaliemiron.github.io/cookidoo-mcp/use-cases/",
+            "name": "Cookidoo AI automation guides and use cases",
+            "description": "Practical workflows for recipe translation, guided cooking, meal planning, shopping lists, and Cookidoo automation.",
+            "dateModified": "2026-07-29",
+            "author": {"@type": "Organization", "name": "Cookidoo MCP maintainers", "url": "https://github.com/vitaliemiron/cookidoo-mcp"}
+          },
+          {
+            "@type": "ItemList",
+            "name": "Cookidoo MCP use cases",
+            "numberOfItems": 6,
+            "itemListElement": [
+              {"@type": "ListItem", "position": 1, "url": "https://vitaliemiron.github.io/cookidoo-mcp/use-cases/translate-cookidoo-recipe/"},
+              {"@type": "ListItem", "position": 2, "url": "https://vitaliemiron.github.io/cookidoo-mcp/use-cases/create-thermomix-guided-recipe/"},
+              {"@type": "ListItem", "position": 3, "url": "https://vitaliemiron.github.io/cookidoo-mcp/use-cases/automate-cookidoo-meal-plan/"},
+              {"@type": "ListItem", "position": 4, "url": "https://vitaliemiron.github.io/cookidoo-mcp/use-cases/cookidoo-shopping-list-by-recipe/"},
+              {"@type": "ListItem", "position": 5, "url": "https://vitaliemiron.github.io/cookidoo-mcp/use-cases/mcp-vs-browser-automation/"},
+              {"@type": "ListItem", "position": 6, "url": "https://vitaliemiron.github.io/cookidoo-mcp/use-cases/guided-cooking-annotation-research/"}
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://vitaliemiron.github.io/cookidoo-mcp/"},
+              {"@type": "ListItem", "position": 2, "name": "Use cases", "item": "https://vitaliemiron.github.io/cookidoo-mcp/use-cases/"}
+            ]
+          }
+        ]
+      }
+    </script>
+    <script>
+      document.documentElement.classList.add("js");
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      let initialTheme = systemTheme;
+      try {
+        const saved = localStorage.getItem("cookidoo-mcp-theme");
+        if (saved === "light" || saved === "dark") initialTheme = saved;
+      } catch {}
+      document.documentElement.dataset.theme = initialTheme;
+      document.querySelector('meta[name="theme-color"]').content = initialTheme === "light" ? "#fffaf2" : "#020617";
+    </script>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script defer src="../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to use cases</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="../" aria-label="Cookidoo MCP home"><span class="brand-mark" aria-hidden="true">CM</span><span class="brand-name">Cookidoo MCP</span></a>
+        <nav class="primary-nav" data-navigation aria-label="Primary navigation"><a href="../">Home</a><a href="./" aria-current="page">Use cases</a><a href="../presentation/">Story</a><a href="../docs/">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a></nav>
+        <div class="header-actions"><button class="nav-button" type="button" data-theme-toggle aria-label="Theme follows this device">System</button><button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button></div>
+      </div>
+    </header>
+    <main id="main">
+      <div class="container docs-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../">Home</a><span aria-hidden="true">/</span><span>Use cases</span></nav>
+        <p class="eyebrow">Practical guides</p>
+        <h1>What can AI do with Cookidoo?</h1>
+        <p class="lead reading">Cookidoo MCP lets an AI assistant help with the repetitive work around recipes: translating, structuring Thermomix steps, planning a week, and retrieving ingredients. These guides show the exact workflow and its boundaries.</p>
+        <ul class="use-case-meta"><li>By Cookidoo MCP maintainers</li><li><time datetime="2026-07-29">Last verified 29 July 2026</time></li><li>Unofficial integration</li></ul>
+      </div>
+      <div class="container docs-shell">
+        <aside class="docs-sidebar" aria-label="Use-case sections">
+          <strong>Use cases</strong>
+          <a href="./" aria-current="page">All guides</a>
+          <a href="./translate-cookidoo-recipe/">Translate recipes</a>
+          <a href="./create-thermomix-guided-recipe/">Guided recipes</a>
+          <a href="./automate-cookidoo-meal-plan/">Plan a week</a>
+          <a href="./cookidoo-shopping-list-by-recipe/">Get ingredients</a>
+          <a href="./mcp-vs-browser-automation/">MCP vs browser</a>
+          <a href="./guided-cooking-annotation-research/">How it was verified</a>
+        </aside>
+        <article class="docs-content">
+          <div class="answer-box">
+            <p class="section-kicker">Short answer</p>
+            <p><strong>AI can discuss a meal idea, use Cookidoo MCP to create or adapt a private recipe, place it in My Week, and retrieve the relevant shopping-list ingredients.</strong> Product search and checkout require a separate store-specific integration.</p>
+          </div>
+          <section id="guides">
+            <p class="section-kicker">Choose a starting point</p>
+            <h2>One useful job per guide</h2>
+            <div class="use-case-grid">
+              <a class="use-case-card" href="./translate-cookidoo-recipe/"><span class="meta">Recipes · 8 min read</span><h2>Translate a Cookidoo recipe with AI</h2><p>Copy the full recipe, translate it clearly, preserve settings, and save a private version.</p></a>
+              <a class="use-case-card" href="./create-thermomix-guided-recipe/"><span class="meta">Guided cooking · 9 min read</span><h2>Create a Thermomix guided recipe</h2><p>Turn ordinary instructions into separate weighing and machine-action steps.</p></a>
+              <a class="use-case-card" href="./automate-cookidoo-meal-plan/"><span class="meta">Planning · 6 min read</span><h2>Automate Cookidoo My Week</h2><p>Read before changing, then add, move, or remove one exact recipe safely.</p></a>
+              <a class="use-case-card" href="./cookidoo-shopping-list-by-recipe/"><span class="meta">Shopping · 5 min read</span><h2>Retrieve ingredients by recipe</h2><p>Keep recipe grouping, ownership state, quantities, and source IDs intact.</p></a>
+              <a class="use-case-card" href="./mcp-vs-browser-automation/"><span class="meta">Architecture · 6 min read</span><h2>Cookidoo MCP or browser automation?</h2><p>Use the API for known work; reserve a browser for investigating unsupported operations.</p></a>
+              <a class="use-case-card" href="./guided-cooking-annotation-research/"><span class="meta">Research · 10 min read</span><h2>How guided cooking was verified</h2><p>See the observation, round-trip test, validation rules, and remaining uncertainty.</p></a>
+            </div>
+          </section>
+          <section id="start">
+            <p class="section-kicker">New to the project?</p>
+            <h2>Start with a conversation, not an API.</h2>
+            <p>Tell the assistant what outcome you want and identify the recipe or date precisely. Ask it to show the proposed changes before any write. The MCP supplies purpose-built actions; you remain responsible for approving the result.</p>
+            <div class="prompt-example">Translate Cookidoo recipe r460132 into Russian. Make the instructions beginner-friendly, keep ingredient steps separate from Thermomix actions, validate the guided settings, and show me the proposed changes before saving.</div>
+            <div class="actions"><a class="button button-primary" href="../docs/">Set up Cookidoo MCP <span aria-hidden="true">→</span></a><a class="button button-secondary" href="../docs/tools/">See all 16 tools</a></div>
+          </section>
+          <section id="faq">
+            <p class="section-kicker">Direct answers</p>
+            <h2>Common questions</h2>
+            <div class="faq-list">
+              <details class="faq-item"><summary>Is this an official Cookidoo integration?</summary><p>No. It is an independent open-source project and is not affiliated with or endorsed by Vorwerk, Thermomix, or Cookidoo.</p></details>
+              <details class="faq-item"><summary>Can it order groceries?</summary><p>Cookidoo MCP retrieves structured shopping-list ingredients. Searching a retailer, choosing products, and placing an order belongs to a separate store-specific MCP.</p></details>
+              <details class="faq-item"><summary>Can an AI change my account without asking?</summary><p>The tools can perform writes after authentication, so the safe workflow is to identify the target, read current state, show the intended change, apply one scoped mutation, and verify it.</p></details>
+            </div>
+          </section>
+          <p class="verification-note">Authored by the Cookidoo MCP maintainers. Technical claims were checked against the repository implementation and contract tests on 29 July 2026. Cookidoo uses undocumented endpoints, so behavior can change.</p>
+        </article>
+      </div>
+    </main>
+    <footer class="site-footer"><div class="container footer-grid"><p class="footer-copy">Cookidoo MCP use cases · Practical, verified, and unofficial</p><nav class="footer-links" aria-label="Footer navigation"><a href="../">Home</a><a href="../docs/">Docs</a><a href="../llms.txt">AI index</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a></nav></div></footer>
+  </body>
+</html>

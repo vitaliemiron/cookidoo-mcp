@@ -111,6 +111,13 @@ repository link instead of requesting new permissions solely for a star.
   - Runtime dependencies.
 - `requirements-dev.txt`
   - Test and lint dependencies.
+- `pyproject.toml`, `cookidoo_mcp/`
+  - Versioned Python package metadata and the `cookidoo-mcp` console launcher.
+- `server.json`
+  - Official MCP Registry metadata for
+    `io.github.vitaliemiron/cookidoo-mcp`.
+- `.github/workflows/release.yml`
+  - Tag-gated PyPI, MCP Registry, and GitHub Release publication.
 - `ruff.toml`, `pytest.ini`
   - Stable lint and test configuration.
 - `prompt.md`, `prompt_FR.md`
@@ -141,6 +148,51 @@ Run the MCP server:
 ```bash
 venv/bin/fastmcp run server.py
 ```
+
+The published package exposes the equivalent stdio launcher:
+
+```bash
+uvx cookidoo-mcp --env-file /absolute/path/to/cookidoo-mcp.env
+```
+
+`--env-file` loads credentials before importing the server and never replaces
+environment variables that are already set. Keep the file private and outside
+the repository.
+
+## Packaging and releases
+
+Release-facing versions must match in:
+
+- `pyproject.toml`;
+- `cookidoo_mcp/__init__.py`;
+- `fastmcp.json`;
+- `server.json`;
+- the package version inside `server.json`.
+
+Check them with:
+
+```bash
+python scripts/check_release_metadata.py 1.0.0
+```
+
+Build and validate locally with:
+
+```bash
+python -m build
+python -m twine check --strict dist/*
+```
+
+Pushing a semantic tag such as `v1.0.0` starts
+`.github/workflows/release.yml`. It first runs the offline suite and validates
+the distributions, then publishes to PyPI using Trusted Publishing, publishes
+`server.json` to the official MCP Registry using GitHub OIDC, and creates a
+GitHub Release with the wheel and source archive.
+
+Before the first tag, PyPI must have a pending Trusted Publisher for project
+`cookidoo-mcp`, owner `vitaliemiron`, repository `cookidoo-mcp`, workflow
+`release.yml`, and environment `pypi`. Never replace OIDC with a committed
+token. Configure the GitHub environments `pypi` and `mcp-registry` before
+tagging.
 
 ## Documentation site
 

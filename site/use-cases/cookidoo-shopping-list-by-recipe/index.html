@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#fffaf2">
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="Retrieve Cookidoo shopping-list ingredients for one recipe with AI while preserving quantities, recipe grouping, ownership state, and a safe grocery handoff.">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/use-cases/cookidoo-shopping-list-by-recipe/">
+    <meta property="og:type" content="article"><meta property="og:title" content="Get Cookidoo shopping-list ingredients by recipe"><meta property="og:description" content="A structured, traceable handoff from a Cookidoo recipe to grocery search or cart automation."><meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/use-cases/cookidoo-shopping-list-by-recipe/"><meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png"><meta property="og:image:alt" content="Five steps from an AI meal idea through Cookidoo recipe and week planning to a store MCP order."><meta name="twitter:card" content="summary_large_image">
+    <title>Get Cookidoo shopping-list ingredients by recipe</title>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@graph":[
+        {"@type":"TechArticle","headline":"Get Cookidoo shopping-list ingredients by recipe","description":"How to retrieve a structured, recipe-grouped Cookidoo shopping list for a safe grocery handoff.","url":"https://vitaliemiron.github.io/cookidoo-mcp/use-cases/cookidoo-shopping-list-by-recipe/","datePublished":"2026-07-29","dateModified":"2026-07-29","author":{"@type":"Organization","name":"Cookidoo MCP maintainers","url":"https://github.com/vitaliemiron/cookidoo-mcp"},"isPartOf":{"@type":"WebSite","name":"Cookidoo MCP","url":"https://vitaliemiron.github.io/cookidoo-mcp/"}},
+        {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vitaliemiron.github.io/cookidoo-mcp/"},{"@type":"ListItem","position":2,"name":"Use cases","item":"https://vitaliemiron.github.io/cookidoo-mcp/use-cases/"},{"@type":"ListItem","position":3,"name":"Shopping list by recipe","item":"https://vitaliemiron.github.io/cookidoo-mcp/use-cases/cookidoo-shopping-list-by-recipe/"}]}
+      ]}
+    </script>
+    <script>document.documentElement.classList.add("js"); const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; let initialTheme = systemTheme; try { const saved = localStorage.getItem("cookidoo-mcp-theme"); if (saved === "light" || saved === "dark") initialTheme = saved; } catch {} document.documentElement.dataset.theme = initialTheme; document.querySelector('meta[name="theme-color"]').content = initialTheme === "light" ? "#fffaf2" : "#020617";</script>
+    <link rel="stylesheet" href="../../assets/styles.css"><script defer src="../../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to shopping-list guide</a>
+    <header class="site-header"><div class="container nav-shell"><a class="brand" href="../../" aria-label="Cookidoo MCP home"><span class="brand-mark" aria-hidden="true">CM</span><span class="brand-name">Cookidoo MCP</span></a><nav class="primary-nav" data-navigation aria-label="Primary navigation"><a href="../../">Home</a><a href="../" aria-current="page">Use cases</a><a href="../../presentation/">Story</a><a href="../../docs/">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a></nav><div class="header-actions"><button class="nav-button" type="button" data-theme-toggle aria-label="Theme follows this device">System</button><button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button></div></div></header>
+    <main id="main">
+      <div class="container docs-hero"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../">Home</a><span aria-hidden="true">/</span><a href="../">Use cases</a><span aria-hidden="true">/</span><span>Shopping list by recipe</span></nav></div>
+      <div class="container docs-shell">
+        <aside class="docs-sidebar" aria-label="Guide sections"><strong>In this guide</strong><a href="#answer">Short answer</a><a href="#source">Source of truth</a><a href="#workflow">Workflow</a><a href="#output">Returned data</a><a href="#example">Example request</a><a href="#handoff">Store handoff</a></aside>
+        <article class="docs-content">
+          <p class="eyebrow">Shopping / Ingredient data</p><h1>Get Cookidoo ingredients by recipe.</h1>
+          <p class="lead">Retrieve the shopping-list ingredients for one exact recipe without losing the quantity text, recipe source, or items already marked as owned.</p>
+          <ul class="use-case-meta"><li>By Cookidoo MCP maintainers</li><li><time datetime="2026-07-29">Last verified 29 July 2026</time></li><li>5 min read</li></ul>
+          <div class="answer-box" id="answer"><p class="section-kicker">Short answer</p><p><strong>Call <code>get_shopping_list_ingredients</code> with the exact recipe ID after that recipe is present in the Cookidoo shopping list.</strong> By default it excludes ingredients marked as already owned and returns both recipe-grouped data and a convenient flat list.</p></div>
+          <section id="source">
+            <p class="section-kicker">Important distinction</p><h2>The Cookidoo shopping list is the source of truth</h2>
+            <p>The tool reads the account’s current shopping-list recipes, ownership state, and manually added items. Filtering by <code>recipe_id</code> selects one of those shopping-list recipe groups; it does not synthesize a new list from any arbitrary recipe in the catalog.</p>
+            <div class="callout"><strong>If the recipe ID is absent, the tool stops clearly.</strong><p>The response identifies which recipe IDs are available instead of silently returning the wrong ingredients.</p></div>
+          </section>
+          <section id="workflow">
+            <p class="section-kicker">Safe sequence</p><h2>Keep the handoff traceable</h2>
+            <ol class="flow-list">
+              <li><div><strong>Connect to Cookidoo.</strong><p>Use credentials from the local environment; do not place them in a prompt or repository file.</p></div></li>
+              <li><div><strong>Read the whole list first when uncertain.</strong><p>Use the returned recipe IDs and names to resolve the intended source.</p></div></li>
+              <li><div><strong>Filter by exact recipe ID.</strong><p>Pass the ID through <code>recipe_id</code> so similar recipe names cannot be confused.</p></div></li>
+              <li><div><strong>Respect ownership state.</strong><p>Leave <code>include_owned=false</code> for what still needs buying. Request <code>true</code> only when the complete historical group is needed.</p></div></li>
+              <li><div><strong>Preserve quantity text and grouping.</strong><p>Do not discard <code>recipe_id</code>, <code>recipe_name</code>, ingredient description, or owned status during the handoff.</p></div></li>
+              <li><div><strong>Ask before selecting retailer products.</strong><p>A separate store MCP should clarify ambiguous matches, brands, pack sizes, and substitutions before changing a cart.</p></div></li>
+            </ol>
+          </section>
+          <section id="output">
+            <p class="section-kicker">Returned structure</p><h2>One response, two useful views</h2>
+            <table class="reference-table">
+              <thead><tr><th>Field</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><code>recipes</code></td><td>Recipe groups with their own ingredients, source ID, name, and available recipe context.</td></tr>
+                <tr><td><code>ingredients</code></td><td>A flat list where each item still carries <code>recipe_id</code> and <code>recipe_name</code>.</td></tr>
+                <tr><td><code>additional_items</code></td><td>Manual shopping-list items, included only when requested.</td></tr>
+                <tr><td><code>summary</code></td><td>Recipe, ingredient, additional-item, and owned-item counts plus active filters.</td></tr>
+              </tbody>
+            </table>
+            <p>Quantity text comes from Cookidoo’s ingredient description, such as “200 g rice.” Grocery automation should retain that text even when the retailer sells by package or piece.</p>
+          </section>
+          <section id="example">
+            <p class="section-kicker">Example request</p><h2>State what is already owned</h2>
+            <div class="prompt-example">Get the shopping-list ingredients for recipe r460132. Exclude anything already marked as owned and do not include manual household items. Keep the recipe grouping and quantities. Show me the list before sending it to the grocery-store MCP.</div>
+          </section>
+          <section id="handoff">
+            <p class="section-kicker">System boundary</p><h2>Ingredients are not retailer products</h2>
+            <p>Cookidoo MCP ends at structured ingredient retrieval. Another MCP can search a specific store, interpret sale units such as kilograms or pieces, choose a product, and add it to a cart.</p>
+            <div class="callout callout-herb"><strong>Never hide unmatched ingredients.</strong><p>The store workflow should return a separate list of missing or ambiguous items so the user can decide what to do.</p></div>
+            <div class="actions"><a class="button button-primary" href="../../docs/automation/">Shopping API details <span aria-hidden="true">→</span></a><a class="button button-secondary" href="../mcp-vs-browser-automation/">MCP or browser?</a></div>
+          </section>
+          <section id="related"><p class="section-kicker">Continue</p><h2>Related guides</h2><div class="related-grid"><a class="related-card" href="../automate-cookidoo-meal-plan/"><span class="meta">Planning</span><h3>Build My Week first</h3><p>Place exact recipes on dates before preparing the list.</p></a><a class="related-card" href="../mcp-vs-browser-automation/"><span class="meta">Architecture</span><h3>Separate known APIs from browser research</h3><p>Use a purpose-built store MCP for the shopping handoff.</p></a></div></section>
+          <p class="verification-note">Authored by the Cookidoo MCP maintainers. Filtering, ownership, recipe grouping, and error behavior checked against service code and shopping-list unit tests on 29 July 2026.</p>
+        </article>
+      </div>
+    </main>
+    <footer class="site-footer"><div class="container footer-grid"><p class="footer-copy">Cookidoo shopping-list guide · Recipe context preserved</p><nav class="footer-links" aria-label="Footer navigation"><a href="../">All use cases</a><a href="../../docs/automation/">Technical reference</a><a href="../../raw/use-cases/cookidoo-shopping-list-by-recipe.md">Raw Markdown</a></nav></div></footer>
+  </body>
+</html>

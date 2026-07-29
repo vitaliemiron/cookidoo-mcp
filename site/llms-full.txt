@@ -5,6 +5,8 @@ Cookidoo MCP is an unofficial FastMCP server for automating a user's own Cookido
 Canonical documentation: https://vitaliemiron.github.io/cookidoo-mcp/docs/
 Repository: https://github.com/vitaliemiron/cookidoo-mcp
 Structured tool inventory: https://vitaliemiron.github.io/cookidoo-mcp/tools.json
+Official MCP Registry name: io.github.vitaliemiron/cookidoo-mcp
+Python package: cookidoo-mcp
 
 Before changing repository code or using authenticated Cookidoo operations,
 read AGENTS.md completely. It is the canonical agent guide.
@@ -12,6 +14,77 @@ read AGENTS.md completely. It is the canonical agent guide.
 ## Motivation
 
 Meal preparation has useful creative work and repetitive administrative work. The project keeps recipe discovery, taste, and cooking decisions with the person while making it possible for an AI assistant to help with copying, translating, structuring, scheduling, and collecting ingredients. The intended outcomes are clearer recipes, less repeated data entry, more room for healthy home cooking, and a reusable source of inspiration. Exact time savings depend on the workflow.
+
+## Task-focused guides
+
+Human guide hub:
+https://vitaliemiron.github.io/cookidoo-mcp/use-cases/
+
+Raw Markdown index:
+https://vitaliemiron.github.io/cookidoo-mcp/raw/use-cases/index.md
+
+### Translate a Cookidoo recipe
+
+Copy the official recipe into private recipes because the official
+recipe-details response has no preparation instructions. Read the private
+copy, translate the final text, split ingredient handling from machine actions,
+recalculate UTF-16 positions, validate, PATCH ingredients and steps
+separately, then read the result again.
+
+Guide:
+https://vitaliemiron.github.io/cookidoo-mcp/use-cases/translate-cookidoo-recipe/
+
+### Create a Thermomix guided private recipe
+
+Write readable instructions first. A weighing or adding step contains only
+INGREDIENT annotations; the following chopping, mixing, heating, kneading, or
+other machine step contains TTS or MODE. Add annotation data represented by the
+sentence, calculate positions against final text, validate, upload, and verify.
+Structured customer recipes are not official Vorwerk Guided Cooking recipes.
+
+Guide:
+https://vitaliemiron.github.io/cookidoo-mcp/use-cases/create-thermomix-guided-recipe/
+
+### Automate Cookidoo My Week
+
+Read the rolling seven-day window first. Resolve an exact recipe ID and ISO
+date, show the intended add, remove, or move, apply one scoped operation, then
+read the window again. The requested date starts the seven-day window; it is
+not automatically a Monday.
+
+Guide:
+https://vitaliemiron.github.io/cookidoo-mcp/use-cases/automate-cookidoo-meal-plan/
+
+### Retrieve shopping-list ingredients by recipe
+
+The account's current Cookidoo shopping list is the source of truth. Filter one
+of its recipe groups by exact ID, exclude owned items by default, and preserve
+recipe grouping, quantity descriptions, and ownership state. Product search
+and cart changes belong to a separate store-specific MCP.
+
+Guide:
+https://vitaliemiron.github.io/cookidoo-mcp/use-cases/cookidoo-shopping-list-by-recipe/
+
+### Choose MCP or browser automation
+
+Use a supported Cookidoo MCP tool for normal work. Use an authenticated browser
+to investigate an unsupported operation or changed network contract. Once the
+contract is known, implement it in the service and add tests rather than
+leaving browser automation as the repeatable workflow.
+
+Guide:
+https://vitaliemiron.github.io/cookidoo-mcp/use-cases/mcp-vs-browser-automation/
+
+### Guided-cooking annotation research
+
+On 2026-07-23, an authenticated editor observation and temporary private-recipe
+round trip reconstructed nested ingredient weighing, TTS with time,
+temperature, speed and reverse, and Dough mode. The annotations survived a
+partial step PATCH and reload; the temporary recipe was deleted. This is a
+verified but undocumented private contract that can change.
+
+Guide:
+https://vitaliemiron.github.io/cookidoo-mcp/use-cases/guided-cooking-annotation-research/
 
 ## Capabilities
 
@@ -47,12 +120,20 @@ See tools.json for descriptions and categories.
 
 ## Authentication
 
-Copy `.env.example` to `.env` and configure the account:
+Python 3.12 or newer is required. For a packaged installation, start the stdio
+server with:
+
+uvx cookidoo-mcp --env-file /absolute/path/to/cookidoo-mcp.env
+
+The private environment file contains:
 
 COOKIDOO_EMAIL=your_login
 COOKIDOO_PASSWORD=your_password
 
-The login can be an email or the account's phone-number login, depending on the account. Never commit `.env` or credentials. The configured locale in the service must be a valid Cookidoo country/language pairing.
+The login can be an email or the account's phone-number login, depending on the
+account. Never commit `.env` or credentials. Existing environment variables
+take precedence over values loaded with `--env-file`. The configured locale in
+the service must be a valid Cookidoo country/language pairing.
 
 ## Recommended recipe workflow
 
