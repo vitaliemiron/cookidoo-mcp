@@ -30,6 +30,10 @@ Security issues belong in a
 2. Search existing issues and pull requests to avoid duplicate work.
 3. Open an issue before a large behavioral or architectural change.
 4. Keep the change focused. Unrelated cleanup is easier to review separately.
+5. Give the pull request a Conventional Commit title. Use `feat:` for a new
+   user-facing capability, `fix:` for a correction, and `chore:`, `docs:`, or
+   `test:` when the change should not independently bump the package version.
+   The squash title becomes the release input used by Release Please.
 
 ## Local setup
 

@@ -87,7 +87,8 @@ jobs:
 
       - name: Smoke-test the installed command
         run: |
-          test "$(cookidoo-mcp --version)" = "cookidoo-mcp 1.0.0"
+          expected_version="$(python -c 'from cookidoo_mcp import __version__; print(__version__)')"
+          test "$(cookidoo-mcp --version)" = "cookidoo-mcp ${expected_version}"
           python -c "from server import mcp; assert mcp.name == 'cookidoo-mcp-server'"
 
   windows-package:
@@ -118,7 +119,8 @@ jobs:
         shell: pwsh
         run: |
           $version = cookidoo-mcp --version
-          if ($version -ne "cookidoo-mcp 1.0.0") {
+          $expectedVersion = python -c "from cookidoo_mcp import __version__; print(__version__)"
+          if ($version -ne "cookidoo-mcp $expectedVersion") {
             throw "Unexpected version output: $version"
           }
           $envFile = Join-Path $env:RUNNER_TEMP "cookidoo.env"

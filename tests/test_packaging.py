@@ -18,6 +18,36 @@ def test_release_versions_stay_in_sync() -> None:
     check(__version__)
 
 
+def test_release_please_updates_every_release_version() -> None:
+    config = json.loads(
+        (ROOT / "release-please-config.json").read_text(encoding="utf-8")
+    )
+    manifest = json.loads(
+        (ROOT / ".release-please-manifest.json").read_text(encoding="utf-8")
+    )
+    workflow = (
+        ROOT / ".github" / "workflows" / "release-please.yml"
+    ).read_text(encoding="utf-8")
+
+    assert config["release-type"] == "python"
+    assert config["include-component-in-tag"] is False
+    assert config["packages"]["."]["package-name"] == "cookidoo-mcp"
+    assert manifest == {".": __version__}
+    assert {
+        (extra["path"], extra["jsonpath"])
+        for extra in config["packages"]["."]["extra-files"]
+    } == {
+        ("fastmcp.json", "$.version"),
+        ("server.json", "$.version"),
+        ("server.json", "$.packages[0].version"),
+    }
+    assert (
+        "googleapis/release-please-action@"
+        "45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0"
+    ) in workflow
+    assert "secrets.RELEASE_PLEASE_TOKEN" in workflow
+
+
 def test_release_version_check_rejects_wrong_tag() -> None:
     with pytest.raises(ValueError, match="tag requests 2.0.0"):
         check("2.0.0")

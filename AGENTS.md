@@ -181,12 +181,13 @@ Release-facing versions must match in:
 - `cookidoo_mcp/__init__.py`;
 - `fastmcp.json`;
 - `server.json`;
-- the package version inside `server.json`.
+- the package version inside `server.json`;
+- `.release-please-manifest.json`.
 
 Check them with:
 
 ```bash
-python scripts/check_release_metadata.py 1.0.0
+python scripts/check_release_metadata.py
 ```
 
 Build and validate locally with:
@@ -196,14 +197,26 @@ python -m build
 python -m twine check --strict dist/*
 ```
 
-Pushing a semantic tag such as `v1.0.0` starts
-`.github/workflows/release.yml`. It first runs the offline suite and validates
-the distributions, generates a CycloneDX SBOM, and records GitHub build
-provenance and SBOM attestations for the wheel and source archive. It then
-publishes to PyPI using Trusted Publishing, validates and publishes
-`server.json` to the official MCP Registry using GitHub OIDC, verifies the
-published registry version through the public API, and creates a GitHub Release
-with the wheel, source archive, and SBOM.
+`.github/workflows/release-please.yml` reads Conventional Commit squash titles
+after every push to `main`. A `feat:` title proposes a minor release, `fix:`
+proposes a patch, and `feat!:` or another breaking-change marker proposes a
+major release. Release Please keeps one release PR current and synchronizes
+`pyproject.toml`, `cookidoo_mcp/__init__.py`, `fastmcp.json`, both version
+fields in `server.json`, `CHANGELOG.md`, and
+`.release-please-manifest.json`.
+
+Merging the generated release PR creates a semantic tag such as `v1.1.0` and a
+GitHub Release. The tag starts `.github/workflows/release.yml`, which reruns
+the offline suite, validates the distributions, generates a CycloneDX SBOM,
+records GitHub build-provenance and SBOM attestations, publishes to PyPI using
+Trusted Publishing, publishes and verifies `server.json` through the official
+MCP Registry using GitHub OIDC, and attaches the wheel, source archive, and
+SBOM to the GitHub Release.
+
+Release Please uses the repository secret `RELEASE_PLEASE_TOKEN`. It must be a
+maintainer token able to create pull requests and tags so generated PRs and
+tags trigger the normal protected-branch and release workflows. Never print,
+commit, or expose that token to pull-request code.
 
 Before the first tag, PyPI must have a pending Trusted Publisher for project
 `cookidoo-mcp`, owner `vitaliemiron`, repository `cookidoo-mcp`, workflow
