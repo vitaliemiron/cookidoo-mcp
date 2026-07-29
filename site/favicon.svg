@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Cookidoo MCP">
+  <rect width="64" height="64" rx="16" fill="#c2410c"/>
+  <path d="M44 21.5a17 17 0 1 0 0 21" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="7"/>
+  <path d="M42.5 13c5.8.4 9 3.5 9.5 9.4-5.9-.4-9.1-3.5-9.5-9.4Z" fill="#d1fae5"/>
+</svg>
