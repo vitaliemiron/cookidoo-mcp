@@ -1,11 +1,23 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fffaf2">
   <meta name="robots" content="noindex">
   <link rel="icon" href="/cookidoo-mcp/favicon.svg" type="image/svg+xml">
   <title>Page not found — Cookidoo MCP</title>
+  <script>
+    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    let initialTheme = systemTheme;
+    try {
+      const saved = localStorage.getItem("cookidoo-mcp-theme");
+      if (saved === "light" || saved === "dark") initialTheme = saved;
+    } catch {}
+    document.documentElement.dataset.theme = initialTheme;
+    document.querySelector('meta[name="theme-color"]').content =
+      initialTheme === "light" ? "#fffaf2" : "#020617";
+  </script>
   <link rel="stylesheet" href="/cookidoo-mcp/assets/styles.css">
 </head>
 <body>

@@ -1,39 +1,79 @@
 const storageKey = "cookidoo-mcp-theme";
 const root = document.documentElement;
+const systemThemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+const themeCycle = ["system", "light", "dark"];
+let currentThemePreference = "system";
 
-function setTheme(theme) {
+function resolveTheme(preference) {
+  if (preference === "system") {
+    return systemThemeQuery.matches ? "dark" : "light";
+  }
+  return preference;
+}
+
+function setThemePreference(preference, persist = true) {
+  const theme = resolveTheme(preference);
+  currentThemePreference = preference;
   root.dataset.theme = theme;
   const themeColor = document.querySelector('meta[name="theme-color"]');
   if (themeColor) {
     themeColor.content = theme === "light" ? "#fffaf2" : "#020617";
   }
+
+  if (persist) {
+    try {
+      if (preference === "system") {
+        localStorage.removeItem(storageKey);
+      } else {
+        localStorage.setItem(storageKey, preference);
+      }
+    } catch {
+      // Storage can be unavailable in strict privacy modes; the theme still works.
+    }
+  }
+
   const toggle = document.querySelector("[data-theme-toggle]");
   if (toggle) {
-    toggle.textContent = theme === "light" ? "Dark" : "Light";
+    const currentLabel =
+      preference === "system"
+        ? "System"
+        : theme === "light"
+          ? "Light"
+          : "Dark";
+    const currentIndex = themeCycle.indexOf(preference);
+    const nextPreference = themeCycle[(currentIndex + 1) % themeCycle.length];
+    toggle.textContent = currentLabel;
     toggle.setAttribute(
       "aria-label",
-      `Switch to ${theme === "light" ? "dark" : "light"} theme`,
+      `Theme: ${currentLabel.toLowerCase()}. Switch to ${nextPreference} theme`,
     );
+    toggle.title =
+      preference === "system"
+        ? "Theme follows this device"
+        : `${currentLabel} theme selected`;
   }
 }
 
-let initialTheme = root.dataset.theme === "dark" ? "dark" : "light";
 try {
-  const savedTheme = localStorage.getItem(storageKey);
-  if (savedTheme === "light" || savedTheme === "dark") initialTheme = savedTheme;
+  const savedPreference = localStorage.getItem(storageKey);
+  if (savedPreference === "light" || savedPreference === "dark") {
+    currentThemePreference = savedPreference;
+  }
 } catch {
-  // Use the theme declared in the document when storage is unavailable.
+  // Follow the device theme when storage is unavailable.
 }
-setTheme(initialTheme);
+setThemePreference(currentThemePreference, false);
 
 document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
-  const nextTheme = root.dataset.theme === "light" ? "dark" : "light";
-  try {
-    localStorage.setItem(storageKey, nextTheme);
-  } catch {
-    // Storage can be unavailable in strict privacy modes; the theme still works.
+  const currentIndex = themeCycle.indexOf(currentThemePreference);
+  const nextPreference = themeCycle[(currentIndex + 1) % themeCycle.length];
+  setThemePreference(nextPreference);
+});
+
+systemThemeQuery.addEventListener("change", () => {
+  if (currentThemePreference === "system") {
+    setThemePreference("system", false);
   }
-  setTheme(nextTheme);
 });
 
 const menu = document.querySelector("[data-navigation]");
