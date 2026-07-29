@@ -3,6 +3,10 @@ const root = document.documentElement;
 
 function setTheme(theme) {
   root.dataset.theme = theme;
+  const themeColor = document.querySelector('meta[name="theme-color"]');
+  if (themeColor) {
+    themeColor.content = theme === "light" ? "#fffaf2" : "#020617";
+  }
   const toggle = document.querySelector("[data-theme-toggle]");
   if (toggle) {
     toggle.textContent = theme === "light" ? "Dark" : "Light";
@@ -13,14 +17,14 @@ function setTheme(theme) {
   }
 }
 
+let initialTheme = root.dataset.theme === "dark" ? "dark" : "light";
 try {
   const savedTheme = localStorage.getItem(storageKey);
-  if (savedTheme === "light" || savedTheme === "dark") {
-    setTheme(savedTheme);
-  }
+  if (savedTheme === "light" || savedTheme === "dark") initialTheme = savedTheme;
 } catch {
-  setTheme(root.dataset.theme === "light" ? "light" : "dark");
+  // Use the theme declared in the document when storage is unavailable.
 }
+setTheme(initialTheme);
 
 document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
   const nextTheme = root.dataset.theme === "light" ? "dark" : "light";
@@ -46,6 +50,31 @@ menu?.querySelectorAll("a").forEach((link) => {
     menu.dataset.open = "false";
     menuToggle?.setAttribute("aria-expanded", "false");
   });
+});
+
+const helpDisclosures = Array.from(document.querySelectorAll("details.help"));
+
+helpDisclosures.forEach((disclosure) => {
+  disclosure.addEventListener("toggle", () => {
+    if (!disclosure.open) return;
+    helpDisclosures.forEach((other) => {
+      if (other !== disclosure) other.open = false;
+    });
+  });
+});
+
+document.addEventListener("click", (event) => {
+  helpDisclosures.forEach((disclosure) => {
+    if (!disclosure.contains(event.target)) disclosure.open = false;
+  });
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  const openDisclosure = document.querySelector("details.help[open]");
+  if (!openDisclosure) return;
+  openDisclosure.open = false;
+  openDisclosure.querySelector("summary")?.focus();
 });
 
 const reducedMotion = window.matchMedia(

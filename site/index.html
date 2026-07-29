@@ -1,26 +1,26 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#020617">
+    <meta name="theme-color" content="#fffaf2">
     <meta
       name="description"
-      content="Cookidoo MCP connects AI assistants to recipes, guided cooking, shopping lists, images, and meal planning—so less time goes into kitchen admin."
+      content="Talk through meal ideas with AI, create clear Cookidoo recipes, plan your week, and prepare ingredient lists for the next automation."
     >
     <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Cookidoo MCP — Spend less time managing meals">
+    <meta property="og:title" content="Cookidoo MCP — From idea to dinner">
     <meta
       property="og:description"
-      content="An unofficial open-source bridge between AI assistance and your Cookidoo workflow."
+      content="Discuss recipes with AI, save them to Cookidoo, plan your week, and pass ingredient lists to your next automation."
     >
     <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/">
     <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
     <meta property="og:image:alt" content="A connected path from a recipe card through guided cooking and a weekly plan to fresh ingredients.">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
-    <title>Cookidoo MCP — Spend less time managing meals</title>
+    <title>Cookidoo MCP — From idea to dinner</title>
     <script>
       document.documentElement.classList.add("js");
       try {
@@ -40,11 +40,12 @@
           <span class="brand-name">Cookidoo MCP</span>
         </a>
         <nav class="primary-nav" data-navigation aria-label="Primary navigation">
-          <a href="#why">Why</a>
-          <a href="#automations">Automations</a>
-          <a href="#reliability">Reliability</a>
-          <a href="./presentation/">Story</a>
-          <a href="./docs/">Docs</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#why">Why it helps</a>
+          <a href="#automations">What it can do</a>
+          <a href="#reliability">Safety</a>
+          <a href="./presentation/">Our story</a>
+          <a href="./docs/">For developers</a>
           <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
         </nav>
         <div class="header-actions">
@@ -64,34 +65,87 @@
       <section class="hero">
         <div class="container hero-grid">
           <div>
-            <p class="eyebrow" data-reveal>Open-source Cookidoo automation</p>
-            <h1 data-reveal style="--reveal-delay: 60ms">Spend less time managing meals. Keep the part that matters.</h1>
+            <div class="eyebrow-row" data-reveal>
+              <p class="eyebrow">Your AI and Cookidoo, connected</p>
+              <details class="help">
+                <summary aria-label="What does connected mean?">?</summary>
+                <div class="help-panel">
+                  <strong>For technical readers</strong>
+                  <p>An AI client calls this MCP server’s tools to work with the user’s Cookidoo account. It is an unofficial open-source integration.</p>
+                </div>
+              </details>
+            </div>
+            <h1 data-reveal style="--reveal-delay: 60ms">From idea to dinner.</h1>
             <p class="hero-copy" data-reveal style="--reveal-delay: 120ms">
-              Cookidoo MCP gives an AI assistant purpose-built tools for recipes,
-              guided cooking, shopping lists, images, and meal planning—turning
-              scattered kitchen tasks into one connected conversation.
+              Talk about what you want to eat. Let AI turn it into a clear
+              Cookidoo recipe, place it in your week, and prepare the
+              ingredient list.
             </p>
             <div class="actions" data-reveal style="--reveal-delay: 180ms">
-              <a class="button button-primary" href="./docs/">Read the documentation <span aria-hidden="true">→</span></a>
-              <a class="button button-secondary" href="./presentation/">See the story</a>
+              <a class="button button-primary" href="#how-it-works">See how it works <span aria-hidden="true">↓</span></a>
+              <a class="button button-secondary" href="./docs/">Developer setup</a>
             </div>
             <p class="hero-note" data-reveal style="--reveal-delay: 220ms">
-              Unofficial integration · credentials stay in your environment · Apache 2.0
+              You choose the food and approve the changes. The assistant handles the repetitive steps.
             </p>
           </div>
 
-          <div class="flow-stage" data-reveal aria-label="Cookidoo MCP connects discovery, recipe adaptation, cooking, planning, and shopping">
-            <div class="flow-line line-1" aria-hidden="true"></div>
-            <div class="flow-line line-2" aria-hidden="true"></div>
-            <div class="flow-line line-3" aria-hidden="true"></div>
-            <div class="flow-line line-4" aria-hidden="true"></div>
-            <div class="flow-line line-5" aria-hidden="true"></div>
-            <div class="flow-core">MCP</div>
-            <div class="flow-node node-discover"><span>01</span>Discover</div>
-            <div class="flow-node node-adapt"><span>02</span>Adapt</div>
-            <div class="flow-node node-cook"><span>03</span>Cook</div>
-            <div class="flow-node node-plan"><span>04</span>Plan</div>
-            <div class="flow-node node-shop"><span>05</span>Shop</div>
+          <div class="journey-card" id="how-it-works" data-reveal aria-labelledby="journey-title">
+            <div class="journey-heading">
+              <div>
+                <span class="journey-kicker">One conversation, clear steps</span>
+                <h2 id="journey-title">How your idea moves</h2>
+              </div>
+              <details class="help help-align-end">
+                <summary aria-label="How does this process work technically?">?</summary>
+                <div class="help-panel">
+                  <strong>What happens underneath</strong>
+                  <p>Steps 2–4 use Cookidoo MCP tools. Step 5 is a handoff: a grocery-store MCP can search products and place an order.</p>
+                </div>
+              </details>
+            </div>
+            <ol class="journey-stepper">
+              <li>
+                <span class="journey-number">1</span>
+                <div>
+                  <span class="journey-owner owner-ai">AI conversation</span>
+                  <strong>Find an idea</strong>
+                  <p>Describe a craving, a goal, or share a recipe link.</p>
+                </div>
+              </li>
+              <li>
+                <span class="journey-number">2</span>
+                <div>
+                  <span class="journey-owner owner-cookidoo">Cookidoo MCP</span>
+                  <strong>Make the recipe yours</strong>
+                  <p>Translate it, make the steps clearer, and save it.</p>
+                </div>
+              </li>
+              <li>
+                <span class="journey-number">3</span>
+                <div>
+                  <span class="journey-owner owner-cookidoo">Cookidoo MCP</span>
+                  <strong>Plan your week</strong>
+                  <p>Add the meal to the day that works for you.</p>
+                </div>
+              </li>
+              <li>
+                <span class="journey-number">4</span>
+                <div>
+                  <span class="journey-owner owner-cookidoo">Cookidoo MCP</span>
+                  <strong>Prepare the list</strong>
+                  <p>Collect the ingredients while keeping recipe context.</p>
+                </div>
+              </li>
+              <li class="journey-handoff">
+                <span class="journey-number">5</span>
+                <div>
+                  <span class="journey-owner owner-other">Another MCP</span>
+                  <strong>Order when you are ready</strong>
+                  <p>Hand the list to a grocery-store automation.</p>
+                </div>
+              </li>
+            </ol>
           </div>
         </div>
       </section>
@@ -100,19 +154,19 @@
         <div class="container metrics">
           <div class="metric">
             <span class="metric-value" data-counter="16">16</span>
-            <span class="metric-label">purpose-built MCP tools</span>
+            <span class="metric-label">ready-made actions for the assistant</span>
           </div>
           <div class="metric">
             <span class="metric-value" data-counter="5">5</span>
-            <span class="metric-label">live API contracts</span>
+            <span class="metric-label">real connection checks</span>
           </div>
           <div class="metric">
             <span class="metric-value" data-counter="7" data-suffix="-day">7-day</span>
-            <span class="metric-label">meal-planning window</span>
+            <span class="metric-label">week-planning window</span>
           </div>
           <div class="metric">
             <span class="metric-value" data-counter="1" data-suffix="×">1×</span>
-            <span class="metric-label">regression monitor every day</span>
+            <span class="metric-label">automatic health check each day</span>
           </div>
         </div>
       </section>
@@ -120,31 +174,31 @@
       <section class="section" id="why">
         <div class="container split">
           <div class="split-heading" data-reveal>
-            <p class="section-kicker">The motivation</p>
-            <h2>The kitchen had automation. The workflow around it didn’t.</h2>
+            <p class="section-kicker">Why it exists</p>
+            <h2>A recipe idea should not become admin work.</h2>
           </div>
           <div class="split-content" data-reveal style="--reveal-delay: 90ms">
             <p class="section-intro">
-              Finding a promising recipe is easy. Turning it into the right
-              language, clear Thermomix actions, a realistic week, and a usable
-              shopping list is where the digital chores begin.
+              The enjoyable part is choosing and cooking food. Copying details,
+              translating steps, updating a calendar, and rebuilding a shopping
+              list should not take over.
             </p>
             <ol class="problem-list">
               <li>
                 <span class="index">01</span>
-                <span><strong>Inspiration is fragmented.</strong>Recipes arrive from Cookidoo, blogs, screenshots, and other languages.</span>
+                <span><strong>Ideas come from everywhere.</strong>Cookidoo, blogs, screenshots, friends, and other languages.</span>
               </li>
               <li>
                 <span class="index">02</span>
-                <span><strong>Adaptation demands precision.</strong>Weights, time, temperature, speed, reverse direction, and modes must stay aligned.</span>
+                <span><strong>Useful recipes need clear steps.</strong>Especially when you are cooking something for the first time.</span>
               </li>
               <li>
                 <span class="index">03</span>
-                <span><strong>Planning lives somewhere else.</strong>A recipe idea still has to become a calendar entry and shopping-list data.</span>
+                <span><strong>An idea is not yet a plan.</strong>The meal still needs a day and a complete ingredient list.</span>
               </li>
               <li>
                 <span class="index">04</span>
-                <span><strong>Unofficial APIs change.</strong>Useful automation needs continuous tests, not wishful thinking.</span>
+                <span><strong>Connections can change.</strong>Daily checks help catch problems before they surprise you.</span>
               </li>
             </ol>
           </div>
@@ -153,12 +207,11 @@
 
       <section class="section" id="automations">
         <div class="container">
-          <p class="section-kicker" data-reveal>What it gives back</p>
-          <h2 class="reading" data-reveal>Automation for the admin. Space for the human choices.</h2>
+          <p class="section-kicker" data-reveal>What it can do</p>
+          <h2 class="reading" data-reveal>Less copying. More cooking.</h2>
           <p class="section-intro" data-reveal>
-            Cookidoo MCP does not decide what a good meal means to you. It
-            connects the repetitive steps so you can focus on taste, health,
-            curiosity, and the people at the table.
+            You keep the decisions. The assistant helps carry them from an idea
+            into Cookidoo, your weekly plan, and your ingredient list.
           </p>
 
           <div class="bento">
@@ -166,40 +219,37 @@
               <span class="card-number">01 / INSPIRATION</span>
               <h3>Turn “that looks good” into something you can actually cook.</h3>
               <p>
-                Copy official recipes for their full instructions, translate
-                them, or adapt ideas from outside Cookidoo into a structured
-                Thermomix workflow.
+                Bring a recipe from Cookidoo or another source, translate it,
+                and adapt it to your preferences.
               </p>
             </article>
             <article class="card" data-reveal style="--reveal-delay: 40ms">
               <span class="card-number">02 / CLARITY</span>
               <h3>Make every step easier for a beginner.</h3>
-              <p>Keep weighing and adding separate from machine actions, with explicit settings and validated annotations.</p>
+              <p>Separate adding ingredients from mixing or cooking, so every action is easy to follow.</p>
             </article>
             <article class="card" data-reveal>
               <span class="card-number">03 / HEALTH</span>
               <h3>Move healthy intentions into a practical week.</h3>
-              <p>Use recipe ideas, a seven-day planner, and shopping-list data as one connected planning surface.</p>
+              <p>Turn good intentions into meals you can see on a real weekly plan.</p>
             </article>
             <article class="card card-wide" data-reveal style="--reveal-delay: 40ms">
               <span class="card-number">04 / FREE TIME</span>
-              <h3>Coordinate six digital tasks without six separate workflows.</h3>
+              <h3>Stop moving the same information from place to place.</h3>
               <p>
-                Discover, copy, translate, structure, schedule, and collect
-                ingredients from one AI conversation. Exact time saved depends
-                on the meal and workflow; the repetitive handoffs are what the
-                MCP removes.
+                Discuss, adapt, save, schedule, and collect ingredients from one
+                conversation. Exact time saved depends on your routine.
               </p>
             </article>
             <article class="card card-wide" data-reveal>
               <span class="card-number">05 / GUIDED COOKING</span>
-              <h3>Preserve the details that make Thermomix guidance useful.</h3>
-              <p>Model time, temperature, speed, reverse direction, weighing, Dough, Blend, Turbo, Steaming, Rice Cooker, Warm Up, and Browning.</p>
+              <h3>Keep Thermomix settings attached to the right step.</h3>
+              <p>Time, temperature, speed, reverse, weighing, and supported cooking modes stay explicit.</p>
             </article>
             <article class="card" data-reveal style="--reveal-delay: 40ms">
               <span class="card-number">06 / OWNERSHIP</span>
               <h3>Add the image that makes a personal recipe feel complete.</h3>
-              <p>Normalize and upload an image you own through Cookidoo’s signed customer-recipe flow.</p>
+              <p>Add a photo you own, so a personal recipe is easy to recognize later.</p>
             </article>
           </div>
         </div>
@@ -207,33 +257,32 @@
 
       <section class="section">
         <div class="container">
-          <p class="section-kicker" data-reveal>One connected workflow</p>
-          <h2 class="reading" data-reveal>From appetite to action.</h2>
+          <p class="section-kicker" data-reveal>The Cookidoo part</p>
+          <h2 class="reading" data-reveal>One helper for the whole week.</h2>
           <p class="section-intro" data-reveal>
-            Each step is useful alone. Together, they make meal automation feel
-            less like a collection of scripts and more like a capable kitchen
-            assistant.
+            Use only the step you need, or let the assistant connect them into
+            one flow.
           </p>
           <div class="workflow">
             <article class="workflow-step" data-reveal>
-              <h3>Discover</h3>
-              <p>Start with a Cookidoo recipe or an idea from anywhere.</p>
+              <h3>Discuss</h3>
+              <p>Start with what you feel like eating or a recipe you found.</p>
             </article>
             <article class="workflow-step" data-reveal style="--reveal-delay: 40ms">
-              <h3>Adapt</h3>
-              <p>Translate, resize, clarify, and structure the recipe.</p>
+              <h3>Create</h3>
+              <p>Translate, resize, clarify, and save the recipe.</p>
             </article>
             <article class="workflow-step" data-reveal style="--reveal-delay: 80ms">
-              <h3>Cook</h3>
-              <p>Add validated guided settings and ingredient weighing.</p>
+              <h3>Prepare</h3>
+              <p>Make the steps and Thermomix settings easy to follow.</p>
             </article>
             <article class="workflow-step" data-reveal style="--reveal-delay: 120ms">
               <h3>Plan</h3>
-              <p>Place official or private recipes on the right day.</p>
+              <p>Place the meal on the day that fits your schedule.</p>
             </article>
             <article class="workflow-step" data-reveal style="--reveal-delay: 160ms">
-              <h3>Shop</h3>
-              <p>Read ingredients grouped by recipe and ownership state.</p>
+              <h3>Hand off</h3>
+              <p>Prepare ingredients for a shopping or ordering automation.</p>
             </article>
           </div>
         </div>
@@ -241,20 +290,32 @@
 
       <section class="section" id="reliability">
         <div class="container">
-          <p class="section-kicker" data-reveal>Trust by design</p>
-          <h2 class="reading" data-reveal>Useful automation needs visible boundaries.</h2>
+          <p class="section-kicker" data-reveal>Safe and predictable</p>
+          <h2 class="reading" data-reveal>You stay in control.</h2>
           <div class="trust-grid">
             <article class="trust-item" data-reveal>
-              <h3>Your credentials stay out of the repository.</h3>
-              <p>Local use reads environment variables. CI uses encrypted GitHub Secrets, never committed values.</p>
+              <h3>Your login stays private.</h3>
+              <p>It is stored in your environment, never in the project code.</p>
+              <details class="help">
+                <summary aria-label="How is the login protected?">?</summary>
+                <div class="help-panel"><strong>Technical detail</strong><p>Local use reads environment variables. Automated tests use encrypted GitHub Secrets.</p></div>
+              </details>
             </article>
             <article class="trust-item" data-reveal style="--reveal-delay: 50ms">
-              <h3>Recipe writes are structured and validated.</h3>
-              <p>Pydantic models check annotation ranges, UTF-16 positions, and the separation between ingredients and machine actions.</p>
+              <h3>Changes are checked before saving.</h3>
+              <p>Recipe steps are validated so actions do not get mixed together.</p>
+              <details class="help">
+                <summary aria-label="How are recipe changes validated?">?</summary>
+                <div class="help-panel"><strong>Technical detail</strong><p>Pydantic checks annotation ranges, UTF-16 positions, and ingredient/action separation.</p></div>
+              </details>
             </article>
             <article class="trust-item" data-reveal style="--reveal-delay: 100ms">
-              <h3>External changes become actionable failures.</h3>
-              <p>Five real API contracts run daily and open a regression issue when Cookidoo behavior changes.</p>
+              <h3>Daily checks look for broken connections.</h3>
+              <p>If Cookidoo changes, maintainers get a clear warning.</p>
+              <details class="help help-align-end">
+                <summary aria-label="How are Cookidoo changes detected?">?</summary>
+                <div class="help-panel"><strong>Technical detail</strong><p>Five authenticated API contracts run daily and open a regression issue on failure.</p></div>
+              </details>
             </article>
           </div>
         </div>
@@ -264,12 +325,12 @@
         <div class="container">
           <div class="cta-panel" data-reveal>
             <div>
-              <p class="section-kicker">Start with intent</p>
-              <h2>Bring your ideas. Let the workflow connect itself.</h2>
+              <p class="section-kicker">Start with an idea</p>
+              <h2>What would you like to cook?</h2>
             </div>
             <div class="actions">
-              <a class="button button-primary" href="./docs/">Get started <span aria-hidden="true">→</span></a>
-              <a class="button button-secondary" href="https://github.com/vitaliemiron/cookidoo-mcp">View source</a>
+              <a class="button button-primary" href="./docs/">Set up the assistant <span aria-hidden="true">→</span></a>
+              <a class="button button-secondary" href="./presentation/">See the full story</a>
             </div>
           </div>
         </div>

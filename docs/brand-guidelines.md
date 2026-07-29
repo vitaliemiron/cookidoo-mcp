@@ -26,7 +26,16 @@ tools and monitors the external API for regressions.
 
 ## Primary message
 
-Spend less time managing meals. Keep the part that matters.
+From idea to dinner.
+
+The homepage should explain the value in ordinary language first:
+
+> Talk about what you want to eat. Let AI turn it into a clear Cookidoo
+> recipe, place it in your week, and prepare the ingredient list.
+
+Technical language belongs in documentation or optional `?` disclosures. Never
+make a visitor understand MCP, API contracts, schemas, or UTF-16 before they can
+understand what the product helps them do.
 
 ## Supporting messages
 
@@ -50,6 +59,9 @@ We are:
 
 We sound like:
 
+- “From idea to dinner.”
+- “Talk about what you want to eat.”
+- “Make the recipe yours, then place it in your week.”
 - “Turn inspiration into a recipe you can actually cook.”
 - “Let the repetitive steps connect themselves.”
 - “The kitchen already has automation. The workflow around it can too.”
@@ -74,6 +86,20 @@ We do not sound like:
 - Body type: IBM Plex Sans.
 - Grid: twelve columns on desktop, one column on mobile.
 - Motion: short reveal and flow animations using only opacity and transforms.
+
+Light theme is the default consumer experience:
+
+- Background: warm cream `#FFFAF2`.
+- Surface: white `#FFFFFF`.
+- Foreground: charcoal `#1F2937`.
+- Primary action: terracotta `#C2410C`.
+- Strong action/label: deep terracotta `#9A3412`.
+- Fresh accent: green `#047857`.
+- Technical accent: blue `#1D4ED8`.
+
+The light theme should feel like a familiar cooking and planning application:
+warm, stable, immediately readable, and usable without technical knowledge.
+Dark theme remains available for preference and developer-focused reading.
 
 All pages must preserve visible focus states, WCAG AA contrast, keyboard
 navigation, semantic heading order, and reduced-motion support.

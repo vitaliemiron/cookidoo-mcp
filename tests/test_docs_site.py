@@ -130,6 +130,25 @@ def test_ai_resources_cover_every_documentation_area() -> None:
         assert rule in full
 
 
+def test_homepage_uses_a_clear_consumer_journey() -> None:
+    homepage = (SITE / "index.html").read_text(encoding="utf-8")
+
+    assert "From idea to dinner." in homepage
+    assert "Spend less time managing meals" not in homepage
+    assert homepage.count('class="journey-number"') == 5
+    for owner in ("AI conversation", "Cookidoo MCP", "Another MCP"):
+        assert owner in homepage
+    for action in (
+        "Find an idea",
+        "Make the recipe yours",
+        "Plan your week",
+        "Prepare the list",
+        "Order when you are ready",
+    ):
+        assert action in homepage
+    assert 'details class="help' in homepage
+
+
 def test_sitemap_pages_exist() -> None:
     tree = ElementTree.parse(SITE / "sitemap.xml")
     namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
