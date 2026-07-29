@@ -1,86 +1,351 @@
 # AGENTS.md
 
-Notes for future agents (or humans) working on this project, covering what was explored/fixed in this session and what's still open.
+This file is the canonical context for an AI coding agent entering this
+repository without prior conversation history. Read it before changing code.
+It applies to the entire repository.
 
-## What this project is
+## Project purpose
 
-A FastMCP server (`server.py` + `cookidoo_service.py`) exposing Cookidoo (Thermomix recipe platform) actions as MCP tools: connect/auth, fetch a recipe's details, generate/validate a custom recipe structure, and upload a custom recipe. It wraps the `cookidoo-api` PyPI package (https://github.com/miaucl/cookidoo-api) plus some direct calls to Cookidoo's undocumented `created-recipes` REST endpoint for things the library doesn't cover.
+This repository contains an unofficial FastMCP server for Thermomix Cookidoo.
+It lets an AI client authenticate to a Cookidoo account and work with:
 
-## Bugs fixed
+- official and customer recipes;
+- full recipe copying and translation workflows;
+- structured guided-cooking settings;
+- custom recipe images;
+- the Cookidoo shopping list;
+- the Cookidoo meal-planning calendar.
 
-- `server.py`'s `get_recipe_details`: was reading `ingredient.quantity` (doesn't exist) instead of `ingredient.description` (where the quantity/amount text actually lives on `CookidooIngredient`). Fixed, and also added `image`/`thumbnail` URLs to the output, which were previously fetched but never surfaced.
-- `cookidoo_service.py` login locale: was hardcoded to `country="fr", language="fr-FR"`. Changed over the course of this session, ending at `country="ro", language="en"` (resolves to `cookidoo.international/foundation/en`). Change this call in `login()` if a different locale is needed — use `cookidoo_api.helpers.get_localization_options(country=..., language=...)` to check valid pairings first (not every country/language combo exists; `us` for example only has `en-US`, not plain `en`).
-- `cookidoo_service.py` authentication headers: the service expected the old `Cookidoo.auth_data.access_token` interface. Installed `cookidoo-api` 0.17.2 authenticates through session cookies and no longer has `auth_data`. Custom-recipe POST/PATCH calls now reuse the authenticated API session and its normal headers.
+The implementation combines the third-party `cookidoo-api` Python package with
+direct requests to undocumented Cookidoo endpoints that the package does not
+cover. Cookidoo may change these endpoints without notice, so API-facing
+changes require both unit tests and, where safe, live contract tests.
 
-**Caveat:** the MCP server runs as a long-lived subprocess with module-level state (`_cookidoo_api` in `server.py`). Editing `cookidoo_service.py`/`server.py` does NOT take effect in already-connected MCP tool calls — the server process needs to be restarted/reconnected for code changes to be picked up. During this session, verification of fixes was done by running the updated Python directly (`python3 -c "..."` against the venv), not through the live MCP tools.
+This project is not affiliated with Vorwerk, Thermomix, or Cookidoo.
 
-## Known limitation: `get_recipe_details` / official recipe endpoint has no steps
+## Non-negotiable rules
 
-The official recipe-details endpoint (`Cookidoo.get_recipe_details`, backing the `get_recipe_details` MCP tool) returns ingredients, difficulty, times, images, etc., but genuinely has **no step-by-step instructions field at all** (confirmed by inspecting the raw API response — no `steps`/`instructions` key exists on `CookidooShoppingRecipeDetails`). This isn't a bug in this codebase; the public "recipe details" endpoint just doesn't carry that data.
+### Keep ingredient and machine steps separate
 
-**Workaround that does work:** `Cookidoo.add_custom_recipe_from(recipe_id, serving_size)` — the same "copy to my recipes" action available in the Cookidoo UI — creates a private copy under the account's `created-recipes` and *does* return full `ingredients` (with quantities) and `instructions` (`CookidooCustomRecipe`). This is the recommended path whenever full recipe content (including steps) is needed: copy first, then read/edit the copy.
+Every created, translated, enhanced, or repaired recipe must separate
+ingredient handling from Thermomix actions:
 
-## Custom recipe editing: raw PATCH endpoint
+1. A weighing/adding step contains only ingredient handling and `INGREDIENT`
+   annotations.
+2. The following step contains chopping, mixing, heating, cooking, kneading, or
+   another machine action and uses a `TTS` or `MODE` annotation.
 
-Custom/created recipes are edited via `PATCH {base_url}/created-recipes/{locale}/{recipe_id}`. Creating a recipe still uses a complete object; `cookidoo_service.py`'s `create_custom_recipe` shows the base shape: `name`, `image`, `isImageOwnedByUser`, `tools`, `yield`, `prepTime`/`cookTime`/`totalTime` (seconds), `ingredients` (list of `{type: "INGREDIENT", text, annotations?}`), `instructions` (list of `{type: "STEP", text, annotations?}`), `hints`, `workStatus`, `recipeMetadata`.
+Never put `INGREDIENT` together with `TTS` or `MODE` in the same step.
+`RecipeStep` validation enforces this for structured payloads. Apply the rule
+even when a recipe currently contains only plain text.
 
-The live web editor was inspected on 2026-07-23 (customer-recipes bundle `1.174.5`). It performs safe **partial** updates to the same endpoint:
+### Protect account data and credentials
 
-- `{"instructions": [...]}` replaces only the preparation steps.
-- `{"ingredients": [...]}` replaces only the ingredients.
+- Never commit `.env`, cookies, session data, account identifiers, or secret
+  values.
+- Never print `COOKIDOO_EMAIL` or `COOKIDOO_PASSWORD` in test output.
+- `COOKIDOO_EMAIL` is the Cookidoo login identifier. It may be an email address
+  or a phone number; when it is a phone number, keep it without spaces.
+- Use only `.env.example` placeholders in documentation and fixtures.
+- Do not delete or overwrite an existing customer recipe unless the user
+  explicitly identifies it and asks for that change.
+- Live tests may create a temporary recipe only when they guarantee cleanup in
+  a `finally` block.
+- Only upload images the account owner is allowed to use.
 
-`CookidooService.update_custom_recipe_steps` and `update_custom_recipe_ingredients` now use these partial forms so unrelated recipe fields are preserved.
+### Prefer the API over browser automation
 
-### Image field
+Use the MCP/service API for known operations. Use an authenticated browser only
+to investigate an unsupported Cookidoo operation or capture a changed network
+contract. Once understood, implement and test the operation in the service
+instead of leaving browser automation as the normal workflow.
 
-The `image` field only accepts `null` or a path matching `^((prod|nonprod)/img/customer-recipe/)?[A-Za-z0-9-_]{1,}.(bmp|jpe|jpeg|jpg|png)$` — i.e. an asset already uploaded to Cookidoo's own `customer-recipe` namespace. Setting it to an arbitrary external URL is rejected by server-side validation.
+## Repository map
 
-The upload flow is now implemented in
-`CookidooService.upload_custom_recipe_image` and exposed as the
-`upload_custom_recipe_image` MCP tool:
+- `server.py`
+  - FastMCP server and user-facing MCP tools.
+  - Holds the module-level authenticated service/client state.
+  - Converts tool arguments and results to strings/JSON.
+- `cookidoo_service.py`
+  - Authentication and Cookidoo API orchestration.
+  - Contains direct HTTP wrappers for unsupported endpoints.
+- `schemas.py`
+  - Pydantic models for recipes and guided-cooking annotations.
+  - Converts validated models to Cookidoo request objects.
+  - Calculates JavaScript UTF-16 annotation positions.
+- `examples/guided_recipe.json`
+  - Verified example containing ingredient weighing, TTS, reverse direction,
+    temperature, and Dough mode annotations.
+- `tests/`
+  - Offline unit tests using fakes and mocks.
+- `tests/live/test_cookidoo_api.py`
+  - Authenticated contract tests against the real Cookidoo API.
+- `.github/workflows/unit-tests.yml`
+  - Unit tests and lint on pull requests and `main`.
+- `.github/workflows/live-api.yml`
+  - Scheduled and manually dispatched real-API monitoring.
+- `requirements.txt`
+  - Runtime dependencies.
+- `requirements-dev.txt`
+  - Test and lint dependencies.
+- `ruff.toml`, `pytest.ini`
+  - Stable lint and test configuration.
+- `prompt.md`, `prompt_FR.md`
+  - Older user prompts retained for compatibility/reference. They are not the
+    source of truth for server behavior; code, schemas, tests, and this file
+    are.
 
-1. Read a local image and normalize it to JPEG with Pillow. This also makes
-   WebP files accepted by Cookidoo.
-2. Request a short-lived upload signature with
-   `POST {base_url}/created-recipes/{locale}/image/signature` and
-   `{"source": "uw", "timestamp": unix_seconds}`.
-3. Upload the multipart file to
-   `https://api-eu.cloudinary.com/v1_1/vorwerk-users-gc/image/upload` with the
-   returned signature, API key `993585863591145`, source `uw`, and upload
-   preset `prod-customer-recipe-signed`.
-4. PATCH the recipe with the returned `{public_id}.{format}` key and
-   `isImageOwnedByUser: true`.
+## Supported Python and local setup
 
-Cookidoo documents a 10 MB limit. Only upload images the account owner has the
-right to use.
+`cookidoo-api` requires Python 3.12 or newer. CI tests Python 3.12 and 3.14.
 
-### Step annotations (guided-cooking "cooking settings")
+```bash
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install -r requirements-dev.txt
+cp .env.example .env
+```
 
-Plain step `text` displays fine on-device, but doesn't drive the Thermomix's automatic guided-cooking behavior (auto speed/time). That requires a structured `annotations` array on the instruction object. Confirmed schema for the "Cooking settings" (manual time/speed) feature, captured via one real browser session against the account's own recipe editor (DevTools-equivalent network capture, not blind guessing):
+Fill these variables locally:
+
+```dotenv
+COOKIDOO_EMAIL=your-login
+COOKIDOO_PASSWORD=your-password
+```
+
+Run the MCP server:
+
+```bash
+venv/bin/fastmcp run server.py
+```
+
+The process keeps authenticated state in module-level variables. After editing
+`server.py` or `cookidoo_service.py`, restart/reconnect the MCP server. A
+long-lived already-connected process will not load code changes automatically.
+
+## Test commands
+
+Run lint and all offline tests:
+
+```bash
+venv/bin/ruff check cookidoo_service.py schemas.py server.py tests
+venv/bin/python -m pytest -m "not live" --strict-markers -q
+```
+
+Run authenticated read and write contract tests:
+
+```bash
+set -a
+source .env
+set +a
+COOKIDOO_LIVE_TESTS=1 \
+COOKIDOO_LIVE_MUTATIONS=1 \
+venv/bin/python -m pytest tests/live -m live --strict-markers -v
+```
+
+Live tests currently verify:
+
+- session-cookie login;
+- official recipe details and ingredient parsing;
+- shopping-list endpoints;
+- the seven-day meal-planning endpoint;
+- custom image-upload signature generation;
+- copy, GET, ingredient PATCH, instruction PATCH, and DELETE for a temporary
+  customer recipe.
+
+The mutation test uses official recipe `r460132` as a stable source, creates a
+temporary private copy, and removes it in `finally`.
+
+## GitHub Actions monitoring
+
+The repository contains two CI levels:
+
+1. `Unit tests` runs on pull requests, pushes to `main`, and manual dispatch.
+2. `Cookidoo live API` runs daily at `04:37 UTC`, on manual dispatch, and after
+   relevant API code reaches `main`.
+
+The live workflow requires encrypted repository secrets:
+
+- `COOKIDOO_EMAIL`
+- `COOKIDOO_PASSWORD`
+
+The live workflow is serialized so a newer run does not cancel cleanup in an
+older run. When it fails, it opens or updates an issue titled
+`Cookidoo live API regression`, linking to the failed run. A later successful
+run automatically closes that issue.
+
+Do not add live API tests to pull-request events. Repository secrets must not be
+exposed to untrusted pull-request code or forks.
+
+## Authentication and localization
+
+`CookidooService.login()`:
+
+1. creates one `aiohttp.ClientSession`;
+2. resolves localization with
+   `get_localization_options(country="ro", language="en")`;
+3. creates `CookidooConfig`;
+4. logs in through `cookidoo-api`;
+5. reuses the same cookie-authenticated session for all library and direct HTTP
+   calls.
+
+The tested localization resolves to Cookidoo International English. Cookidoo
+does not expose every country/language combination. Before changing it, call
+`get_localization_options()` and verify that the pair exists.
+
+Modern `cookidoo-api` authenticates with session cookies. Do not restore the
+obsolete `auth_data.access_token` pattern. Direct endpoint calls must reuse:
+
+- `self._api_client._session`;
+- `self._api_client._api_headers`;
+- `self._api_client.localization`.
+
+Always close the service/session in tests and one-shot scripts.
+
+## MCP tool inventory
+
+Authentication:
+
+- `connect_to_cookidoo`
+
+Recipe reads and copying:
+
+- `get_recipe_details`
+- `get_custom_recipe_details`
+- `copy_recipe_to_custom`
+
+Recipe generation and validation:
+
+- `generate_recipe_structure`
+- `validate_guided_recipe_structure`
+- `calculate_annotation_position`
+
+Recipe writes:
+
+- `upload_custom_recipe`
+- `update_custom_recipe_steps`
+- `update_custom_recipe_ingredients`
+- `upload_custom_recipe_image`
+
+Shopping and planning:
+
+- `get_shopping_list_ingredients`
+- `get_meal_plan_week`
+- `add_recipes_to_meal_plan`
+- `remove_recipe_from_meal_plan`
+- `move_recipe_in_meal_plan`
+
+Most tools return a human-readable string. Tools returning structured data
+serialize it with `json.dumps(..., ensure_ascii=False, indent=2)`.
+
+## Official recipe limitation and copy workflow
+
+`Cookidoo.get_recipe_details(recipe_id)` returns metadata and ingredients but
+does not include preparation instructions. The raw response genuinely has no
+`steps` or `instructions` key. Do not treat missing steps as a parser bug.
+
+To obtain the full content of an official recipe:
+
+1. call `add_custom_recipe_from(recipe_id, serving_size)`;
+2. use the returned customer recipe, which includes ingredients and
+   instructions;
+3. translate or enhance the copy;
+4. recompute annotations against the new text;
+5. PATCH ingredients and instructions;
+6. delete the copy if it was created only for inspection/testing.
+
+This mirrors Cookidoo's “copy to my recipes” operation.
+
+## Customer recipe object
+
+Customer recipes use the `created-recipes` API. The complete update structure
+contains:
+
+```json
+{
+  "name": "Recipe name",
+  "image": null,
+  "isImageOwnedByUser": false,
+  "tools": ["TM6"],
+  "yield": {"value": 4, "unitText": "portion"},
+  "prepTime": 1800,
+  "cookTime": 0,
+  "totalTime": 3600,
+  "ingredients": [],
+  "instructions": [],
+  "hints": "",
+  "workStatus": "PRIVATE",
+  "recipeMetadata": {"requiresAnnotationsCheck": false}
+}
+```
+
+Times in Cookidoo request objects are seconds.
+
+The web editor uses safe partial PATCH requests:
+
+- `{"instructions": [...]}` replaces only preparation steps;
+- `{"ingredients": [...]}` replaces only ingredients;
+- `{"image": "...", "isImageOwnedByUser": true}` attaches an uploaded image.
+
+Prefer partial PATCH for edits so unrelated recipe fields are preserved.
+
+Primary customer-recipe endpoints:
+
+- `POST created-recipes/{language}` creates or copies a recipe;
+- `GET created-recipes/{language}/{id}` reads it;
+- `PATCH created-recipes/{language}/{id}` updates it;
+- `DELETE created-recipes/{language}/{id}` removes it.
+
+## Guided-cooking annotations
+
+Every instruction object has:
 
 ```json
 {
   "type": "STEP",
-  "text": "...30 сек/скорость 10.",
-  "annotations": [
-    {
-      "type": "TTS",
-      "data": { "speed": "10", "time": 30 },
-      "position": { "offset": 65, "length": 18 }
-    }
-  ]
+  "text": "Human-readable instruction",
+  "annotations": []
 }
 ```
 
-- `type: "TTS"` = Time/Temperature/Speed (not text-to-speech, despite the UI's CSS class name).
-- `data.speed` is a string (e.g. `"10"`), `data.time` is an integer in **seconds**.
-- `data.direction` is `"CCW"` for reverse. Normal clockwise (`"CW"`) is omitted by the manual-settings editor.
-- `data.temperature` is either omitted or `{"value": "100", "unit": "C"}`. The value is a string; the unit is `"C"` or `"F"`.
-- `position.offset`/`length` is a **JavaScript UTF-16** character range into the step's own `text`, pointing at the human-readable substring (e.g. `"30 сек/скорость 10"`) that the UI expects to find there. This matters when emoji appear before the annotation because Python's normal string indexes differ. Use the `calculate_annotation_position` MCP tool or `schemas.position_for`; do not calculate offsets with plain `len()`/`.index()`.
+Annotation `position` values point into that step's own text. Positions use
+JavaScript UTF-16 code units, not Python code-point indexes. Emoji and some
+non-BMP characters therefore change offsets.
 
-### Step annotations (ingredient linking / auto-weigh)
+Always use `schemas.position_for` or the
+`calculate_annotation_position` MCP tool. Never calculate production offsets
+with plain `len()` or `.index()`.
 
-The editor's scale/ingredient annotation uses this shape:
+### TTS: time, temperature, speed
+
+`TTS` means Time/Temperature/Speed:
+
+```json
+{
+  "type": "TTS",
+  "data": {
+    "time": 30,
+    "temperature": {"value": "100", "unit": "C"},
+    "speed": "4",
+    "direction": "CCW"
+  },
+  "position": {"offset": 42, "length": 29}
+}
+```
+
+- `time` is an integer number of seconds.
+- `speed` is a string: `"soft"`, `"0.5"`, `"1"` through `"10"`.
+- Normal clockwise direction is normally omitted.
+- Reverse direction is `"CCW"`.
+- Temperature values are strings and units are `"C"` or `"F"`.
+- Cookidoo constrains temperature/speed combinations; manual temperatures
+  cannot normally be combined with speeds above 6.
+- Position the annotation over the matching human-readable settings phrase in
+  the step.
+
+### Ingredient linking and auto-weighing
+
+An ingredient-handling step may link a structured ingredient:
 
 ```json
 {
@@ -96,109 +361,170 @@ The editor's scale/ingredient annotation uses this shape:
             "unit": "gram",
             "unitText": "г"
           },
-          "position": { "offset": 0, "length": 4 }
+          "position": {"offset": 0, "length": 4}
         }
       ]
     }
   },
-  "position": { "offset": 9, "length": 11 }
+  "position": {"offset": 9, "length": 11}
 }
 ```
 
-- The outer position points into the step text and identifies the ingredient phrase.
-- The nested `VOLUME` position points into `description.text` and identifies the amount text.
+- The outer position selects the ingredient phrase in the step.
+- The nested `VOLUME` position selects the amount in `description.text`.
 - `amountMax` is available for ranges.
-- `description` may also be a plain string when structured amount data is unavailable.
-- The deployed editor contains support for the same `VOLUME` annotation directly on ingredient-list entries. The current account did not have the `structured-ingredients` feature flag enabled during verification, so the API accepted but stripped that top-level annotation. The nested `VOLUME` inside a step's `INGREDIENT` link was preserved and reconstructed correctly, which is the part needed for on-device weighing.
+- `description` may be a plain string when structured data is unavailable.
+- The API may strip a top-level `VOLUME` annotation from ingredient-list
+  entries when the account lacks the `structured-ingredients` feature flag.
+- The nested `VOLUME` inside a step's `INGREDIENT` annotation is the verified
+  path for on-device weighing.
 
-### Smart-function mode annotations
+### Smart-function modes
 
-Modes use `type: "MODE"`, an uppercase `name`, a mode-specific `data` object, and the normal step-text `position`.
+Modes use `type: "MODE"`, an uppercase `name`, mode-specific `data`, and a
+normal UTF-16 text position.
 
-Confirmed mode names and data:
+- `DOUGH`: `{"time": seconds}`, range 1–1200.
+- `BLEND`: `{"time": seconds, "speed": "6"..."8"}`, range 10–300 seconds.
+- `TURBO`: `{"time": 0.5|1|2, "pulseCount": optional_integer}`.
+- `WARM_UP`:
+  `{"temperature": {"value": "...", "unit": "C"}, "speed": "soft"|"1"|"2"}`.
+- `RICE_COOKER`: `{}`.
+- `STEAMING`:
+  `{"time": seconds, "speed": "...", "direction": "CW"|"CCW", "accessory": "Varoma"|"SimmeringBasket"|"VaromaAndSimmeringBasket"}`.
+- `BROWNING`:
+  `{"time": seconds, "temperature": {"value": "...", "unit": "C"}, "power": "Gentle"|"Intense"}`.
 
-- `DOUGH`: `{"time": seconds}` (1–1200)
-- `BLEND`: `{"time": seconds, "speed": "6"..."8"}` (10–300 seconds)
-- `TURBO`: `{"time": 0.5|1|2, "pulseCount": n?}`
-- `WARM_UP`: `{"temperature": {"value": "...", "unit": "C"}, "speed": "soft"|"1"|"2"}`
-- `RICE_COOKER`: `{}`
-- `STEAMING`: `{"time": seconds, "speed": "...", "direction": "CW"|"CCW", "accessory": "Varoma"|"SimmeringBasket"|"VaromaAndSimmeringBasket"}`
-- `BROWNING`: `{"time": seconds, "temperature": {"value": "...", "unit": "C"}, "power": "Gentle"|"Intense"}`
+The Pydantic models in `schemas.py` validate allowed ranges, combinations, text
+positions, and the ingredient/machine-step separation rule.
 
-Cookidoo currently exposes speed values as strings: `"soft"`, `"0.5"`, `"1"`, ... `"10"`. Temperature and speed combinations are constrained by the editor (for example, manual temperatures cannot be combined with speeds above 6).
+## Image upload contract
 
-## MCP tools added for full custom-recipe workflows
+The `image` recipe field does not accept arbitrary external URLs. It accepts
+`null` or a Cookidoo-owned customer-recipe image key matching:
 
-- `get_custom_recipe_details`
-- `copy_recipe_to_custom`
-- `validate_guided_recipe_structure`
-- `calculate_annotation_position`
-- `update_custom_recipe_steps`
-- `update_custom_recipe_ingredients`
+```text
+^((prod|nonprod)/img/customer-recipe/)?[A-Za-z0-9-_]{1,}.(bmp|jpe|jpeg|jpg|png)$
+```
 
-The Pydantic models in `schemas.py` validate annotation types and ensure every offset/length stays within its enclosing text.
+`CookidooService.upload_custom_recipe_image` performs the verified flow:
 
-End-to-end verification created a temporary private recipe through the service, loaded it in the authenticated browser editor, and confirmed that Cookidoo reconstructed:
+1. read a local image and normalize it to JPEG with Pillow;
+2. reject inputs larger than 10 MB;
+3. request a short-lived signature with
+   `POST created-recipes/{language}/image/signature`;
+4. upload multipart image bytes to Vorwerk's Cloudinary account using the
+   signed preset;
+5. PATCH the returned `{public_id}.{format}` into the recipe with
+   `isImageOwnedByUser: true`.
 
-- `<cr-ingredient>` with amount/unit data for on-device weighing
-- `<cr-tts>` with time, `100°C`, speed `4`, and reverse direction `CCW`
-- `<cr-mode name="dough">` with a 60-second mode duration
+The Cloudinary API key and upload preset in the source are public client-side
+configuration; the short-lived signature and authenticated Cookidoo cookies
+authorize the operation. Never log the signature or cookies.
 
-The same annotations survived a partial step PATCH and a browser reload. The temporary recipe was deleted after verification.
+Do not try to attach an official recipe's stock-image URL directly. If the user
+owns a local image, upload that image through the supported flow.
 
-## Meal-planning/calendar API
+## Shopping-list contract
 
-Cookidoo's meal planner is available through the installed `cookidoo-api`
-package and is exposed by these MCP tools:
+`CookidooService.get_shopping_list_ingredients()` concurrently reads:
 
-- `get_meal_plan_week`
-- `add_recipes_to_meal_plan`
-- `remove_recipe_from_meal_plan`
-- `move_recipe_in_meal_plan`
+- recipes currently in the shopping list;
+- ingredient ownership state;
+- manually added items.
 
-The underlying endpoints are:
+It returns:
 
-- `GET planning/{language}/api/my-week/{YYYY-MM-DD}`
-- `PUT planning/{language}/api/my-day`
-- `DELETE planning/{language}/api/my-day/{day}/recipes/{recipe}`
+- recipe groups;
+- a flat ingredient list;
+- optional additional items;
+- counts and filter metadata.
 
-Official recipes use `{"recipeIds": [...], "dayKey": "..."}`. Customer recipes
-use the same payload plus `"recipeSource": "CUSTOMER"`; deletion uses the
-`recipeSource=CUSTOMER` query parameter.
+Ingredient quantity text is stored in `ingredient.description`, not a
+nonexistent `ingredient.quantity` field.
 
-The week endpoint is actually a rolling seven-day window beginning on the date
-in the path (the same date shown in the web planner's `?date=...` query), not a
-fixed Monday-Sunday week. It omits empty days and can return customer recipes
-only in `customerRecipeIds`, without names or images.
-`CookidooService.get_meal_plan_week` therefore fills all seven days beginning
-on the requested date and resolves each customer ID through
-`get_custom_recipe`. The add tool can split a mixed list of official `r...` IDs
-and custom ULIDs into the correct API calls. Moving adds to the target before
-removing from the source and rolls back a newly added target entry if source
-removal fails.
+The method may return valid empty lists. Live tests must not assume the account
+currently has shopping-list content.
 
-Deleting the final recipe from a day returns HTTP 200 with `content: null`.
-`cookidoo-api` incorrectly tries to parse that null content as a calendar day
-and raises after the deletion already succeeded. Calendar removal therefore
-uses a small direct DELETE wrapper and refreshes the day afterward.
+## Meal-planning contract
 
-## General approach used for translating a recipe end-to-end
+Meal planner endpoints:
 
-1. `add_custom_recipe_from(original_id, servings)` to get a private copy with full ingredients + instructions.
-2. Translate `name`, ingredient `text`s, and instruction `text`s.
-3. PATCH the copy with translated text, preserving `tools`/`yield`/`prepTime`/`totalTime` from the copy, `image: null` (see above), and add TTS annotations per step if guided-cooking behavior is wanted (recompute `position.offset`/`length` against the *translated* text, not the original).
-4. Optionally set `hints` to link back to the original recipe (e.g. for its photo, since the translated copy won't have one).
+- `GET planning/{language}/api/my-week/{YYYY-MM-DD}`;
+- `PUT planning/{language}/api/my-day`;
+- `DELETE planning/{language}/api/my-day/{day}/recipes/{recipe}`.
 
-## Required step separation
+Important behavior:
 
-Always separate ingredient handling from machine actions in every created,
-translated, or enhanced recipe:
+- The date is the beginning of a rolling seven-day window, not necessarily a
+  Monday.
+- Empty days are omitted by the API; the service fills all seven days.
+- Official recipe IDs normally begin with `r`.
+- Customer recipe IDs are 26-character ULIDs.
+- Customer recipes may appear only in `customerRecipeIds`, without names or
+  images; the service resolves them through `get_custom_recipe`.
+- A mixed add request must partition official and customer IDs into the
+  correct Cookidoo calls.
+- Moving adds to the target first, removes from the source second, and rolls
+  back the new target entry if removal fails.
+- Deleting the final recipe from a day returns HTTP 200 with `content: null`.
+  `cookidoo-api` tries to parse that null as a calendar day and raises after the
+  deletion succeeded. The service therefore uses a direct DELETE wrapper and
+  refreshes the day.
 
-1. Use one step only for weighing and/or adding ingredients, with `INGREDIENT`
-   annotations.
-2. Use the following step for chopping, mixing, cooking, kneading, or another
-   Thermomix action, with its `TTS` or `MODE` annotation.
+Avoid calendar mutations in scheduled contract tests unless they are isolated,
+reversible, and guaranteed to clean up.
 
-Never combine `INGREDIENT` with `TTS` or `MODE` annotations in the same step.
-`RecipeStep` validation enforces this for structured guided-cooking payloads,
-and the FastMCP server instructions apply the rule to all tool workflows.
+## Adding or changing an MCP tool
+
+Use this checklist:
+
+1. Confirm whether `cookidoo-api` already supports the operation.
+2. If direct HTTP is required, capture the exact authenticated web/API
+   contract before implementing it.
+3. Put Cookidoo/network logic in `CookidooService`, not in the MCP wrapper.
+4. Add a small `server.py` tool that validates arguments and serializes output.
+5. Reuse the authenticated session, headers, and localization.
+6. Add offline unit tests with fakes/mocks for success, empty data, and errors.
+7. Add or extend a live contract test if the endpoint can be tested safely.
+8. For any temporary live mutation, clean up in `finally`.
+9. Update `README.md`, this file, and the MCP server instructions when behavior
+   or invariants change.
+10. Run Ruff, unit tests, and relevant live tests.
+11. Restart the MCP process before manual end-to-end verification.
+
+## Diagnosing an API regression
+
+When the scheduled live workflow fails:
+
+1. Open the linked GitHub Actions run from the regression issue.
+2. Identify whether failure is login, parsing, endpoint status, or response
+   shape.
+3. Reproduce with the narrowest live test; do not immediately rerun the full
+   mutation suite repeatedly.
+4. Check the installed `cookidoo-api` version and its upstream changes.
+5. Compare the current Cookidoo web request in an authenticated browser if the
+   package no longer matches.
+6. Update service code and raw-response parsing.
+7. Add a unit fixture representing the new response shape.
+8. Run unit and live tests.
+9. Verify that temporary customer recipes and calendar entries were cleaned
+   up.
+
+Do not weaken assertions merely to make monitoring green. A changed contract
+should be understood and represented explicitly.
+
+## Known limitations and risks
+
+- Cookidoo endpoints used here are undocumented and may change.
+- Official recipe details do not expose preparation steps.
+- Some structured ingredient behavior depends on account feature flags.
+- Direct endpoints rely on private attributes of `cookidoo-api`.
+- Image upload relies on Cookidoo's current signed Cloudinary flow.
+- Account state makes shopping-list and calendar content nondeterministic;
+  assert response contracts, not specific user content.
+- A process killed during a live mutation could prevent `finally` cleanup.
+  Keep live operations short, serialized, and easy to identify/remove.
+
+When uncertain, preserve user data, prefer read-only investigation, and add a
+regression test before broadening the implementation.
