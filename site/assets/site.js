@@ -1,8 +1,63 @@
 const storageKey = "cookidoo-mcp-theme";
+const languageStorageKey = "cookidoo-mcp-language";
 const root = document.documentElement;
 const systemThemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
 const themeCycle = ["system", "light", "dark"];
+const supportedLanguages = new Set(["en", "de", "sv", "ro", "ru"]);
 let currentThemePreference = "system";
+
+function normalizedLanguage(value) {
+  return value?.toLowerCase().split(/[-_]/)[0] ?? "";
+}
+
+function savedLanguage() {
+  try {
+    const language = normalizedLanguage(localStorage.getItem(languageStorageKey));
+    return supportedLanguages.has(language) ? language : null;
+  } catch {
+    return null;
+  }
+}
+
+function browserLanguage() {
+  const candidates = [...(navigator.languages ?? []), navigator.language];
+  for (const candidate of candidates) {
+    const language = normalizedLanguage(candidate);
+    if (supportedLanguages.has(language)) return language;
+  }
+  return "en";
+}
+
+function rememberLanguage(language) {
+  const normalized = normalizedLanguage(language);
+  if (!supportedLanguages.has(normalized)) return;
+  try {
+    localStorage.setItem(languageStorageKey, normalized);
+  } catch {
+    // Navigation still works when storage is unavailable.
+  }
+}
+
+function redirectToPreferredLanguage() {
+  const currentLanguage = normalizedLanguage(root.lang);
+  if (currentLanguage !== "en") return false;
+
+  const preferredLanguage = savedLanguage() ?? browserLanguage();
+  if (preferredLanguage === "en") return false;
+
+  const target = document.querySelector(
+    `[data-language="${preferredLanguage}"]`,
+  );
+  if (!target?.href) return false;
+
+  const targetUrl = new URL(target.href);
+  targetUrl.search = window.location.search;
+  targetUrl.hash = window.location.hash;
+  window.location.replace(targetUrl.href);
+  return true;
+}
+
+redirectToPreferredLanguage();
 
 function resolveTheme(preference) {
   if (preference === "system") {
@@ -136,6 +191,12 @@ document.addEventListener("keydown", (event) => {
 });
 
 const languagePicker = document.querySelector("[data-language-picker]");
+languagePicker?.querySelectorAll("[data-language]").forEach((link) => {
+  link.addEventListener("click", () => {
+    rememberLanguage(link.dataset.language);
+  });
+});
+
 document.addEventListener("click", (event) => {
   if (languagePicker?.open && !languagePicker.contains(event.target)) {
     languagePicker.open = false;
