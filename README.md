@@ -24,6 +24,8 @@ An MCP (Model Context Protocol) server for interacting with the Thermomix Cookid
 
 ## Setup
 
+Python 3.12 or newer is required by the Cookidoo API dependency.
+
 1. **Clone the repository and navigate to the project directory**
 
 2. **Create a virtual environment and activate it:**
