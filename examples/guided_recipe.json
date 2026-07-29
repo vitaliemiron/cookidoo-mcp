@@ -1,0 +1,85 @@
+{
+  "name": "Пример рецепта с управляемым приготовлением",
+  "ingredients": [
+    "75 г сахара"
+  ],
+  "steps": [
+    {
+      "type": "STEP",
+      "text": "Добавьте 75 г сахара.",
+      "annotations": [
+        {
+          "type": "INGREDIENT",
+          "data": {
+            "description": {
+              "text": "75 г сахара",
+              "annotations": [
+                {
+                  "type": "VOLUME",
+                  "data": {
+                    "amount": 75,
+                    "unit": "gram",
+                    "unitText": "г"
+                  },
+                  "position": {
+                    "offset": 0,
+                    "length": 4
+                  }
+                }
+              ]
+            }
+          },
+          "position": {
+            "offset": 9,
+            "length": 11
+          }
+        }
+      ]
+    },
+    {
+      "type": "STEP",
+      "text": "Измельчите 30 сек./100°C/обратное вращение/скорость 4.",
+      "annotations": [
+        {
+          "type": "TTS",
+          "data": {
+            "speed": "4",
+            "direction": "CCW",
+            "time": 30,
+            "temperature": {
+              "value": "100",
+              "unit": "C"
+            }
+          },
+          "position": {
+            "offset": 11,
+            "length": 42
+          }
+        }
+      ]
+    },
+    {
+      "type": "STEP",
+      "text": "Замесите тесто 1 мин.",
+      "annotations": [
+        {
+          "type": "MODE",
+          "name": "DOUGH",
+          "data": {
+            "time": 60
+          },
+          "position": {
+            "offset": 15,
+            "length": 6
+          }
+        }
+      ]
+    }
+  ],
+  "servings": 1,
+  "prep_time": 1,
+  "total_time": 2,
+  "hints": [
+    "Проверьте параметры перед приготовлением."
+  ]
+}
