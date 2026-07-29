@@ -16,15 +16,17 @@ a safer or more useful path.
 - Read and manage a rolling seven-day Cookidoo meal plan.
 - Run offline unit tests and daily authenticated API contract monitoring.
 - Serve human, AI-readable, and structured documentation through GitHub Pages.
+- Install the versioned Python package with a one-command MCP launch.
+- Discover the server through the official MCP Registry.
+- Publish signed release artifacts and upgrade notes through GitHub Releases.
 
 ## Current priorities
 
 ### Easier installation and discovery
 
-- Publish a versioned Python package with a one-command MCP launch.
-- Publish the server metadata to the official MCP Registry.
 - Provide verified configuration examples for popular MCP clients.
-- Create stable releases and upgrade notes.
+- Verify the one-command setup on Windows and additional MCP clients.
+- Improve search and AI discovery as usage questions reveal missing guides.
 
 ### Reliability across Cookidoo changes
 
