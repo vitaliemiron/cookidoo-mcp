@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#fffaf2">
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="Create a clear Thermomix guided-cooking recipe with AI using verified Cookidoo weighing, time, temperature, speed, reverse, and mode annotations.">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/use-cases/create-thermomix-guided-recipe/">
+    <meta property="og:type" content="article"><meta property="og:title" content="Create a Thermomix guided-cooking recipe with AI"><meta property="og:description" content="Turn ordinary instructions into validated ingredient and machine-action steps for a private Cookidoo recipe."><meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/use-cases/create-thermomix-guided-recipe/"><meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png"><meta property="og:image:alt" content="Five steps from an AI meal idea through Cookidoo recipe and week planning to a store MCP order."><meta name="twitter:card" content="summary_large_image">
+    <title>Create a Thermomix guided-cooking recipe with AI</title>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@graph":[
+        {"@type":"TechArticle","headline":"Create a Thermomix guided-cooking recipe with AI","description":"A verified workflow for structuring a private Cookidoo recipe with weighing, manual settings, and supported modes.","url":"https://vitaliemiron.github.io/cookidoo-mcp/use-cases/create-thermomix-guided-recipe/","datePublished":"2026-07-29","dateModified":"2026-07-29","author":{"@type":"Organization","name":"Cookidoo MCP maintainers","url":"https://github.com/vitaliemiron/cookidoo-mcp"},"isPartOf":{"@type":"WebSite","name":"Cookidoo MCP","url":"https://vitaliemiron.github.io/cookidoo-mcp/"}},
+        {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vitaliemiron.github.io/cookidoo-mcp/"},{"@type":"ListItem","position":2,"name":"Use cases","item":"https://vitaliemiron.github.io/cookidoo-mcp/use-cases/"},{"@type":"ListItem","position":3,"name":"Create a guided recipe","item":"https://vitaliemiron.github.io/cookidoo-mcp/use-cases/create-thermomix-guided-recipe/"}]}
+      ]}
+    </script>
+    <script>
+      document.documentElement.classList.add("js"); const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; let initialTheme = systemTheme;
+      try { const saved = localStorage.getItem("cookidoo-mcp-theme"); if (saved === "light" || saved === "dark") initialTheme = saved; } catch {}
+      document.documentElement.dataset.theme = initialTheme; document.querySelector('meta[name="theme-color"]').content = initialTheme === "light" ? "#fffaf2" : "#020617";
+    </script>
+    <link rel="stylesheet" href="../../assets/styles.css"><script defer src="../../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to guided recipe guide</a>
+    <header class="site-header"><div class="container nav-shell"><a class="brand" href="../../" aria-label="Cookidoo MCP home"><span class="brand-mark" aria-hidden="true">CM</span><span class="brand-name">Cookidoo MCP</span></a><nav class="primary-nav" data-navigation aria-label="Primary navigation"><a href="../../">Home</a><a href="../" aria-current="page">Use cases</a><a href="../../presentation/">Story</a><a href="../../docs/">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a></nav><div class="header-actions"><button class="nav-button" type="button" data-theme-toggle aria-label="Theme follows this device">System</button><button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button></div></div></header>
+    <main id="main">
+      <div class="container docs-hero"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../">Home</a><span aria-hidden="true">/</span><a href="../">Use cases</a><span aria-hidden="true">/</span><span>Create a guided recipe</span></nav></div>
+      <div class="container docs-shell">
+        <aside class="docs-sidebar" aria-label="Guide sections"><strong>In this guide</strong><a href="#answer">Short answer</a><a href="#structure">Step structure</a><a href="#annotations">Annotations</a><a href="#workflow">Workflow</a><a href="#example">Example request</a><a href="#limits">Limits</a></aside>
+        <article class="docs-content">
+          <p class="eyebrow">Recipes / Guided cooking</p><h1>Create a Thermomix guided recipe with AI.</h1>
+          <p class="lead">Turn an ordinary recipe into a clear private Cookidoo recipe where people can read every instruction and supported machine settings remain attached to the correct step.</p>
+          <ul class="use-case-meta"><li>By Cookidoo MCP maintainers</li><li><time datetime="2026-07-29">Last verified 29 July 2026</time></li><li>9 min read</li></ul>
+          <div class="answer-box" id="answer"><p class="section-kicker">Short answer</p><p><strong>Write the complete human-readable recipe first, split every ingredient action from the machine action that follows, then add validated <code>INGREDIENT</code>, <code>TTS</code>, or <code>MODE</code> annotations.</strong> Calculate each position against the final text before upload.</p></div>
+          <section id="structure">
+            <p class="section-kicker">The essential rule</p><h2>One kind of action per step</h2>
+            <p>Cookidoo MCP deliberately enforces a two-step rhythm because it is clearer for beginners and avoids combining scale behavior with a running Thermomix action.</p>
+            <div class="code-shell"><pre><code>Step 1: Add 75 g sugar.
+        → INGREDIENT annotation only
+
+Step 2: Mill 30 seconds / speed 10.
+        → TTS annotation only</code></pre></div>
+            <div class="callout callout-herb"><strong>Never combine them.</strong><p>A step with <code>INGREDIENT</code> cannot also contain <code>TTS</code> or <code>MODE</code>. The recipe schema rejects this mixture.</p></div>
+          </section>
+          <section id="annotations">
+            <p class="section-kicker">Three action families</p><h2>Choose the structure that matches the step</h2>
+            <table class="reference-table">
+              <thead><tr><th>Annotation</th><th>Use it for</th><th>Important detail</th></tr></thead>
+              <tbody>
+                <tr><td><code>INGREDIENT</code></td><td>Adding or weighing an ingredient</td><td>A nested <code>VOLUME</code> can hold amount, unit, unit text, and an optional range.</td></tr>
+                <tr><td><code>TTS</code></td><td>Manual time, temperature, speed, or reverse</td><td>Time is seconds, speed is a string, and reverse is <code>CCW</code>.</td></tr>
+                <tr><td><code>MODE</code></td><td>A supported Thermomix smart function</td><td>The mode name is uppercase and each mode has its own data constraints.</td></tr>
+              </tbody>
+            </table>
+            <p>Supported mode schemas currently include <code>DOUGH</code>, <code>BLEND</code>, <code>TURBO</code>, <code>WARM_UP</code>, <code>RICE_COOKER</code>, <code>STEAMING</code>, and <code>BROWNING</code>. A mode should only be used when it actually matches the cooking action and available machine behavior.</p>
+            <h3>Why readable text still matters</h3>
+            <p>The annotation does not replace the instruction. It selects a phrase such as “30 seconds / speed 10” within the instruction, so the person and the machine share the same source of truth.</p>
+          </section>
+          <section id="workflow">
+            <p class="section-kicker">Build sequence</p><h2>Structure only after the recipe is final</h2>
+            <ol class="flow-list">
+              <li><div><strong>Collect the complete recipe.</strong><p>Confirm ingredients, servings, tools, prep time, total time, and every preparation instruction.</p></div></li>
+              <li><div><strong>Adapt the method to the Thermomix.</strong><p>Choose realistic order, bowl capacity, accessory use, speed, temperature, and duration. Do not invent unsupported modes.</p></div></li>
+              <li><div><strong>Make each instruction beginner-readable.</strong><p>Name the ingredient, destination, action, setting, and observable result where useful.</p></div></li>
+              <li><div><strong>Separate ingredient and machine steps.</strong><p>Keep weighing and adding before the operation that processes those ingredients.</p></div></li>
+              <li><div><strong>Add annotation data.</strong><p>Use the exact quantity and machine settings represented by the sentence.</p></div></li>
+              <li><div><strong>Calculate UTF-16 positions.</strong><p>Call <code>calculate_annotation_position</code> for the marker in the final sentence.</p></div></li>
+              <li><div><strong>Validate and upload.</strong><p>Run <code>validate_guided_recipe_structure</code>, correct all errors, then use <code>upload_custom_recipe</code>.</p></div></li>
+              <li><div><strong>Read the saved recipe.</strong><p>Confirm the stored instructions and attach a local, user-owned image only if desired.</p></div></li>
+            </ol>
+          </section>
+          <section id="example">
+            <p class="section-kicker">Example request</p><h2>Give the assistant a cooking standard</h2>
+            <div class="prompt-example">Adapt this lentil curry for TM6 and save it as a private Cookidoo recipe. Write for someone using Thermomix for the first time. Separate every ingredient addition from the next machine action. Add only supported weighing, time, temperature, speed, reverse, and mode annotations. Validate all UTF-16 positions and show me the final steps before upload.</div>
+          </section>
+          <section id="limits">
+            <p class="section-kicker">Be precise</p><h2>Guided does not mean official</h2>
+            <ul>
+              <li>This project creates structured private customer recipes; it does not turn them into official Vorwerk recipes.</li>
+              <li>Cooking parameters remain recipe decisions. Validation can check the payload contract but cannot guarantee culinary or food-safety quality.</li>
+              <li>Some Cookidoo behavior can depend on account or device features.</li>
+              <li>Undocumented endpoints and editor behavior may change, which is why the project runs live contract checks.</li>
+            </ul>
+            <div class="actions"><a class="button button-primary" href="../../docs/guided-cooking/">Open the schema reference <span aria-hidden="true">→</span></a><a class="button button-secondary" href="https://github.com/vitaliemiron/cookidoo-mcp/blob/main/examples/guided_recipe.json">Verified JSON example</a></div>
+          </section>
+          <section id="related"><p class="section-kicker">Continue</p><h2>Related guides</h2><div class="related-grid"><a class="related-card" href="../translate-cookidoo-recipe/"><span class="meta">Recipe workflow</span><h3>Translate a Cookidoo recipe</h3><p>Apply the same invariant to a private translated copy.</p></a><a class="related-card" href="../guided-cooking-annotation-research/"><span class="meta">Evidence</span><h3>See how the contract was verified</h3><p>Follow the browser observation, API patch, and reload test.</p></a></div></section>
+          <p class="verification-note">Authored by the Cookidoo MCP maintainers. Annotation names, ranges, and separation rules checked against the schemas and verified example on 29 July 2026.</p>
+        </article>
+      </div>
+    </main>
+    <footer class="site-footer"><div class="container footer-grid"><p class="footer-copy">Thermomix guided-recipe guide · Private Cookidoo recipes</p><nav class="footer-links" aria-label="Footer navigation"><a href="../">All use cases</a><a href="../../docs/guided-cooking/">Technical reference</a><a href="../../raw/use-cases/create-thermomix-guided-recipe.md">Raw Markdown</a></nav></div></footer>
+  </body>
+</html>

@@ -82,29 +82,56 @@
         <article class="docs-content">
           <section id="quickstart">
             <p class="section-kicker">Quick start</p>
-            <h2>Run locally in five steps.</h2>
-            <p>Python 3.12 or newer is required. Credentials stay in your local environment and are never committed.</p>
+            <h2>Run the published package.</h2>
+            <p>Python 3.12 or newer is required. Keep credentials in a private local file, outside the repository.</p>
             <div class="code-shell">
-              <pre><code>git clone https://github.com/vitaliemiron/cookidoo-mcp.git
-cd cookidoo-mcp
-python3 -m venv venv
-source venv/bin/activate
-python -m pip install -r requirements.txt
-cp .env.example .env</code></pre>
+              <pre><code>mkdir -p ~/.config/cookidoo-mcp
+chmod 700 ~/.config/cookidoo-mcp
+touch ~/.config/cookidoo-mcp/.env
+chmod 600 ~/.config/cookidoo-mcp/.env</code></pre>
             </div>
-            <p>Edit <code>.env</code> with your Cookidoo login:</p>
+            <p>Edit that file with your Cookidoo login:</p>
             <div class="code-shell">
               <pre><code>COOKIDOO_EMAIL=your-login
 COOKIDOO_PASSWORD=your-password</code></pre>
             </div>
-            <p>Then start the MCP server:</p>
+            <p>With <a href="https://docs.astral.sh/uv/"><code>uv</code></a> installed, start the stdio MCP server without cloning the repository:</p>
             <div class="code-shell">
-              <pre><code>venv/bin/fastmcp run server.py</code></pre>
+              <pre><code>uvx cookidoo-mcp \
+  --env-file ~/.config/cookidoo-mcp/.env</code></pre>
+            </div>
+            <p>Use the same command and arguments in any MCP client:</p>
+            <div class="code-shell">
+              <pre><code>{
+  "mcpServers": {
+    "cookidoo": {
+      "command": "uvx",
+      "args": [
+        "cookidoo-mcp",
+        "--env-file",
+        "/absolute/path/to/cookidoo-mcp.env"
+      ]
+    }
+  }
+}</code></pre>
             </div>
             <div class="callout callout-herb">
-              <strong>Restart after code changes</strong>
-              <p>The server stores its authenticated client in module-level state. Reconnect after changing <code>server.py</code> or <code>cookidoo_service.py</code>.</p>
+              <strong>Keep the password out of client JSON</strong>
+              <p>Point the client at a private <code>.env</code> file with an absolute path. Existing environment variables take precedence over values in that file.</p>
             </div>
+            <details class="faq-item">
+              <summary>How do I run the source checkout for development?</summary>
+              <div class="code-shell">
+                <pre><code>git clone https://github.com/vitaliemiron/cookidoo-mcp.git
+cd cookidoo-mcp
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install -r requirements-dev.txt
+cp .env.example .env
+venv/bin/fastmcp run server.py</code></pre>
+              </div>
+              <p>Restart after changing <code>server.py</code> or <code>cookidoo_service.py</code>; the long-lived process keeps authenticated state in memory.</p>
+            </details>
           </section>
 
           <section id="explore">

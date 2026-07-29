@@ -1041,6 +1041,221 @@ h3 {
   border-left-color: var(--color-herb);
 }
 
+/* Search-focused use cases */
+.use-case-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  color: var(--color-subtle);
+  font-size: 0.88rem;
+  list-style: none;
+}
+
+.use-case-meta li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.use-case-meta li:not(:first-child)::before {
+  color: var(--color-border-strong);
+  content: "•";
+}
+
+.answer-box {
+  margin-block: 2rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--color-herb) 8%, transparent), transparent 55%),
+    var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.answer-box .section-kicker {
+  margin-top: 0;
+}
+
+.answer-box p:last-child {
+  margin-bottom: 0;
+}
+
+.use-case-grid,
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.use-case-card,
+.related-card {
+  min-height: 13rem;
+  padding: 1.35rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  text-decoration: none;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms var(--ease-out);
+}
+
+.use-case-card:hover,
+.related-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.use-case-card .meta,
+.related-card .meta {
+  color: var(--color-accent);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.use-case-card h2,
+.related-card h3 {
+  margin: 1.6rem 0 0.65rem;
+}
+
+.use-case-card h2 {
+  font-size: clamp(1.45rem, 2.8vw, 2.05rem);
+}
+
+.use-case-card p,
+.related-card p {
+  margin-bottom: 0;
+  color: var(--color-muted);
+}
+
+.flow-list {
+  margin: 1.5rem 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: use-case-flow;
+}
+
+.flow-list li {
+  position: relative;
+  min-height: 5rem;
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-border);
+  counter-increment: use-case-flow;
+}
+
+.flow-list li::before {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  color: var(--color-on-accent);
+  border-radius: 50%;
+  background: var(--color-accent);
+  content: counter(use-case-flow);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.flow-list strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--color-foreground);
+}
+
+.flow-list p {
+  margin: 0;
+}
+
+.prompt-example {
+  margin-block: 1.5rem;
+  padding: 1.25rem;
+  color: var(--color-foreground);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-sky);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--color-code);
+}
+
+.prompt-example::before {
+  display: block;
+  margin-bottom: 0.65rem;
+  color: var(--color-sky);
+  content: "EXAMPLE REQUEST";
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+}
+
+.decision-table td:first-child {
+  color: var(--color-foreground);
+  font-weight: 600;
+}
+
+.faq-list {
+  margin-top: 1.5rem;
+}
+
+.faq-item {
+  border-top: 1px solid var(--color-border);
+}
+
+.faq-item:last-child {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.faq-item summary {
+  min-height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--color-foreground);
+  font-weight: 700;
+  list-style: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  flex: 0 0 auto;
+  color: var(--color-accent);
+  content: "+";
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.25rem;
+}
+
+.faq-item[open] summary::after {
+  content: "−";
+}
+
+.faq-item p {
+  margin: 0 0 1.25rem;
+  color: var(--color-muted);
+}
+
+.verification-note {
+  margin-top: 3.5rem;
+  padding-top: 1rem;
+  color: var(--color-subtle);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.86rem;
+}
+
 .search-box {
   position: relative;
   margin-block: 2rem;
@@ -1605,7 +1820,9 @@ h3 {
   }
 
   .tool-grid,
-  .doc-cards {
+  .doc-cards,
+  .use-case-grid,
+  .related-grid {
     grid-template-columns: 1fr;
   }
 

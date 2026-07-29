@@ -1,0 +1,162 @@
+name: Publish release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: package-release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build and verify distributions
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install build tools
+        run: python -m pip install --upgrade pip build twine
+
+      - name: Match package metadata to the tag
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python scripts/check_release_metadata.py "${RELEASE_TAG#v}"
+
+      - name: Run offline tests
+        run: |
+          python -m pip install ".[dev]"
+          python -m pytest -m "not live" --strict-markers -q
+
+      - name: Build distributions
+        run: python -m build
+
+      - name: Check package metadata
+        run: python -m twine check --strict dist/*
+
+      - name: Upload distributions
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: python-distributions
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  publish-pypi:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: pypi
+      url: https://pypi.org/project/cookidoo-mcp/
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download distributions
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: python-distributions
+          path: dist/
+
+      - name: Publish package with Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@ba38be9e461d3875417946c167d0b5f3d385a247 # v1.14.1
+        with:
+          packages-dir: dist/
+          skip-existing: true
+
+  publish-registry:
+    name: Publish to the MCP Registry
+    needs: publish-pypi
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: mcp-registry
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Wait for the package to become visible on PyPI
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          version="${RELEASE_TAG#v}"
+          for attempt in {1..12}; do
+            if curl --fail --silent --show-error \
+              "https://pypi.org/pypi/cookidoo-mcp/${version}/json" \
+              > /dev/null; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "cookidoo-mcp ${version} is not visible on PyPI" >&2
+          exit 1
+
+      - name: Install the verified MCP publisher
+        env:
+          PUBLISHER_VERSION: "1.8.0"
+          PUBLISHER_SHA256: "1370446bbe74d562608e8005a6ccce02d146a661fbd78674e11cc70b9618d6cf"
+        run: |
+          archive="${RUNNER_TEMP}/mcp-publisher.tar.gz"
+          curl --fail --location --silent --show-error \
+            "https://github.com/modelcontextprotocol/registry/releases/download/v${PUBLISHER_VERSION}/mcp-publisher_linux_amd64.tar.gz" \
+            --output "$archive"
+          echo "${PUBLISHER_SHA256}  ${archive}" | sha256sum --check
+          tar --extract --gzip --file "$archive" --directory "$RUNNER_TEMP" \
+            mcp-publisher
+
+      - name: Authenticate to the MCP Registry
+        run: |
+          "$RUNNER_TEMP/mcp-publisher" login github-oidc
+
+      - name: Publish registry metadata
+        run: |
+          "$RUNNER_TEMP/mcp-publisher" publish
+
+  github-release:
+    name: Create GitHub release
+    needs: publish-pypi
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download distributions
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: python-distributions
+          path: dist/
+
+      - name: Create or refresh the release
+        env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$RELEASE_TAG" > /dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" dist/* --clobber
+          else
+            gh release create "$RELEASE_TAG" dist/* \
+              --generate-notes \
+              --title "Cookidoo MCP ${RELEASE_TAG#v}" \
+              --verify-tag
+          fi

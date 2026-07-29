@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#fffaf2">
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="Compare Cookidoo MCP with browser automation. Learn when a typed API tool is safer and clearer, and when an authenticated browser is still useful for research.">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/use-cases/mcp-vs-browser-automation/">
+    <meta property="og:type" content="article"><meta property="og:title" content="Cookidoo MCP vs browser automation"><meta property="og:description" content="Use purpose-built API tools for known Cookidoo work and a browser only to investigate unsupported operations."><meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/use-cases/mcp-vs-browser-automation/"><meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png"><meta property="og:image:alt" content="Five steps from an AI meal idea through Cookidoo recipe and week planning to a store MCP order."><meta name="twitter:card" content="summary_large_image">
+    <title>Cookidoo MCP vs browser automation</title>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@graph":[
+        {"@type":"TechArticle","headline":"Cookidoo MCP vs browser automation","description":"A practical decision guide for Cookidoo API tools and authenticated browser research.","url":"https://vitaliemiron.github.io/cookidoo-mcp/use-cases/mcp-vs-browser-automation/","datePublished":"2026-07-29","dateModified":"2026-07-29","author":{"@type":"Organization","name":"Cookidoo MCP maintainers","url":"https://github.com/vitaliemiron/cookidoo-mcp"},"isPartOf":{"@type":"WebSite","name":"Cookidoo MCP","url":"https://vitaliemiron.github.io/cookidoo-mcp/"}},
+        {"@type":"FAQPage","mainEntity":[
+          {"@type":"Question","name":"Does Cookidoo MCP replace the Cookidoo website?","acceptedAnswer":{"@type":"Answer","text":"No. Cookidoo MCP provides purpose-built actions for supported automation while the Cookidoo website remains useful for browsing, visual review, and unsupported account operations."}},
+          {"@type":"Question","name":"When should an AI use a browser with Cookidoo?","acceptedAnswer":{"@type":"Answer","text":"Use an authenticated browser to investigate an unsupported operation or changed API contract. Once the request is understood, implement and test it in the service instead of leaving browser automation as the normal workflow."}},
+          {"@type":"Question","name":"Is an MCP tool automatically safe?","acceptedAnswer":{"@type":"Answer","text":"No. A typed tool reduces ambiguity, but write operations still require an exact target, current-state read, scoped change, validation, and verification."}}
+        ]},
+        {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vitaliemiron.github.io/cookidoo-mcp/"},{"@type":"ListItem","position":2,"name":"Use cases","item":"https://vitaliemiron.github.io/cookidoo-mcp/use-cases/"},{"@type":"ListItem","position":3,"name":"MCP vs browser automation","item":"https://vitaliemiron.github.io/cookidoo-mcp/use-cases/mcp-vs-browser-automation/"}]}
+      ]}
+    </script>
+    <script>document.documentElement.classList.add("js"); const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; let initialTheme = systemTheme; try { const saved = localStorage.getItem("cookidoo-mcp-theme"); if (saved === "light" || saved === "dark") initialTheme = saved; } catch {} document.documentElement.dataset.theme = initialTheme; document.querySelector('meta[name="theme-color"]').content = initialTheme === "light" ? "#fffaf2" : "#020617";</script>
+    <link rel="stylesheet" href="../../assets/styles.css"><script defer src="../../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to comparison</a>
+    <header class="site-header"><div class="container nav-shell"><a class="brand" href="../../" aria-label="Cookidoo MCP home"><span class="brand-mark" aria-hidden="true">CM</span><span class="brand-name">Cookidoo MCP</span></a><nav class="primary-nav" data-navigation aria-label="Primary navigation"><a href="../../">Home</a><a href="../" aria-current="page">Use cases</a><a href="../../presentation/">Story</a><a href="../../docs/">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a></nav><div class="header-actions"><button class="nav-button" type="button" data-theme-toggle aria-label="Theme follows this device">System</button><button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button></div></div></header>
+    <main id="main">
+      <div class="container docs-hero"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../">Home</a><span aria-hidden="true">/</span><a href="../">Use cases</a><span aria-hidden="true">/</span><span>MCP vs browser</span></nav></div>
+      <div class="container docs-shell">
+        <aside class="docs-sidebar" aria-label="Guide sections"><strong>In this guide</strong><a href="#answer">Short answer</a><a href="#comparison">Comparison</a><a href="#decision">Decision rule</a><a href="#research">Research loop</a><a href="#safety">Safety</a><a href="#faq">FAQ</a></aside>
+        <article class="docs-content">
+          <p class="eyebrow">Architecture / Automation</p><h1>Cookidoo MCP or browser automation?</h1>
+          <p class="lead">Both are useful, but for different jobs: use stable, validated MCP tools for supported operations and a signed-in browser for observing behavior that is not understood yet.</p>
+          <ul class="use-case-meta"><li>By Cookidoo MCP maintainers</li><li><time datetime="2026-07-29">Last verified 29 July 2026</time></li><li>6 min read</li></ul>
+          <div class="answer-box" id="answer"><p class="section-kicker">Short answer</p><p><strong>Prefer Cookidoo MCP whenever a supported tool exists.</strong> Its inputs, outputs, validation, error handling, and tests are designed for the task. Use a browser to discover an unsupported network contract or review visual state, then move repeatable work into the tested service.</p></div>
+          <section id="comparison">
+            <p class="section-kicker">Side by side</p><h2>Choose based on the kind of uncertainty</h2>
+            <table class="reference-table decision-table">
+              <thead><tr><th>Question</th><th>Cookidoo MCP</th><th>Browser automation</th></tr></thead>
+              <tbody>
+                <tr><td>Best at</td><td>Known recipe, planning, shopping-list, image, and guided-cooking operations</td><td>Exploring an unsupported screen or changed request</td></tr>
+                <tr><td>Input</td><td>Explicit IDs, dates, booleans, and validated JSON</td><td>Visible controls, page state, and UI text</td></tr>
+                <tr><td>Output</td><td>Structured or deliberately formatted data</td><td>Rendered page state and captured network behavior</td></tr>
+                <tr><td>Regression signal</td><td>Unit tests plus scheduled live API contracts</td><td>A UI flow can fail after layout or label changes</td></tr>
+                <tr><td>Visual context</td><td>Limited to API data and supported image upload</td><td>Strong: can inspect illustrations, editor state, and visual confirmations</td></tr>
+                <tr><td>Normal role</td><td>Repeatable account workflow</td><td>Research, unsupported work, or human-facing review</td></tr>
+              </tbody>
+            </table>
+          </section>
+          <section id="decision">
+            <p class="section-kicker">Simple rule</p><h2>Use the narrowest reliable interface</h2>
+            <ol>
+              <li>If a Cookidoo MCP tool already performs the operation, use it.</li>
+              <li>If the tool fails, inspect the exact error and relevant contract test before opening a browser.</li>
+              <li>If the operation is unsupported or the API contract has changed, use an authenticated browser to observe the real request.</li>
+              <li>Implement the confirmed request in <code>cookidoo_service.py</code>, expose a small MCP tool, and add tests.</li>
+              <li>Return to the MCP for normal use.</li>
+            </ol>
+            <div class="callout callout-herb"><strong>A browser is a research instrument, not a permanent workaround.</strong><p>This keeps repeated operations explicit, testable, and easier for another AI or maintainer to understand.</p></div>
+          </section>
+          <section id="research">
+            <p class="section-kicker">Example</p><h2>How image upload moved from browser research to an MCP tool</h2>
+            <p>An external image URL was rejected because Cookidoo accepts a customer-recipe image key, not an arbitrary URL. Browser network observation revealed a signed upload flow: request a short-lived signature, upload the normalized image to Cookidoo’s Cloudinary account, then PATCH the returned key into the private recipe.</p>
+            <p>That flow is now implemented as <code>upload_custom_recipe_image</code>, normalizes supported local images to JPEG, enforces the documented 10 MB limit, and is covered by tests. The browser is no longer needed for routine image attachment.</p>
+          </section>
+          <section id="safety">
+            <p class="section-kicker">What does not change</p><h2>Every write still needs discipline</h2>
+            <p>A purpose-built API is less ambiguous, but it is not permission to make broad changes. For recipes and calendars, resolve the exact target, read current state where relevant, show the intended change, apply the smallest write, and verify the result.</p>
+            <div class="prompt-example">Use Cookidoo MCP, not the browser, to read my plan starting 2026-07-29. Do not change it. Explain which exact tool and date window you used.</div>
+          </section>
+          <section id="faq">
+            <p class="section-kicker">Direct answers</p><h2>Frequently asked questions</h2>
+            <div class="faq-list">
+              <details class="faq-item"><summary>Does Cookidoo MCP replace the Cookidoo website?</summary><p>No. Cookidoo MCP provides purpose-built actions for supported automation. The website remains useful for browsing, visual review, and unsupported account operations.</p></details>
+              <details class="faq-item"><summary>When should an AI use a browser with Cookidoo?</summary><p>Use an authenticated browser to investigate an unsupported operation or changed API contract. Once understood, implement and test it in the service instead of leaving browser automation as the normal workflow.</p></details>
+              <details class="faq-item"><summary>Is an MCP tool automatically safe?</summary><p>No. A typed tool reduces ambiguity, but writes still require an exact target, current-state read, scoped change, validation, and verification.</p></details>
+            </div>
+          </section>
+          <section id="related"><p class="section-kicker">Continue</p><h2>Related guides</h2><div class="related-grid"><a class="related-card" href="../guided-cooking-annotation-research/"><span class="meta">Research</span><h3>Guided-cooking contract discovery</h3><p>See a complete browser-to-API research loop.</p></a><a class="related-card" href="../../docs/testing/"><span class="meta">Reliability</span><h3>Testing undocumented APIs</h3><p>Understand unit and scheduled live contract coverage.</p></a></div></section>
+          <p class="verification-note">Authored by the Cookidoo MCP maintainers. Architecture guidance reflects the repository’s canonical API-first rule and current tool coverage as of 29 July 2026.</p>
+        </article>
+      </div>
+    </main>
+    <footer class="site-footer"><div class="container footer-grid"><p class="footer-copy">Cookidoo MCP vs browser automation · Use each for the right uncertainty</p><nav class="footer-links" aria-label="Footer navigation"><a href="../">All use cases</a><a href="../../docs/testing/">Reliability</a><a href="../../raw/use-cases/mcp-vs-browser-automation.md">Raw Markdown</a></nav></div></footer>
+  </body>
+</html>

@@ -74,12 +74,46 @@ information, while the store-specific MCP works with the shop.
 
 ## Getting started
 
-Running an MCP server currently requires a small technical setup. You can
-follow the [getting-started guide](https://vitaliemiron.github.io/cookidoo-mcp/docs/)
-yourself or ask a developer or coding assistant to configure it for you.
+Python 3.12 or newer is required. Put your Cookidoo login in a private local
+file such as `~/.config/cookidoo-mcp/.env`:
+
+```dotenv
+COOKIDOO_EMAIL=your-login
+COOKIDOO_PASSWORD=your-password
+```
+
+If the login is a phone number, write it without spaces. Never commit or share
+this file.
+
+With [`uv`](https://docs.astral.sh/uv/) installed, run the published package
+without cloning the repository:
+
+```bash
+uvx cookidoo-mcp --env-file ~/.config/cookidoo-mcp/.env
+```
+
+An MCP client can use the same command:
+
+```json
+{
+  "mcpServers": {
+    "cookidoo": {
+      "command": "uvx",
+      "args": [
+        "cookidoo-mcp",
+        "--env-file",
+        "/absolute/path/to/cookidoo-mcp.env"
+      ]
+    }
+  }
+}
+```
+
+Use an absolute path. The exact location of the MCP configuration file depends
+on your client; the command and arguments remain the same.
 
 <details>
-<summary><strong>Technical setup</strong></summary>
+<summary><strong>Run from source for development</strong></summary>
 
 Python 3.12 or newer is required.
 
@@ -126,6 +160,8 @@ for advanced recipe authoring.
 - **Guided cooking:** read the
   [annotation guide](https://vitaliemiron.github.io/cookidoo-mcp/docs/guided-cooking/)
   before creating weighing, time, temperature, speed, or mode actions.
+- **Official registry metadata:** use [`server.json`](server.json) for the
+  versioned package, transport, and secret environment-variable declarations.
 
 ### Instruction for AI assistants
 

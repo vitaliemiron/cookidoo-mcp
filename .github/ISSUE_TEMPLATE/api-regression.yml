@@ -1,0 +1,88 @@
+name: Cookidoo API regression
+description: Report a previously working Cookidoo contract that has changed
+title: "[API regression]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Cookidoo endpoints used by this project are undocumented and may change.
+        Share only sanitized evidence. Security or private-data exposure belongs
+        in a private vulnerability report, not this public form.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Safety checks
+      options:
+        - label: This report contains no credentials, cookies, signatures, account IDs, or private recipe data.
+          required: true
+        - label: This is an ordinary compatibility failure, not a security vulnerability.
+          required: true
+        - label: I searched for an existing regression issue.
+          required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - Authentication
+        - Official recipe details
+        - Customer recipes
+        - Guided-cooking annotations
+        - Image upload
+        - Shopping list
+        - Meal planning
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: tool
+    attributes:
+      label: MCP tool or service method
+      placeholder: get_meal_plan_week
+    validations:
+      required: true
+
+  - type: textarea
+    id: change
+    attributes:
+      label: What changed?
+      description: Compare the previous contract with the sanitized behavior now observed.
+      placeholder: Previously the endpoint returned ..., but it now returns ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Minimal reproduction
+      description: Prefer a read-only reproduction. Confirm cleanup for any temporary mutation.
+    validations:
+      required: true
+
+  - type: input
+    id: first_seen
+    attributes:
+      label: First observed
+      placeholder: 2026-07-29 or workflow run URL
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized status, response shape, or traceback
+      description: Do not paste the full response if it contains private content.
+      render: shell
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: v1.0.0 or commit SHA
+    validations:
+      required: true
