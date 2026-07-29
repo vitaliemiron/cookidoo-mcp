@@ -6,6 +6,13 @@ The format is based on [Keep a
 Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1](https://github.com/vitaliemiron/cookidoo-mcp/compare/v1.1.0...v1.1.1) (2026-07-29)
+
+
+### Bug Fixes
+
+* **release:** attest reproducible CycloneDX SBOMs ([#23](https://github.com/vitaliemiron/cookidoo-mcp/issues/23)) ([01b7443](https://github.com/vitaliemiron/cookidoo-mcp/commit/01b74430caa506729e1aa1bcfd1616cc9d9d04f1))
+
 ## [1.1.0](https://github.com/vitaliemiron/cookidoo-mcp/compare/v1.0.0...v1.1.0) (2026-07-29)
 
 

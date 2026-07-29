@@ -3,7 +3,7 @@
   "name": "io.github.vitaliemiron/cookidoo-mcp",
   "title": "Cookidoo MCP",
   "description": "Create, translate, and plan Cookidoo recipes with guided Thermomix actions and shopping lists.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "websiteUrl": "https://vitaliemiron.github.io/cookidoo-mcp/",
   "repository": {
     "url": "https://github.com/vitaliemiron/cookidoo-mcp",
@@ -23,7 +23,7 @@
     {
       "registryType": "pypi",
       "identifier": "cookidoo-mcp",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "transport": {
         "type": "stdio"
       },
