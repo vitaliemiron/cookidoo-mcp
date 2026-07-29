@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#020617">
+    <meta
+      name="description"
+      content="Cookidoo MCP connects AI assistants to recipes, guided cooking, shopping lists, images, and meal planning—so less time goes into kitchen admin."
+    >
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Cookidoo MCP — Spend less time managing meals">
+    <meta
+      property="og:description"
+      content="An unofficial open-source bridge between AI assistance and your Cookidoo workflow."
+    >
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta property="og:image:alt" content="A connected path from a recipe card through guided cooking and a weekly plan to fresh ingredients.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <title>Cookidoo MCP — Spend less time managing meals</title>
+    <script>
+      document.documentElement.classList.add("js");
+      try {
+        const saved = localStorage.getItem("cookidoo-mcp-theme");
+        if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+      } catch {}
+    </script>
+    <link rel="stylesheet" href="./assets/styles.css">
+    <script defer src="./assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="./" aria-label="Cookidoo MCP home">
+          <span class="brand-mark" aria-hidden="true">CM</span>
+          <span class="brand-name">Cookidoo MCP</span>
+        </a>
+        <nav class="primary-nav" data-navigation aria-label="Primary navigation">
+          <a href="#why">Why</a>
+          <a href="#automations">Automations</a>
+          <a href="#reliability">Reliability</a>
+          <a href="./presentation/">Story</a>
+          <a href="./docs/">Docs</a>
+          <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+        <div class="header-actions">
+          <button class="nav-button" type="button" data-theme-toggle aria-label="Switch to light theme">Light</button>
+          <button
+            class="nav-button menu-toggle"
+            type="button"
+            data-menu-toggle
+            aria-expanded="false"
+            aria-label="Open navigation"
+          >Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <p class="eyebrow" data-reveal>Open-source Cookidoo automation</p>
+            <h1 data-reveal style="--reveal-delay: 60ms">Spend less time managing meals. Keep the part that matters.</h1>
+            <p class="hero-copy" data-reveal style="--reveal-delay: 120ms">
+              Cookidoo MCP gives an AI assistant purpose-built tools for recipes,
+              guided cooking, shopping lists, images, and meal planning—turning
+              scattered kitchen tasks into one connected conversation.
+            </p>
+            <div class="actions" data-reveal style="--reveal-delay: 180ms">
+              <a class="button button-primary" href="./docs/">Read the documentation <span aria-hidden="true">→</span></a>
+              <a class="button button-secondary" href="./presentation/">See the story</a>
+            </div>
+            <p class="hero-note" data-reveal style="--reveal-delay: 220ms">
+              Unofficial integration · credentials stay in your environment · Apache 2.0
+            </p>
+          </div>
+
+          <div class="flow-stage" data-reveal aria-label="Cookidoo MCP connects discovery, recipe adaptation, cooking, planning, and shopping">
+            <div class="flow-line line-1" aria-hidden="true"></div>
+            <div class="flow-line line-2" aria-hidden="true"></div>
+            <div class="flow-line line-3" aria-hidden="true"></div>
+            <div class="flow-line line-4" aria-hidden="true"></div>
+            <div class="flow-line line-5" aria-hidden="true"></div>
+            <div class="flow-core">MCP</div>
+            <div class="flow-node node-discover"><span>01</span>Discover</div>
+            <div class="flow-node node-adapt"><span>02</span>Adapt</div>
+            <div class="flow-node node-cook"><span>03</span>Cook</div>
+            <div class="flow-node node-plan"><span>04</span>Plan</div>
+            <div class="flow-node node-shop"><span>05</span>Shop</div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-label="Project metrics">
+        <div class="container metrics">
+          <div class="metric">
+            <span class="metric-value" data-counter="16">16</span>
+            <span class="metric-label">purpose-built MCP tools</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value" data-counter="5">5</span>
+            <span class="metric-label">live API contracts</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value" data-counter="7" data-suffix="-day">7-day</span>
+            <span class="metric-label">meal-planning window</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value" data-counter="1" data-suffix="×">1×</span>
+            <span class="metric-label">regression monitor every day</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="why">
+        <div class="container split">
+          <div class="split-heading" data-reveal>
+            <p class="section-kicker">The motivation</p>
+            <h2>The kitchen had automation. The workflow around it didn’t.</h2>
+          </div>
+          <div class="split-content" data-reveal style="--reveal-delay: 90ms">
+            <p class="section-intro">
+              Finding a promising recipe is easy. Turning it into the right
+              language, clear Thermomix actions, a realistic week, and a usable
+              shopping list is where the digital chores begin.
+            </p>
+            <ol class="problem-list">
+              <li>
+                <span class="index">01</span>
+                <span><strong>Inspiration is fragmented.</strong>Recipes arrive from Cookidoo, blogs, screenshots, and other languages.</span>
+              </li>
+              <li>
+                <span class="index">02</span>
+                <span><strong>Adaptation demands precision.</strong>Weights, time, temperature, speed, reverse direction, and modes must stay aligned.</span>
+              </li>
+              <li>
+                <span class="index">03</span>
+                <span><strong>Planning lives somewhere else.</strong>A recipe idea still has to become a calendar entry and shopping-list data.</span>
+              </li>
+              <li>
+                <span class="index">04</span>
+                <span><strong>Unofficial APIs change.</strong>Useful automation needs continuous tests, not wishful thinking.</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="automations">
+        <div class="container">
+          <p class="section-kicker" data-reveal>What it gives back</p>
+          <h2 class="reading" data-reveal>Automation for the admin. Space for the human choices.</h2>
+          <p class="section-intro" data-reveal>
+            Cookidoo MCP does not decide what a good meal means to you. It
+            connects the repetitive steps so you can focus on taste, health,
+            curiosity, and the people at the table.
+          </p>
+
+          <div class="bento">
+            <article class="card card-wide card-accent" data-reveal>
+              <span class="card-number">01 / INSPIRATION</span>
+              <h3>Turn “that looks good” into something you can actually cook.</h3>
+              <p>
+                Copy official recipes for their full instructions, translate
+                them, or adapt ideas from outside Cookidoo into a structured
+                Thermomix workflow.
+              </p>
+            </article>
+            <article class="card" data-reveal style="--reveal-delay: 40ms">
+              <span class="card-number">02 / CLARITY</span>
+              <h3>Make every step easier for a beginner.</h3>
+              <p>Keep weighing and adding separate from machine actions, with explicit settings and validated annotations.</p>
+            </article>
+            <article class="card" data-reveal>
+              <span class="card-number">03 / HEALTH</span>
+              <h3>Move healthy intentions into a practical week.</h3>
+              <p>Use recipe ideas, a seven-day planner, and shopping-list data as one connected planning surface.</p>
+            </article>
+            <article class="card card-wide" data-reveal style="--reveal-delay: 40ms">
+              <span class="card-number">04 / FREE TIME</span>
+              <h3>Coordinate six digital tasks without six separate workflows.</h3>
+              <p>
+                Discover, copy, translate, structure, schedule, and collect
+                ingredients from one AI conversation. Exact time saved depends
+                on the meal and workflow; the repetitive handoffs are what the
+                MCP removes.
+              </p>
+            </article>
+            <article class="card card-wide" data-reveal>
+              <span class="card-number">05 / GUIDED COOKING</span>
+              <h3>Preserve the details that make Thermomix guidance useful.</h3>
+              <p>Model time, temperature, speed, reverse direction, weighing, Dough, Blend, Turbo, Steaming, Rice Cooker, Warm Up, and Browning.</p>
+            </article>
+            <article class="card" data-reveal style="--reveal-delay: 40ms">
+              <span class="card-number">06 / OWNERSHIP</span>
+              <h3>Add the image that makes a personal recipe feel complete.</h3>
+              <p>Normalize and upload an image you own through Cookidoo’s signed customer-recipe flow.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <p class="section-kicker" data-reveal>One connected workflow</p>
+          <h2 class="reading" data-reveal>From appetite to action.</h2>
+          <p class="section-intro" data-reveal>
+            Each step is useful alone. Together, they make meal automation feel
+            less like a collection of scripts and more like a capable kitchen
+            assistant.
+          </p>
+          <div class="workflow">
+            <article class="workflow-step" data-reveal>
+              <h3>Discover</h3>
+              <p>Start with a Cookidoo recipe or an idea from anywhere.</p>
+            </article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 40ms">
+              <h3>Adapt</h3>
+              <p>Translate, resize, clarify, and structure the recipe.</p>
+            </article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 80ms">
+              <h3>Cook</h3>
+              <p>Add validated guided settings and ingredient weighing.</p>
+            </article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 120ms">
+              <h3>Plan</h3>
+              <p>Place official or private recipes on the right day.</p>
+            </article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 160ms">
+              <h3>Shop</h3>
+              <p>Read ingredients grouped by recipe and ownership state.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="reliability">
+        <div class="container">
+          <p class="section-kicker" data-reveal>Trust by design</p>
+          <h2 class="reading" data-reveal>Useful automation needs visible boundaries.</h2>
+          <div class="trust-grid">
+            <article class="trust-item" data-reveal>
+              <h3>Your credentials stay out of the repository.</h3>
+              <p>Local use reads environment variables. CI uses encrypted GitHub Secrets, never committed values.</p>
+            </article>
+            <article class="trust-item" data-reveal style="--reveal-delay: 50ms">
+              <h3>Recipe writes are structured and validated.</h3>
+              <p>Pydantic models check annotation ranges, UTF-16 positions, and the separation between ingredients and machine actions.</p>
+            </article>
+            <article class="trust-item" data-reveal style="--reveal-delay: 100ms">
+              <h3>External changes become actionable failures.</h3>
+              <p>Five real API contracts run daily and open a regression issue when Cookidoo behavior changes.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="cta-panel" data-reveal>
+            <div>
+              <p class="section-kicker">Start with intent</p>
+              <h2>Bring your ideas. Let the workflow connect itself.</h2>
+            </div>
+            <div class="actions">
+              <a class="button button-primary" href="./docs/">Get started <span aria-hidden="true">→</span></a>
+              <a class="button button-secondary" href="https://github.com/vitaliemiron/cookidoo-mcp">View source</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="./">
+            <span class="brand-mark" aria-hidden="true">CM</span>
+            <span>Cookidoo MCP</span>
+          </a>
+          <p class="footer-copy">
+            An unofficial open-source project. Not affiliated with or endorsed
+            by Vorwerk, Thermomix, or Cookidoo.
+          </p>
+        </div>
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="./docs/">Documentation</a>
+          <a href="./presentation/">Presentation</a>
+          <a href="./llms.txt">llms.txt</a>
+          <a href="./tools.json">tools.json</a>
+          <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

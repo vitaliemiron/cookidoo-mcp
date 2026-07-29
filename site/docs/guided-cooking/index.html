@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#020617">
+    <meta name="description" content="Cookidoo guided-cooking annotations: ingredient weighing, TTS, modes, and UTF-16 positions.">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/docs/guided-cooking/">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Guided cooking — Cookidoo MCP">
+    <meta property="og:description" content="Validated schemas for weighing, time, temperature, speed, reverse, and Thermomix modes.">
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/docs/guided-cooking/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Guided cooking — Cookidoo MCP</title>
+    <script>
+      document.documentElement.classList.add("js");
+      try {
+        const saved = localStorage.getItem("cookidoo-mcp-theme");
+        if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+      } catch {}
+    </script>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script defer src="../../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to guided-cooking documentation</a>
+    <header class="site-header"><div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Cookidoo MCP home"><span class="brand-mark" aria-hidden="true">CM</span><span class="brand-name">Cookidoo MCP</span></a>
+      <nav class="primary-nav" data-navigation aria-label="Primary navigation"><a href="../../">Home</a><a href="../../presentation/">Story</a><a href="../" aria-current="page">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a></nav>
+      <div class="header-actions"><button class="nav-button" type="button" data-theme-toggle aria-label="Switch to light theme">Light</button><button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button></div>
+    </div></header>
+
+    <main id="main">
+      <div class="container docs-hero"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../">Home</a><span aria-hidden="true">/</span><a href="../">Documentation</a><span aria-hidden="true">/</span><span>Guided cooking</span></nav></div>
+      <div class="container docs-shell">
+        <aside class="docs-sidebar" aria-label="Documentation sections">
+          <strong>Documentation</strong><a href="../">Overview</a><a href="../tools/">Tool reference</a><a href="./" aria-current="page">Guided cooking</a><a href="../automation/">Automations</a><a href="../testing/">Testing</a><a href="../../llms.txt">AI index</a>
+        </aside>
+        <article class="docs-content">
+          <p class="eyebrow">Schemas / Guided cooking</p>
+          <h1>Make the step readable and the machine action explicit.</h1>
+          <p class="lead">Plain text guides a person. Structured annotations let Cookidoo reconstruct ingredient weighing, manual settings, and supported Thermomix modes.</p>
+
+          <section id="separation">
+            <p class="section-kicker">Required invariant</p>
+            <h2>Ingredient handling and machine actions are separate steps.</h2>
+            <div class="callout callout-herb">
+              <strong>Always use two consecutive steps</strong>
+              <p>First weigh or add ingredients with only <code>INGREDIENT</code> annotations. Then chop, mix, heat, cook, or knead with a <code>TTS</code> or <code>MODE</code> annotation.</p>
+            </div>
+            <p>This applies to every recipe created, translated, enhanced, or repaired by the MCP.</p>
+            <div class="code-shell"><pre><code>[
+  {
+    "type": "STEP",
+    "text": "Добавьте 75 г сахара.",
+    "annotations": [{"type": "INGREDIENT", "...": "..."}]
+  },
+  {
+    "type": "STEP",
+    "text": "Измельчите 30 сек/скорость 10.",
+    "annotations": [{"type": "TTS", "...": "..."}]
+  }
+]</code></pre></div>
+            <p>Do not combine those annotations in one step, even if the original recipe does.</p>
+          </section>
+
+          <section id="positions">
+            <p class="section-kicker">Text ranges</p>
+            <h2>Positions use JavaScript UTF-16 code units.</h2>
+            <p>Every annotation points to a human-readable substring inside its step. Python code-point indexes differ from JavaScript when emoji or other non-BMP characters appear before that substring.</p>
+            <div class="callout"><strong>Never calculate production offsets with plain <code>len()</code> or <code>.index()</code>.</strong><p>Use <code>schemas.position_for</code> or the <code>calculate_annotation_position</code> MCP tool.</p></div>
+            <div class="code-shell"><pre><code>calculate_annotation_position(
+  text="Добавьте ингредиенты. Затем 30 сек/скорость 10.",
+  marker="30 сек/скорость 10",
+  occurrence=1
+)</code></pre></div>
+          </section>
+
+          <section id="tts">
+            <p class="section-kicker">Manual settings</p>
+            <h2>TTS: time, temperature, and speed.</h2>
+            <p><code>TTS</code> is Cookidoo’s manual settings annotation—not text-to-speech.</p>
+            <div class="code-shell"><pre><code>{
+  "type": "TTS",
+  "data": {
+    "time": 30,
+    "temperature": {"value": "100", "unit": "C"},
+    "speed": "4",
+    "direction": "CCW"
+  },
+  "position": {"offset": 42, "length": 29}
+}</code></pre></div>
+            <table class="reference-table">
+              <thead><tr><th>Field</th><th>Contract</th></tr></thead>
+              <tbody>
+                <tr><td><code>time</code></td><td>Integer seconds.</td></tr>
+                <tr><td><code>speed</code></td><td>String: <code>soft</code>, <code>0.5</code>, or <code>1</code> through <code>10</code>.</td></tr>
+                <tr><td><code>temperature.value</code></td><td>String value; unit is <code>C</code> or <code>F</code>.</td></tr>
+                <tr><td><code>direction</code></td><td>Use <code>CCW</code> for reverse. Normal clockwise is normally omitted.</td></tr>
+                <tr><td><code>position</code></td><td>UTF-16 range over the readable settings phrase.</td></tr>
+              </tbody>
+            </table>
+            <p>Cookidoo constrains combinations; manual temperatures cannot normally be combined with speeds above 6.</p>
+          </section>
+
+          <section id="ingredient">
+            <p class="section-kicker">Auto-weighing</p>
+            <h2>Link the ingredient phrase and its amount.</h2>
+            <div class="code-shell"><pre><code>{
+  "type": "INGREDIENT",
+  "data": {
+    "description": {
+      "text": "75 г сахара",
+      "annotations": [
+        {
+          "type": "VOLUME",
+          "data": {
+            "amount": 75,
+            "unit": "gram",
+            "unitText": "г"
+          },
+          "position": {"offset": 0, "length": 4}
+        }
+      ]
+    }
+  },
+  "position": {"offset": 9, "length": 11}
+}</code></pre></div>
+            <ul>
+              <li>The outer range selects the ingredient phrase in the step.</li>
+              <li>The nested <code>VOLUME</code> range selects the amount in <code>description.text</code>.</li>
+              <li>Use <code>amountMax</code> for a range.</li>
+              <li>The verified on-device weighing path is the nested <code>VOLUME</code> inside the step annotation.</li>
+            </ul>
+          </section>
+
+          <section id="modes">
+            <p class="section-kicker">Smart functions</p>
+            <h2>Supported modes</h2>
+            <table class="reference-table">
+              <thead><tr><th>Mode</th><th>Data</th></tr></thead>
+              <tbody>
+                <tr><td><code>DOUGH</code></td><td><code>{"time": seconds}</code>, 1–1200.</td></tr>
+                <tr><td><code>BLEND</code></td><td><code>{"time": seconds, "speed": "6"..."8"}</code>, 10–300 seconds.</td></tr>
+                <tr><td><code>TURBO</code></td><td><code>{"time": 0.5|1|2, "pulseCount": optional}</code>.</td></tr>
+                <tr><td><code>WARM_UP</code></td><td>Temperature plus speed <code>soft</code>, <code>1</code>, or <code>2</code>.</td></tr>
+                <tr><td><code>RICE_COOKER</code></td><td>Empty data object.</td></tr>
+                <tr><td><code>STEAMING</code></td><td>Time, speed, direction, and supported accessory.</td></tr>
+                <tr><td><code>BROWNING</code></td><td>Time, temperature, and <code>Gentle</code> or <code>Intense</code> power.</td></tr>
+              </tbody>
+            </table>
+            <div class="code-shell"><pre><code>{
+  "type": "MODE",
+  "name": "DOUGH",
+  "data": {"time": 60},
+  "position": {"offset": 12, "length": 13}
+}</code></pre></div>
+          </section>
+
+          <section id="workflow">
+            <p class="section-kicker">Recommended workflow</p>
+            <h2>Translate first. Annotate second.</h2>
+            <ol>
+              <li>Copy an official recipe when full instructions are needed.</li>
+              <li>Translate and clarify ingredient and step text.</li>
+              <li>Split ingredient handling from machine operations.</li>
+              <li>Add the readable settings phrase to each machine step.</li>
+              <li>Calculate positions against the final translated text.</li>
+              <li>Validate the complete structure.</li>
+              <li>PATCH ingredients and instructions separately.</li>
+              <li>Reload the customer recipe and verify the stored result.</li>
+            </ol>
+            <div class="actions"><a class="button button-primary" href="../../raw/guided-cooking.md">Raw Markdown <span aria-hidden="true">→</span></a><a class="button button-secondary" href="https://github.com/vitaliemiron/cookidoo-mcp/blob/main/examples/guided_recipe.json">Verified JSON example</a></div>
+          </section>
+        </article>
+      </div>
+    </main>
+    <footer class="site-footer"><div class="container footer-grid"><p class="footer-copy">Cookidoo MCP guided-cooking reference</p><nav class="footer-links" aria-label="Footer navigation"><a href="../">Docs</a><a href="../tools/">Tools</a><a href="../../llms.txt">AI index</a></nav></div></footer>
+  </body>
+</html>

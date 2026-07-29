@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#020617">
+    <meta
+      name="description"
+      content="Cookidoo MCP documentation: setup, tools, guided-cooking schemas, automation, and API monitoring."
+    >
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/docs/">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cookidoo MCP documentation">
+    <meta property="og:description" content="Build recipe, guided cooking, shopping-list, and meal-planning automations.">
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/docs/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta property="og:image:alt" content="A connected path from a recipe card through guided cooking and a weekly plan to fresh ingredients.">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Documentation — Cookidoo MCP</title>
+    <script>
+      document.documentElement.classList.add("js");
+      try {
+        const saved = localStorage.getItem("cookidoo-mcp-theme");
+        if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+      } catch {}
+    </script>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script defer src="../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to documentation</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="../" aria-label="Cookidoo MCP home">
+          <span class="brand-mark" aria-hidden="true">CM</span>
+          <span class="brand-name">Cookidoo MCP</span>
+        </a>
+        <nav class="primary-nav" data-navigation aria-label="Primary navigation">
+          <a href="../">Home</a>
+          <a href="../presentation/">Story</a>
+          <a href="./" aria-current="page">Docs</a>
+          <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+        <div class="header-actions">
+          <button class="nav-button" type="button" data-theme-toggle aria-label="Switch to light theme">Light</button>
+          <button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="container docs-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a href="../">Home</a><span aria-hidden="true">/</span><span>Documentation</span>
+        </nav>
+        <p class="eyebrow">Documentation / Overview</p>
+        <h1>Connect AI intent to the Cookidoo workflow.</h1>
+        <p class="lead reading">
+          Start the MCP server, understand its 16 tools, and build safe
+          automations for recipes, guided cooking, images, shopping lists, and
+          meal planning.
+        </p>
+      </div>
+
+      <div class="container docs-shell">
+        <aside class="docs-sidebar" aria-label="Documentation sections">
+          <strong>Documentation</strong>
+          <a href="./" aria-current="page">Overview</a>
+          <a href="./tools/">Tool reference</a>
+          <a href="./guided-cooking/">Guided cooking</a>
+          <a href="./automation/">Automations</a>
+          <a href="./testing/">Testing</a>
+          <a href="../llms.txt">AI index</a>
+        </aside>
+
+        <article class="docs-content">
+          <section id="quickstart">
+            <p class="section-kicker">Quick start</p>
+            <h2>Run locally in five steps.</h2>
+            <p>Python 3.12 or newer is required. Credentials stay in your local environment and are never committed.</p>
+            <div class="code-shell">
+              <pre><code>git clone https://github.com/vitaliemiron/cookidoo-mcp.git
+cd cookidoo-mcp
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install -r requirements.txt
+cp .env.example .env</code></pre>
+            </div>
+            <p>Edit <code>.env</code> with your Cookidoo login:</p>
+            <div class="code-shell">
+              <pre><code>COOKIDOO_EMAIL=your-login
+COOKIDOO_PASSWORD=your-password</code></pre>
+            </div>
+            <p>Then start the MCP server:</p>
+            <div class="code-shell">
+              <pre><code>venv/bin/fastmcp run server.py</code></pre>
+            </div>
+            <div class="callout callout-herb">
+              <strong>Restart after code changes</strong>
+              <p>The server stores its authenticated client in module-level state. Reconnect after changing <code>server.py</code> or <code>cookidoo_service.py</code>.</p>
+            </div>
+          </section>
+
+          <section id="explore">
+            <p class="section-kicker">Explore the system</p>
+            <h2>Human-readable and model-readable by design.</h2>
+            <div class="doc-cards">
+              <a class="doc-card" href="./tools/">
+                <span class="meta">16 tools</span>
+                <h3>Tool reference</h3>
+                <p>Arguments, behavior, source requirements, and expected output for every MCP action.</p>
+              </a>
+              <a class="doc-card" href="./guided-cooking/">
+                <span class="meta">Schemas</span>
+                <h3>Guided cooking</h3>
+                <p>TTS, ingredient weighing, smart-function modes, and JavaScript UTF-16 positions.</p>
+              </a>
+              <a class="doc-card" href="./automation/">
+                <span class="meta">Workflows</span>
+                <h3>Shopping and planning</h3>
+                <p>Recipe-grouped ingredients and the rolling seven-day meal-planning contract.</p>
+              </a>
+              <a class="doc-card" href="./testing/">
+                <span class="meta">Reliability</span>
+                <h3>Testing and monitoring</h3>
+                <p>Offline unit checks, five authenticated contracts, cleanup rules, and regression issues.</p>
+              </a>
+            </div>
+          </section>
+
+          <section id="tools">
+            <p class="section-kicker">Find a tool</p>
+            <h2>Search the MCP surface.</h2>
+            <div class="search-box">
+              <label for="tool-search">Filter by name, purpose, or workflow</label>
+              <input
+                class="search-input"
+                id="tool-search"
+                type="search"
+                placeholder="Try “calendar”, “image”, or “guided”"
+                autocomplete="off"
+                data-doc-search
+              >
+              <div class="search-status" aria-live="polite" data-search-status></div>
+            </div>
+            <div class="tool-grid">
+              <a class="tool-card" href="./tools/#connect-to-cookidoo" data-search-item data-search-text="connect authentication login session credentials">
+                <code>connect_to_cookidoo</code><span>Authenticate and store the shared session.</span>
+              </a>
+              <a class="tool-card" href="./tools/#get-recipe-details" data-search-item data-search-text="official recipe details ingredients metadata">
+                <code>get_recipe_details</code><span>Read official recipe metadata and ingredients.</span>
+              </a>
+              <a class="tool-card" href="./tools/#get-custom-recipe-details" data-search-item data-search-text="custom private recipe instructions steps">
+                <code>get_custom_recipe_details</code><span>Read full private recipe content.</span>
+              </a>
+              <a class="tool-card" href="./tools/#get-shopping-list-ingredients" data-search-item data-search-text="shopping grocery ingredient ownership recipe group">
+                <code>get_shopping_list_ingredients</code><span>Read shopping items grouped by recipe.</span>
+              </a>
+              <a class="tool-card" href="./tools/#get-meal-plan-week" data-search-item data-search-text="meal calendar week planning seven day">
+                <code>get_meal_plan_week</code><span>Read a complete seven-day planning window.</span>
+              </a>
+              <a class="tool-card" href="./tools/#add-recipes-to-meal-plan" data-search-item data-search-text="add calendar plan official custom">
+                <code>add_recipes_to_meal_plan</code><span>Add official or customer recipes to a day.</span>
+              </a>
+              <a class="tool-card" href="./tools/#remove-recipe-from-meal-plan" data-search-item data-search-text="remove delete calendar plan">
+                <code>remove_recipe_from_meal_plan</code><span>Remove one recipe from a planned day.</span>
+              </a>
+              <a class="tool-card" href="./tools/#move-recipe-in-meal-plan" data-search-item data-search-text="move calendar plan rollback">
+                <code>move_recipe_in_meal_plan</code><span>Move a recipe between days with rollback.</span>
+              </a>
+              <a class="tool-card" href="./tools/#copy-recipe-to-custom" data-search-item data-search-text="copy official custom full instructions translate">
+                <code>copy_recipe_to_custom</code><span>Copy an official recipe to access full steps.</span>
+              </a>
+              <a class="tool-card" href="./tools/#generate-recipe-structure" data-search-item data-search-text="generate create recipe structure">
+                <code>generate_recipe_structure</code><span>Build a validated upload-ready recipe object.</span>
+              </a>
+              <a class="tool-card" href="./tools/#validate-guided-recipe-structure" data-search-item data-search-text="validate guided cooking annotations schema">
+                <code>validate_guided_recipe_structure</code><span>Validate guided-cooking JSON.</span>
+              </a>
+              <a class="tool-card" href="./tools/#calculate-annotation-position" data-search-item data-search-text="utf16 position offset annotation emoji">
+                <code>calculate_annotation_position</code><span>Calculate JavaScript UTF-16 text ranges.</span>
+              </a>
+              <a class="tool-card" href="./tools/#update-custom-recipe-steps" data-search-item data-search-text="patch update steps instructions tts mode">
+                <code>update_custom_recipe_steps</code><span>Replace private steps and annotations.</span>
+              </a>
+              <a class="tool-card" href="./tools/#update-custom-recipe-ingredients" data-search-item data-search-text="patch update ingredients volume weight">
+                <code>update_custom_recipe_ingredients</code><span>Replace ingredients and structured amounts.</span>
+              </a>
+              <a class="tool-card" href="./tools/#upload-custom-recipe-image" data-search-item data-search-text="image photo jpeg cloudinary upload">
+                <code>upload_custom_recipe_image</code><span>Normalize and attach an owned image.</span>
+              </a>
+              <a class="tool-card" href="./tools/#upload-custom-recipe" data-search-item data-search-text="upload create custom recipe">
+                <code>upload_custom_recipe</code><span>Create a private recipe in Cookidoo.</span>
+              </a>
+            </div>
+            <p class="no-results" data-no-results hidden>
+              No matching tool. Try a broader workflow term such as “recipe,”
+              “calendar,” “shopping,” or “image.”
+            </p>
+          </section>
+
+          <section id="ai">
+            <p class="section-kicker">For AI agents</p>
+            <h2>Skip the page chrome.</h2>
+            <p>Use the purpose-built machine-readable resources when indexing or reasoning about the project:</p>
+            <table class="reference-table">
+              <thead><tr><th>Resource</th><th>Purpose</th></tr></thead>
+              <tbody>
+                <tr><td><a href="../llms.txt"><code>/llms.txt</code></a></td><td>Concise navigation and context for language models.</td></tr>
+                <tr><td><a href="../llms-full.txt"><code>/llms-full.txt</code></a></td><td>Consolidated project and API guidance.</td></tr>
+                <tr><td><a href="../tools.json"><code>/tools.json</code></a></td><td>Machine-readable tool names, parameters, categories, and summaries.</td></tr>
+                <tr><td><a href="../raw/overview.md"><code>/raw/*.md</code></a></td><td>Unstyled Markdown versions of the technical guides.</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section id="boundary">
+            <p class="section-kicker">Important boundary</p>
+            <h2>This is an unofficial integration.</h2>
+            <p>
+              The server combines the third-party <code>cookidoo-api</code>
+              package with direct requests to undocumented Cookidoo endpoints.
+              It is not affiliated with Vorwerk, Thermomix, or Cookidoo.
+            </p>
+            <div class="callout">
+              <strong>Preserve user data</strong>
+              <p>Prefer read-only investigation. Never overwrite or delete a private recipe unless the user explicitly identifies it and requests that action.</p>
+            </div>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <p class="footer-copy">Cookidoo MCP documentation · Apache 2.0 · Unofficial integration</p>
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="../">Home</a><a href="../presentation/">Story</a><a href="../llms.txt">AI index</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

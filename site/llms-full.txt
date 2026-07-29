@@ -1,0 +1,125 @@
+# Cookidoo MCP — complete AI context
+
+Cookidoo MCP is an unofficial FastMCP server for automating a user's own Cookidoo workflows. It wraps the cookidoo-api Python package and selected undocumented Cookidoo REST endpoints.
+
+Canonical documentation: https://vitaliemiron.github.io/cookidoo-mcp/docs/
+Repository: https://github.com/vitaliemiron/cookidoo-mcp
+Structured tool inventory: https://vitaliemiron.github.io/cookidoo-mcp/tools.json
+
+## Motivation
+
+Meal preparation has useful creative work and repetitive administrative work. The project keeps recipe discovery, taste, and cooking decisions with the person while making it possible for an AI assistant to help with copying, translating, structuring, scheduling, and collecting ingredients. The intended outcomes are clearer recipes, less repeated data entry, more room for healthy home cooking, and a reusable source of inspiration. Exact time savings depend on the workflow.
+
+## Capabilities
+
+- Authenticate with a configured Cookidoo account.
+- Inspect public recipe metadata and ingredients.
+- Copy an official recipe to the user's private recipes to obtain full preparation steps.
+- Create, translate, and update private custom recipes.
+- Upload user-owned recipe images.
+- Add structured guided-cooking annotations for weighing, time, temperature, speed, direction, and supported modes.
+- Read the Cookidoo shopping list and normalize ingredients.
+- Read and safely edit a rolling seven-day My Week meal plan.
+
+## Tools
+
+1. connect_to_cookidoo()
+2. get_recipe_details(recipe_id: str)
+3. get_custom_recipe_details(recipe_id: str)
+4. get_shopping_list_ingredients(recipe_id: str | None = None, include_owned: bool = false, include_additional_items: bool = true)
+5. get_meal_plan_week(date: str)
+6. add_recipes_to_meal_plan(date: str, recipe_ids: list[str], recipe_source: str = "auto")
+7. remove_recipe_from_meal_plan(date: str, recipe_id: str, recipe_source: str = "auto")
+8. move_recipe_in_meal_plan(recipe_id: str, from_date: str, to_date: str, recipe_source: str = "auto")
+9. copy_recipe_to_custom(recipe_id: str, servings: int = 4)
+10. generate_recipe_structure(name: str, ingredients: list[str], steps: list[str], servings: int = 4, prep_time: int = 30, total_time: int = 60, hints: str = "")
+11. validate_guided_recipe_structure(recipe_json: str)
+12. calculate_annotation_position(text: str, marker: str, occurrence: int = 1)
+13. update_custom_recipe_steps(recipe_id: str, steps_json: str)
+14. update_custom_recipe_ingredients(recipe_id: str, ingredients_json: str)
+15. upload_custom_recipe_image(recipe_id: str, image_path: str)
+16. upload_custom_recipe(recipe_json: str)
+
+See tools.json for descriptions and categories.
+
+## Authentication
+
+Copy `.env.example` to `.env` and configure the account:
+
+COOKIDOO_EMAIL=your_login
+COOKIDOO_PASSWORD=your_password
+
+The login can be an email or the account's phone-number login, depending on the account. Never commit `.env` or credentials. The configured locale in the service must be a valid Cookidoo country/language pairing.
+
+## Recommended recipe workflow
+
+1. Connect to Cookidoo.
+2. Copy an official recipe with copy_recipe_to_custom so the private copy contains full ingredients and preparation instructions.
+3. Read the custom recipe.
+4. Translate or adapt the name, ingredients, and steps.
+5. Separate every ingredient-handling operation from the machine operation that follows it.
+6. Calculate annotation positions against the final translated text.
+7. Validate the full guided structure.
+8. Update ingredients and steps, or upload a new recipe.
+9. Re-read the saved recipe and verify the result.
+
+## Required step separation
+
+Never combine ingredient annotations with machine-action annotations in one step.
+
+Correct:
+
+- Step A: weigh or add ingredients; only INGREDIENT annotations.
+- Step B: chop, mix, heat, knead, steam, or perform another Thermomix action; only TTS or MODE annotations.
+
+This rule applies when creating, translating, enhancing, validating, or updating any recipe.
+
+## Annotation positions
+
+Cookidoo uses JavaScript UTF-16 offsets. Python character indexes differ when emoji or other astral Unicode characters appear before a marker. Always call calculate_annotation_position or use the schema helper. Positions point to the human-readable text that represents the action or ingredient.
+
+## TTS annotations
+
+TTS means time, temperature, and speed. The data object can contain:
+
+- time: integer seconds
+- speed: string, such as "soft", "0.5", "1", … "10"
+- direction: "CCW" for reverse; normal clockwise can be omitted
+- temperature: {"value": "100", "unit": "C"} or the Fahrenheit equivalent
+
+## Ingredient annotations
+
+An INGREDIENT annotation links a phrase in a preparation step to an ingredient description. Structured amounts use a nested VOLUME annotation with amount, optional amountMax, unit, and unitText. The outer position points into the step. The nested position points into description.text.
+
+## Modes
+
+Supported MODE names currently include DOUGH, BLEND, TURBO, WARM_UP, RICE_COOKER, STEAMING, and BROWNING. Each mode has its own validated data object. Consult the guided-cooking documentation and schemas.py before constructing a payload.
+
+## Planning
+
+get_meal_plan_week accepts an ISO date and returns the seven-day Cookidoo planning window that contains it. Add, remove, and move tools accept official or custom recipe IDs. Use recipe_source="auto" unless the source must be forced.
+
+Safe mutation pattern:
+
+1. Read the week.
+2. Identify the exact recipe occurrence and date.
+3. Apply one scoped mutation.
+4. Read the week again and confirm the resulting state.
+
+## Shopping
+
+get_shopping_list_ingredients can return the whole list or filter it by recipe. It can include or exclude owned items and additional user-created items. Use its structured output as the handoff to a grocery-search or cart integration; product selection and purchasing remain separate systems.
+
+## Reliability
+
+The repository contains deterministic unit tests and five opt-in live API contracts. A scheduled GitHub Actions workflow runs the live contracts daily using repository secrets, making undocumented API drift visible. Live tests should not perform destructive account mutations by default.
+
+## Limits and safety
+
+- Cookidoo endpoints used by this project are undocumented and may change.
+- Official recipe details do not include preparation steps; copying to a private recipe is the supported workaround.
+- Only upload images the user owns or has permission to use.
+- Treat credentials, session cookies, and repository secrets as sensitive.
+- Read current state before changing meal plans or recipes.
+- Validate structured annotations before upload.
+- This project is not affiliated with or endorsed by Vorwerk.
