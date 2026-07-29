@@ -7,9 +7,40 @@ Repository: https://github.com/vitaliemiron/cookidoo-mcp
 Structured tool inventory: https://vitaliemiron.github.io/cookidoo-mcp/tools.json
 Official MCP Registry name: io.github.vitaliemiron/cookidoo-mcp
 Python package: cookidoo-mcp
+Interactive setup generator: https://vitaliemiron.github.io/cookidoo-mcp/setup/
+Raw setup guide: https://vitaliemiron.github.io/cookidoo-mcp/raw/setup.md
 
 Before changing repository code or using authenticated Cookidoo operations,
 read AGENTS.md completely. It is the canonical agent guide.
+
+## Client setup
+
+Run the published STDIO server with:
+
+uvx cookidoo-mcp --env-file /absolute/path/to/cookidoo.env
+
+The private file contains COOKIDOO_EMAIL, COOKIDOO_PASSWORD,
+COOKIDOO_COUNTRY, and COOKIDOO_LANGUAGE. The locale defaults are `ro` and `en`;
+change them together only to a valid Cookidoo country/language pairing. Never
+embed real credentials in client JSON, a repository, an issue, a screenshot,
+or a chat message.
+
+- Codex: use `codex mcp add cookidoo -- uvx cookidoo-mcp --env-file
+  /absolute/path/to/cookidoo.env`. Codex app, CLI, and IDE extension share MCP
+  configuration on the same host.
+- Claude Desktop: add the command and args under `mcpServers` in
+  `claude_desktop_config.json`; its official desktop setup is documented for
+  macOS and Windows.
+- VS Code: add a STDIO entry under `servers` in the user-profile `mcp.json`.
+  Use remote user configuration when the process should run inside WSL, SSH,
+  or a development container.
+
+Package installation, the installed command, server import, and private
+environment-file loading run on GitHub's real `windows-latest` runner. The
+PowerShell and client configuration formats follow current primary
+documentation. Describe the package path as CI-verified and client UI
+instructions as documentation-verified because individual app screens can
+change between versions.
 
 ## Motivation
 
@@ -104,17 +135,17 @@ https://vitaliemiron.github.io/cookidoo-mcp/use-cases/guided-cooking-annotation-
 3. get_custom_recipe_details(recipe_id: str)
 4. get_shopping_list_ingredients(recipe_id: str | None = None, include_owned: bool = false, include_additional_items: bool = true)
 5. get_meal_plan_week(date: str)
-6. add_recipes_to_meal_plan(date: str, recipe_ids: list[str], recipe_source: str = "auto")
-7. remove_recipe_from_meal_plan(date: str, recipe_id: str, recipe_source: str = "auto")
-8. move_recipe_in_meal_plan(recipe_id: str, from_date: str, to_date: str, recipe_source: str = "auto")
-9. copy_recipe_to_custom(recipe_id: str, servings: int = 4)
+6. add_recipes_to_meal_plan(date: str, recipe_ids: str, recipe_source: str = "auto", dry_run: bool = false)
+7. remove_recipe_from_meal_plan(date: str, recipe_id: str, recipe_source: str = "auto", dry_run: bool = false)
+8. move_recipe_in_meal_plan(recipe_id: str, from_date: str, to_date: str, recipe_source: str = "auto", dry_run: bool = false)
+9. copy_recipe_to_custom(recipe_id: str, servings: int = 4, dry_run: bool = false)
 10. generate_recipe_structure(name: str, ingredients: list[str], steps: list[str], servings: int = 4, prep_time: int = 30, total_time: int = 60, hints: str = "")
 11. validate_guided_recipe_structure(recipe_json: str)
 12. calculate_annotation_position(text: str, marker: str, occurrence: int = 1)
-13. update_custom_recipe_steps(recipe_id: str, steps_json: str)
-14. update_custom_recipe_ingredients(recipe_id: str, ingredients_json: str)
-15. upload_custom_recipe_image(recipe_id: str, image_path: str)
-16. upload_custom_recipe(recipe_json: str)
+13. update_custom_recipe_steps(recipe_id: str, steps_json: str, dry_run: bool = false)
+14. update_custom_recipe_ingredients(recipe_id: str, ingredients_json: str, dry_run: bool = false)
+15. upload_custom_recipe_image(recipe_id: str, image_path: str, dry_run: bool = false)
+16. upload_custom_recipe(recipe_json: str, dry_run: bool = false)
 
 See tools.json for descriptions and categories.
 
@@ -129,11 +160,22 @@ The private environment file contains:
 
 COOKIDOO_EMAIL=your_login
 COOKIDOO_PASSWORD=your_password
+COOKIDOO_COUNTRY=ro
+COOKIDOO_LANGUAGE=en
 
 The login can be an email or the account's phone-number login, depending on the
 account. Never commit `.env` or credentials. Existing environment variables
-take precedence over values loaded with `--env-file`. The configured locale in
-the service must be a valid Cookidoo country/language pairing.
+take precedence over values loaded with `--env-file`. Country and language are
+optional and default to ro/en. The service normalizes and validates the exact
+Cookidoo country/language pair before login.
+
+## Mutation previews
+
+Before creating or changing a recipe, image, or meal-plan entry, call the same
+tool with dry_run=true. A preview returns will_mutate=false plus the validated
+target and exact planned changes. Show that preview to the user, then repeat
+the call with dry_run=false only after the requested change is clear. A dry run
+must never write to Cookidoo.
 
 ## Recommended recipe workflow
 

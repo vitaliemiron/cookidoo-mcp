@@ -89,3 +89,44 @@ jobs:
         run: |
           test "$(cookidoo-mcp --version)" = "cookidoo-mcp 1.0.0"
           python -c "from server import mcp; assert mcp.name == 'cookidoo-mcp-server'"
+
+  windows-package:
+    name: Windows package setup
+    runs-on: windows-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Build and install the wheel
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --wheel
+          $wheel = Get-ChildItem dist\*.whl | Select-Object -First 1
+          python -m pip install $wheel.FullName
+
+      - name: Smoke-test the installed command and env-file path
+        shell: pwsh
+        run: |
+          $version = cookidoo-mcp --version
+          if ($version -ne "cookidoo-mcp 1.0.0") {
+            throw "Unexpected version output: $version"
+          }
+          $envFile = Join-Path $env:RUNNER_TEMP "cookidoo.env"
+          @"
+          COOKIDOO_EMAIL=windows-placeholder@example.com
+          COOKIDOO_PASSWORD=windows-placeholder
+          COOKIDOO_COUNTRY=ro
+          COOKIDOO_LANGUAGE=en
+          "@ | Set-Content -Encoding utf8 $envFile
+          python -c "from pathlib import Path; from dotenv import dotenv_values; data = dotenv_values(Path(r'$envFile')); assert data['COOKIDOO_COUNTRY'] == 'ro'"
+          python -c "from server import mcp; assert mcp.name == 'cookidoo-mcp-server'"

@@ -61,5 +61,7 @@ leak data or mutate the wrong account should be reported privately.
   moderate-or-higher vulnerabilities.
 - Dependabot checks Python and GitHub Actions dependencies every week.
 - Workflow actions are pinned to immutable commit SHAs.
+- Tagged wheel and source distributions receive GitHub build-provenance and
+  CycloneDX SBOM attestations; the SBOM is also attached to the GitHub Release.
 - The `main` branch accepts changes through pull requests with required CI and
   security checks.

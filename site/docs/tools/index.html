@@ -35,7 +35,7 @@
       <div class="container nav-shell">
         <a class="brand" href="../../" aria-label="Cookidoo MCP home"><span class="brand-mark" aria-hidden="true">CM</span><span class="brand-name">Cookidoo MCP</span></a>
         <nav class="primary-nav" data-navigation aria-label="Primary navigation">
-          <a href="../../">Home</a><a href="../../presentation/">Story</a><a href="../" aria-current="page">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+          <a href="../../">Home</a><a href="../../setup/">Setup</a><a href="../../presentation/">Story</a><a href="../" aria-current="page">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
         </nav>
         <div class="header-actions">
           <button class="nav-button" type="button" data-theme-toggle aria-label="Theme follows this device">System</button>
@@ -52,6 +52,7 @@
         <aside class="docs-sidebar" aria-label="Documentation sections">
           <strong>Documentation</strong>
           <a href="../">Overview</a>
+          <a href="../../setup/">Setup wizard</a>
           <a href="./" aria-current="page">Tool reference</a>
           <a href="../guided-cooking/">Guided cooking</a>
           <a href="../automation/">Automations</a>
@@ -88,11 +89,18 @@
             <a class="tool-card" href="#upload-custom-recipe"><code>upload_custom_recipe</code><span>Create private recipe</span></a>
           </nav>
 
+          <section aria-labelledby="preview-title">
+            <p class="section-kicker">Safe changes</p>
+            <h2 id="preview-title">Preview before you apply</h2>
+            <p>Every tool that creates or changes a recipe, image, or meal-plan entry accepts <code>dry_run</code>. Call it with <code>dry_run=true</code> first to validate the input and receive <code>will_mutate: false</code>, the exact target, planned changes, and safety notes. Review the JSON, then repeat the same call with <code>dry_run=false</code> to apply it.</p>
+            <div class="callout"><strong>A preview never writes to Cookidoo</strong><p>An image preview reads and converts the local file in memory to verify its format and size, but does not upload or attach it.</p></div>
+          </section>
+
           <section class="tool-reference" id="connect-to-cookidoo">
             <p class="section-kicker">Authentication</p>
             <h2>connect_to_cookidoo</h2>
             <p><code class="signature">connect_to_cookidoo()</code></p>
-            <p>Loads <code>COOKIDOO_EMAIL</code> and <code>COOKIDOO_PASSWORD</code>, creates the shared cookie-authenticated session, and stores it for later tools.</p>
+            <p>Loads <code>COOKIDOO_EMAIL</code> and <code>COOKIDOO_PASSWORD</code>, validates the optional <code>COOKIDOO_COUNTRY</code> and <code>COOKIDOO_LANGUAGE</code> pair (default <code>ro</code> + <code>en</code>), creates the shared cookie-authenticated session, and stores it for later tools.</p>
             <p><strong>Returns:</strong> a success message containing the configured login identifier, or a configuration/authentication error.</p>
           </section>
 
@@ -139,13 +147,14 @@
           <section class="tool-reference" id="add-recipes-to-meal-plan">
             <p class="section-kicker">Meal planning</p>
             <h2>add_recipes_to_meal_plan</h2>
-            <p><code class="signature">add_recipes_to_meal_plan(date, recipe_ids, recipe_source="auto")</code></p>
+            <p><code class="signature">add_recipes_to_meal_plan(date, recipe_ids, recipe_source="auto", dry_run=false)</code></p>
             <table class="reference-table">
               <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
               <tbody>
                 <tr><td><code>date</code></td><td>Target day in <code>YYYY-MM-DD</code> format.</td></tr>
                 <tr><td><code>recipe_ids</code></td><td>Comma, whitespace, or newline-separated IDs.</td></tr>
                 <tr><td><code>recipe_source</code></td><td><code>auto</code>, <code>official</code>, or <code>custom</code>.</td></tr>
+                <tr><td><code>dry_run</code></td><td>Validate and preview without changing the calendar.</td></tr>
               </tbody>
             </table>
             <p>Mixed official and customer IDs are partitioned into the correct Cookidoo calls.</p>
@@ -154,23 +163,23 @@
           <section class="tool-reference" id="remove-recipe-from-meal-plan">
             <p class="section-kicker">Meal planning</p>
             <h2>remove_recipe_from_meal_plan</h2>
-            <p><code class="signature">remove_recipe_from_meal_plan(date, recipe_id, recipe_source="auto")</code></p>
+            <p><code class="signature">remove_recipe_from_meal_plan(date, recipe_id, recipe_source="auto", dry_run=false)</code></p>
             <p>Removes one official or customer recipe from one day and refreshes the resulting day state.</p>
           </section>
 
           <section class="tool-reference" id="move-recipe-in-meal-plan">
             <p class="section-kicker">Meal planning</p>
             <h2>move_recipe_in_meal_plan</h2>
-            <p><code class="signature">move_recipe_in_meal_plan(recipe_id, from_date, to_date, recipe_source="auto")</code></p>
+            <p><code class="signature">move_recipe_in_meal_plan(recipe_id, from_date, to_date, recipe_source="auto", dry_run=false)</code></p>
             <p>Adds to the target day first, removes from the source second, and rolls back a newly added target entry if source removal fails.</p>
           </section>
 
           <section class="tool-reference" id="copy-recipe-to-custom">
             <p class="section-kicker">Recipe copy</p>
             <h2>copy_recipe_to_custom</h2>
-            <p><code class="signature">copy_recipe_to_custom(recipe_id: str, servings: int = 4)</code></p>
+            <p><code class="signature">copy_recipe_to_custom(recipe_id: str, servings: int = 4, dry_run: bool = false)</code></p>
             <p>Copies an official recipe into the account’s private customer recipes. The returned copy includes full ingredients and instructions, making it the standard starting point for translation and guided-cooking enhancement.</p>
-            <div class="callout"><strong>This creates account data</strong><p>Delete temporary copies created only for inspection or testing.</p></div>
+            <div class="callout"><strong>This creates account data</strong><p>Use <code>dry_run=true</code> to inspect the planned copy first, then apply only when you want the private recipe to remain in your account.</p></div>
           </section>
 
           <section class="tool-reference" id="generate-recipe-structure">
@@ -197,21 +206,21 @@
           <section class="tool-reference" id="update-custom-recipe-steps">
             <p class="section-kicker">Recipe write</p>
             <h2>update_custom_recipe_steps</h2>
-            <p><code class="signature">update_custom_recipe_steps(recipe_id, steps_json)</code></p>
+            <p><code class="signature">update_custom_recipe_steps(recipe_id, steps_json, dry_run=false)</code></p>
             <p>Validates and replaces only the <code>instructions</code> array, preserving all unrelated customer-recipe fields.</p>
           </section>
 
           <section class="tool-reference" id="update-custom-recipe-ingredients">
             <p class="section-kicker">Recipe write</p>
             <h2>update_custom_recipe_ingredients</h2>
-            <p><code class="signature">update_custom_recipe_ingredients(recipe_id, ingredients_json)</code></p>
+            <p><code class="signature">update_custom_recipe_ingredients(recipe_id, ingredients_json, dry_run=false)</code></p>
             <p>Validates and replaces only the <code>ingredients</code> array, including supported structured amounts.</p>
           </section>
 
           <section class="tool-reference" id="upload-custom-recipe-image">
             <p class="section-kicker">Image write</p>
             <h2>upload_custom_recipe_image</h2>
-            <p><code class="signature">upload_custom_recipe_image(recipe_id, image_path)</code></p>
+            <p><code class="signature">upload_custom_recipe_image(recipe_id, image_path, dry_run=false)</code></p>
             <p>Reads a local image, normalizes it to JPEG, obtains Cookidoo’s signed upload authorization, uploads it to the customer-recipe image namespace, and attaches it to the recipe.</p>
             <div class="callout"><strong>Use an image you own</strong><p>Arbitrary external URLs and official stock-image URLs are not valid customer-recipe image values.</p></div>
           </section>
@@ -219,7 +228,7 @@
           <section class="tool-reference" id="upload-custom-recipe">
             <p class="section-kicker">Recipe write</p>
             <h2>upload_custom_recipe</h2>
-            <p><code class="signature">upload_custom_recipe(recipe_json: str)</code></p>
+            <p><code class="signature">upload_custom_recipe(recipe_json: str, dry_run: bool = false)</code></p>
             <p>Validates a complete recipe object and creates a private customer recipe in Cookidoo using the authenticated account.</p>
           </section>
 

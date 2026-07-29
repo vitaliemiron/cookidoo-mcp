@@ -33,13 +33,13 @@
     <a class="skip-link" href="#main">Skip to automation documentation</a>
     <header class="site-header"><div class="container nav-shell">
       <a class="brand" href="../../" aria-label="Cookidoo MCP home"><span class="brand-mark" aria-hidden="true">CM</span><span class="brand-name">Cookidoo MCP</span></a>
-      <nav class="primary-nav" data-navigation aria-label="Primary navigation"><a href="../../">Home</a><a href="../../presentation/">Story</a><a href="../" aria-current="page">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a></nav>
+      <nav class="primary-nav" data-navigation aria-label="Primary navigation"><a href="../../">Home</a><a href="../../setup/">Setup</a><a href="../../presentation/">Story</a><a href="../" aria-current="page">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a></nav>
       <div class="header-actions"><button class="nav-button" type="button" data-theme-toggle aria-label="Theme follows this device">System</button><button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button></div>
     </div></header>
     <main id="main">
       <div class="container docs-hero"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../">Home</a><span aria-hidden="true">/</span><a href="../">Documentation</a><span aria-hidden="true">/</span><span>Automations</span></nav></div>
       <div class="container docs-shell">
-        <aside class="docs-sidebar" aria-label="Documentation sections"><strong>Documentation</strong><a href="../">Overview</a><a href="../tools/">Tool reference</a><a href="../guided-cooking/">Guided cooking</a><a href="./" aria-current="page">Automations</a><a href="../testing/">Testing</a><a href="../../llms.txt">AI index</a></aside>
+        <aside class="docs-sidebar" aria-label="Documentation sections"><strong>Documentation</strong><a href="../">Overview</a><a href="../../setup/">Setup wizard</a><a href="../tools/">Tool reference</a><a href="../guided-cooking/">Guided cooking</a><a href="./" aria-current="page">Automations</a><a href="../testing/">Testing</a><a href="../../llms.txt">AI index</a></aside>
         <article class="docs-content">
           <p class="eyebrow">Workflows / Shopping and planning</p>
           <h1>Move from a recipe idea to an actionable week.</h1>
@@ -103,7 +103,7 @@
             <p>The service uses a direct DELETE wrapper because deleting the final recipe from a day returns HTTP 200 with <code>content: null</code>, which the upstream library incorrectly tries to parse as a calendar day.</p>
             <h3>Move</h3>
             <p>The target is added first. The source is removed second. If source removal fails, the new target entry is rolled back.</p>
-            <div class="callout callout-herb"><strong>Read before writing</strong><p>For calendar workflows, fetch the relevant window first so the model understands existing day state and recipe sources.</p></div>
+            <div class="callout callout-herb"><strong>Read and preview before writing</strong><p>Fetch the relevant window first, then call the mutation with <code>dry_run=true</code>. The returned JSON validates dates, recipe IDs, source inference, and operation order without changing the calendar. Repeat with <code>dry_run=false</code> only after reviewing it.</p></div>
           </section>
 
           <section id="workflow">

@@ -35,25 +35,25 @@
     },
     {
       "name": "add_recipes_to_meal_plan",
-      "signature": "add_recipes_to_meal_plan(date: str, recipe_ids: list[str], recipe_source: str = \"auto\")",
+      "signature": "add_recipes_to_meal_plan(date: str, recipe_ids: str, recipe_source: str = \"auto\", dry_run: bool = false)",
       "category": "planning",
       "description": "Add one or more official or custom recipes to a date in My Week."
     },
     {
       "name": "remove_recipe_from_meal_plan",
-      "signature": "remove_recipe_from_meal_plan(date: str, recipe_id: str, recipe_source: str = \"auto\")",
+      "signature": "remove_recipe_from_meal_plan(date: str, recipe_id: str, recipe_source: str = \"auto\", dry_run: bool = false)",
       "category": "planning",
       "description": "Remove a recipe occurrence from a specific day."
     },
     {
       "name": "move_recipe_in_meal_plan",
-      "signature": "move_recipe_in_meal_plan(recipe_id: str, from_date: str, to_date: str, recipe_source: str = \"auto\")",
+      "signature": "move_recipe_in_meal_plan(recipe_id: str, from_date: str, to_date: str, recipe_source: str = \"auto\", dry_run: bool = false)",
       "category": "planning",
       "description": "Move one recipe occurrence between two dates."
     },
     {
       "name": "copy_recipe_to_custom",
-      "signature": "copy_recipe_to_custom(recipe_id: str, servings: int = 4)",
+      "signature": "copy_recipe_to_custom(recipe_id: str, servings: int = 4, dry_run: bool = false)",
       "category": "recipes",
       "description": "Copy an official recipe into the account so its full content can be translated or adapted."
     },
@@ -77,25 +77,25 @@
     },
     {
       "name": "update_custom_recipe_steps",
-      "signature": "update_custom_recipe_steps(recipe_id: str, steps_json: str)",
+      "signature": "update_custom_recipe_steps(recipe_id: str, steps_json: str, dry_run: bool = false)",
       "category": "authoring",
       "description": "Replace only the preparation steps of an existing custom recipe."
     },
     {
       "name": "update_custom_recipe_ingredients",
-      "signature": "update_custom_recipe_ingredients(recipe_id: str, ingredients_json: str)",
+      "signature": "update_custom_recipe_ingredients(recipe_id: str, ingredients_json: str, dry_run: bool = false)",
       "category": "authoring",
       "description": "Replace only the ingredient list of an existing custom recipe."
     },
     {
       "name": "upload_custom_recipe_image",
-      "signature": "upload_custom_recipe_image(recipe_id: str, image_path: str)",
+      "signature": "upload_custom_recipe_image(recipe_id: str, image_path: str, dry_run: bool = false)",
       "category": "media",
       "description": "Upload a user-owned local image and assign it to a custom recipe."
     },
     {
       "name": "upload_custom_recipe",
-      "signature": "upload_custom_recipe(recipe_json: str)",
+      "signature": "upload_custom_recipe(recipe_json: str, dry_run: bool = false)",
       "category": "authoring",
       "description": "Create a complete custom recipe from a validated JSON payload."
     }

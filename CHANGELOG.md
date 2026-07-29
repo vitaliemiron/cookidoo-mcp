@@ -8,6 +8,24 @@ Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow
 
 ## [Unreleased]
 
+### Added
+
+- A four-step setup wizard for Codex, Claude Desktop, and VS Code on macOS,
+  Linux, and Windows, with credentials kept in a private local file.
+- Configurable Cookidoo country and language values with normalization,
+  supported-pair validation, and backwards-compatible `ro` + `en` defaults.
+- Non-mutating `dry_run` previews for every recipe, image, and meal-plan tool
+  that changes Cookidoo account data.
+- Windows package installation and environment-file smoke testing in CI.
+- CycloneDX SBOM generation, GitHub build-provenance/SBOM attestations, and
+  public MCP Registry publication verification for tagged releases.
+
+### Changed
+
+- Dependabot now groups Python and GitHub Actions updates to reduce maintenance
+  noise.
+- MCP Registry links now open the public registry search for this server.
+
 ## [1.0.0] - 2026-07-29
 
 ### Added

@@ -3,7 +3,7 @@
 [![Unit tests](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/unit-tests.yml)
 [![Cookidoo live API](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/live-api.yml/badge.svg)](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/live-api.yml)
 [![PyPI](https://img.shields.io/pypi/v/cookidoo-mcp?color=256c59)](https://pypi.org/project/cookidoo-mcp/)
-[![MCP Registry](https://img.shields.io/badge/MCP_Registry-listed-c44b1c)](https://registry.modelcontextprotocol.io/v0/servers?search=cookidoo-mcp)
+[![MCP Registry](https://img.shields.io/badge/MCP_Registry-listed-c44b1c)](https://registry.modelcontextprotocol.io/?q=io.github.vitaliemiron%2Fcookidoo-mcp)
 [![Documentation](https://img.shields.io/badge/guide-open-f5b942)](https://vitaliemiron.github.io/cookidoo-mcp/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-047857)](LICENSE)
 
@@ -45,6 +45,9 @@ the next automation for product search or ordering.
 
 ## Explore
 
+- **[Setup wizard](https://vitaliemiron.github.io/cookidoo-mcp/setup/)**
+  builds a private, copy-ready configuration for Codex, Claude Desktop, or
+  VS Code on macOS, Linux, and Windows.
 - **[Motivation—why use it?](https://vitaliemiron.github.io/cookidoo-mcp/#why)**
   explains the repetitive work this project removes and what that gives back
   to home cooks.
@@ -62,7 +65,7 @@ the next automation for product search or ordering.
   explains how daily real-API checks detect Cookidoo changes.
 - **[Install from PyPI](https://pypi.org/project/cookidoo-mcp/)** provides the
   signed versioned package used by the one-command setup below.
-- **[Official MCP Registry entry](https://registry.modelcontextprotocol.io/v0/servers?search=cookidoo-mcp)**
+- **[Official MCP Registry entry](https://registry.modelcontextprotocol.io/?q=io.github.vitaliemiron%2Fcookidoo-mcp)**
   exposes machine-readable installation and configuration metadata.
 
 ## How the journey works
@@ -86,10 +89,17 @@ file such as `~/.config/cookidoo-mcp/.env`:
 ```dotenv
 COOKIDOO_EMAIL=your-login
 COOKIDOO_PASSWORD=your-password
+COOKIDOO_COUNTRY=ro
+COOKIDOO_LANGUAGE=en
 ```
 
 If the login is a phone number, write it without spaces. Never commit or share
-this file.
+this file. The locale values are optional and default to Cookidoo International
+English (`ro` + `en`). If you change them, use a country/language pair supported
+by your Cookidoo account.
+
+Prefer the **[guided setup wizard](https://vitaliemiron.github.io/cookidoo-mcp/setup/)**
+if you do not regularly edit terminal commands or JSON configuration.
 
 With [`uv`](https://docs.astral.sh/uv/) installed, run the published package
 without cloning the repository:
@@ -118,6 +128,11 @@ An MCP client can use the same command:
 Use an absolute path. The exact location of the MCP configuration file depends
 on your client; the command and arguments remain the same.
 
+Before a tool creates or changes a recipe, image, or calendar entry, the server
+instructs the assistant to request a `dry_run` preview first. The preview
+validates the input and shows the target and planned changes without writing to
+Cookidoo; applying the same call with `dry_run=false` performs the change.
+
 <details>
 <summary><strong>Run from source for development</strong></summary>
 
@@ -137,6 +152,8 @@ Add your Cookidoo login to `.env`:
 ```dotenv
 COOKIDOO_EMAIL=your-login
 COOKIDOO_PASSWORD=your-password
+COOKIDOO_COUNTRY=ro
+COOKIDOO_LANGUAGE=en
 ```
 
 If the login is a phone number, write it without spaces. Never commit `.env`.
@@ -196,6 +213,10 @@ issue when behavior changes.
 
 Developer commands and cleanup rules are documented in [`AGENTS.md`](AGENTS.md)
 and the [testing guide](https://vitaliemiron.github.io/cookidoo-mcp/docs/testing/).
+
+Tagged releases use PyPI Trusted Publishing. Each GitHub Release also includes
+a CycloneDX software bill of materials (SBOM), while GitHub records signed
+build-provenance and SBOM attestations for its wheel and source archive.
 
 ## Acknowledgments
 
