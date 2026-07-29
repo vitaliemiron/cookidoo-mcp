@@ -16,16 +16,22 @@ a safer or more useful path.
 - Read and manage a rolling seven-day Cookidoo meal plan.
 - Run offline unit tests and daily authenticated API contract monitoring.
 - Serve human, AI-readable, and structured documentation through GitHub Pages.
+- Use a guided setup wizard for Codex, Claude Desktop, and VS Code across
+  macOS, Linux, and Windows.
+- Configure and validate the Cookidoo country/language pair.
+- Preview recipe, image, and meal-plan mutations before applying them.
+- Smoke-test package setup and private environment-file loading on Windows CI.
 - Install the versioned Python package with a one-command MCP launch.
 - Discover the server through the official MCP Registry.
-- Publish signed release artifacts and upgrade notes through GitHub Releases.
+- Publish signed release artifacts, provenance attestations, a CycloneDX SBOM,
+  and upgrade notes through GitHub Releases.
 
 ## Current priorities
 
 ### Easier installation and discovery
 
-- Provide verified configuration examples for popular MCP clients.
-- Verify the one-command setup on Windows and additional MCP clients.
+- Expand hands-on client testing beyond the documented Codex, Claude Desktop,
+  and VS Code configurations.
 - Improve search and AI discovery as usage questions reveal missing guides.
 
 ### Reliability across Cookidoo changes
@@ -38,8 +44,6 @@ a safer or more useful path.
 
 ### Clearer first-run experience
 
-- Make country and language selection configurable and validate supported
-  locale pairs.
 - Improve actionable authentication and reconnect errors.
 - Add task-based guides for translation, guided cooking, planning, and
   shopping-list workflows.
@@ -48,7 +52,6 @@ a safer or more useful path.
 
 - More reusable guided-recipe examples and validation diagnostics.
 - Import helpers for user-owned recipe sources.
-- Safer preview or dry-run output before multi-step account mutations.
 - Additional accessibility and localization for the documentation site.
 - Community-contributed adapters that remain separate from the core Cookidoo
   contract.

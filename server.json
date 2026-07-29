@@ -31,7 +31,7 @@
         {
           "type": "named",
           "name": "--env-file",
-          "description": "Optional local .env file containing the Cookidoo login and password.",
+          "description": "Optional local .env file containing Cookidoo credentials and locale settings.",
           "format": "filepath",
           "isRequired": false
         }
@@ -50,6 +50,20 @@
           "format": "string",
           "isRequired": false,
           "isSecret": true
+        },
+        {
+          "name": "COOKIDOO_COUNTRY",
+          "description": "Optional two-letter Cookidoo country code; defaults to ro.",
+          "format": "string",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "COOKIDOO_LANGUAGE",
+          "description": "Optional Cookidoo language tag for the selected country; defaults to en.",
+          "format": "string",
+          "isRequired": false,
+          "isSecret": false
         }
       ]
     }

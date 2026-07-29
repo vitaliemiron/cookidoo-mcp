@@ -32,6 +32,105 @@ CLOUDINARY_UPLOAD_URL = (
     "https://api-eu.cloudinary.com/v1_1/vorwerk-users-gc/image/upload"
 )
 MAX_CUSTOM_RECIPE_IMAGE_BYTES = 10 * 1024 * 1024
+DEFAULT_COOKIDOO_COUNTRY = "ro"
+DEFAULT_COOKIDOO_LANGUAGE = "en"
+
+
+def normalize_cookidoo_country(country: str) -> str:
+    """Normalize and validate a Cookidoo ISO country code."""
+
+    normalized = country.strip().lower()
+    if not re.fullmatch(r"[a-z]{2}", normalized):
+        raise ValueError(
+            "Invalid COOKIDOO_COUNTRY. Use a two-letter country code such as "
+            "'ro', 'de', or 'us'."
+        )
+    return normalized
+
+
+def normalize_cookidoo_language(language: str) -> str:
+    """Normalize a Cookidoo language tag such as ``en`` or ``pt-BR``."""
+
+    raw_parts = language.strip().replace("_", "-").split("-")
+    if not raw_parts or not re.fullmatch(r"[A-Za-z]{2,3}", raw_parts[0]):
+        raise ValueError(
+            "Invalid COOKIDOO_LANGUAGE. Use a language tag such as 'en', "
+            "'de-DE', or 'pt-BR'."
+        )
+
+    normalized_parts = [raw_parts[0].lower()]
+    for part in raw_parts[1:]:
+        if re.fullmatch(r"[A-Za-z]{2}", part):
+            normalized_parts.append(part.upper())
+        elif re.fullmatch(r"[A-Za-z]{4}", part):
+            normalized_parts.append(part.title())
+        elif re.fullmatch(r"[0-9]{3}", part):
+            normalized_parts.append(part)
+        else:
+            raise ValueError(
+                "Invalid COOKIDOO_LANGUAGE. Use a language tag such as 'en', "
+                "'de-DE', or 'pt-BR'."
+            )
+    return "-".join(normalized_parts)
+
+
+def load_cookidoo_locale(
+    country: str | None = None,
+    language: str | None = None,
+) -> tuple[str, str]:
+    """Load and normalize Cookidoo locale settings.
+
+    Explicit values take precedence over environment variables. If neither is
+    supplied, the established international Romanian-account defaults are
+    retained for backwards compatibility.
+    """
+
+    load_dotenv()
+    selected_country = (
+        country
+        if country is not None
+        else os.getenv("COOKIDOO_COUNTRY", DEFAULT_COOKIDOO_COUNTRY)
+    )
+    selected_language = (
+        language
+        if language is not None
+        else os.getenv("COOKIDOO_LANGUAGE", DEFAULT_COOKIDOO_LANGUAGE)
+    )
+    return (
+        normalize_cookidoo_country(selected_country),
+        normalize_cookidoo_language(selected_language),
+    )
+
+
+async def resolve_cookidoo_localization(
+    country: str,
+    language: str,
+):
+    """Resolve an exact country/language pair supported by cookidoo-api."""
+
+    options = await get_localization_options(
+        country=country,
+        language=language,
+    )
+    if options:
+        return options[0]
+
+    country_options = await get_localization_options(country=country)
+    if country_options:
+        supported_languages = ", ".join(
+            sorted({option.language for option in country_options})
+        )
+        raise ValueError(
+            f"Cookidoo does not support language {language!r} for country "
+            f"{country!r}. Supported languages for {country!r}: "
+            f"{supported_languages}. Set COOKIDOO_LANGUAGE to one of these "
+            "values."
+        )
+
+    raise ValueError(
+        f"Cookidoo does not support country {country!r}. Set "
+        "COOKIDOO_COUNTRY to a supported two-letter Cookidoo country code."
+    )
 
 
 def load_cookidoo_credentials() -> tuple[str, str]:
@@ -61,16 +160,27 @@ def load_cookidoo_credentials() -> tuple[str, str]:
 class CookidooService:
     """Service class for managing Cookidoo API interactions."""
 
-    def __init__(self, email: str, password: str):
+    def __init__(
+        self,
+        email: str,
+        password: str,
+        country: str | None = None,
+        language: str | None = None,
+    ):
         """
         Initialize the Cookidoo service with credentials.
 
         Args:
             email: Cookidoo account email
             password: Cookidoo account password
+            country: Optional Cookidoo country code. Falls back to
+                COOKIDOO_COUNTRY, then ``ro``.
+            language: Optional Cookidoo language tag. Falls back to
+                COOKIDOO_LANGUAGE, then ``en``.
         """
         self.email = email
         self.password = password
+        self.country, self.language = load_cookidoo_locale(country, language)
         self._api_client: Optional[Cookidoo] = None
         self._session: Optional[ClientSession] = None
 
@@ -85,6 +195,11 @@ class CookidooService:
             Exception: If authentication fails
         """
         try:
+            localization = await resolve_cookidoo_localization(
+                self.country,
+                self.language,
+            )
+
             # Create aiohttp ClientSession with a timeout
             self._session = ClientSession(
                 connector=aiohttp.TCPConnector(ssl=False)
@@ -94,9 +209,7 @@ class CookidooService:
             config = CookidooConfig(
                 email=self.email,
                 password=self.password,
-                localization=(
-                    await get_localization_options(country="ro", language="en")
-                )[0],
+                localization=localization,
             )
 
             # Create Cookidoo API client with session and config
@@ -107,11 +220,18 @@ class CookidooService:
 
             return self._api_client
 
+        except ValueError:
+            if self._session:
+                await self._session.close()
+            raise
         except Exception as e:
             # Clean up session if login fails
             if self._session:
                 await self._session.close()
-            raise Exception(f"Failed to authenticate with Cookidoo: {str(e)}") from e
+            raise RuntimeError(
+                "Failed to authenticate with Cookidoo. Check your credentials "
+                "and locale configuration."
+            ) from e
 
     async def close(self) -> None:
         """Close the aiohttp session."""

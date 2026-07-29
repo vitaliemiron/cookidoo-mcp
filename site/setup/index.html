@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fffaf2">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <meta
+      name="description"
+      content="Set up Cookidoo MCP for Codex, Claude Desktop, or VS Code on macOS, Linux, or Windows with a private credential file."
+    >
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/setup/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Setup wizard — Cookidoo MCP">
+    <meta
+      property="og:description"
+      content="Choose your device and AI app, then copy a safe Cookidoo MCP configuration."
+    >
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/setup/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta property="og:image:alt" content="Five steps from an AI meal idea through Cookidoo recipe and week planning to a store MCP order.">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Setup wizard — Cookidoo MCP</title>
+    <script>
+      document.documentElement.classList.add("js");
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      let initialTheme = systemTheme;
+      try {
+        const saved = localStorage.getItem("cookidoo-mcp-theme");
+        if (saved === "light" || saved === "dark") initialTheme = saved;
+      } catch {}
+      document.documentElement.dataset.theme = initialTheme;
+      document.querySelector('meta[name="theme-color"]').content =
+        initialTheme === "light" ? "#fffaf2" : "#020617";
+    </script>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script defer src="../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to setup</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="../" aria-label="Cookidoo MCP home">
+          <span class="brand-mark" aria-hidden="true">CM</span>
+          <span class="brand-name">Cookidoo MCP</span>
+        </a>
+        <nav class="primary-nav" data-navigation aria-label="Primary navigation">
+          <a href="../">Home</a>
+          <a href="./" aria-current="page">Setup</a>
+          <a href="../use-cases/">Guides</a>
+          <a href="../presentation/">Our story</a>
+          <a href="../docs/">For developers</a>
+          <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+        <div class="header-actions">
+          <button class="nav-button" type="button" data-theme-toggle aria-label="Theme follows this device">System</button>
+          <button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="container setup-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a href="../">Home</a><span aria-hidden="true">/</span><span>Setup</span>
+        </nav>
+        <p class="eyebrow">Guided setup</p>
+        <h1>Connect in a few clear steps.</h1>
+        <p class="lead reading">
+          Choose your computer and AI app. The wizard builds a configuration
+          you can copy without putting your Cookidoo password in this page.
+        </p>
+      </div>
+
+      <div class="container setup-shell">
+        <aside class="wizard-progress" aria-label="Setup progress">
+          <div
+            class="progress-meter"
+            role="progressbar"
+            aria-valuemin="1"
+            aria-valuemax="4"
+            aria-valuenow="1"
+            aria-valuetext="Step 1 of 4: Your device"
+            data-wizard-progress
+          >
+            <span data-progress-fill></span>
+          </div>
+          <p class="progress-label" aria-live="polite" data-progress-label>Step 1 of 4</p>
+          <ol class="progress-steps">
+            <li>
+              <button type="button" data-go-step="1" aria-current="step">
+                <span>1</span><span>Your device</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-go-step="2" disabled>
+                <span>2</span><span>Your AI app</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-go-step="3" disabled>
+                <span>3</span><span>Private file</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-go-step="4" disabled>
+                <span>4</span><span>Copy setup</span>
+              </button>
+            </li>
+          </ol>
+          <div class="privacy-note">
+            <strong>Your password stays on your computer.</strong>
+            <p>This page has no login or password fields and sends no form data.</p>
+          </div>
+        </aside>
+
+        <form class="wizard-card" data-setup-wizard novalidate>
+          <noscript>
+            <div class="callout">
+              <strong>JavaScript is needed for the generator</strong>
+              <p>Use the <a href="../raw/setup.md">plain setup guide</a> for the same commands and configuration formats.</p>
+            </div>
+          </noscript>
+
+          <div class="wizard-status" aria-live="polite" data-wizard-status></div>
+
+          <fieldset class="wizard-step" data-wizard-step="1">
+            <legend class="wizard-heading" tabindex="-1">
+              <span class="section-kicker">Step 1</span>
+              <span class="wizard-title">Which computer are you using?</span>
+              <span class="wizard-description">This changes the file path and terminal commands.</span>
+            </legend>
+            <div class="choice-grid choice-grid-device">
+              <label class="choice-card">
+                <input type="radio" name="device" value="macos">
+                <span class="choice-content">
+                  <strong>macOS</strong>
+                  <span>Apple computer</span>
+                </span>
+              </label>
+              <label class="choice-card">
+                <input type="radio" name="device" value="linux">
+                <span class="choice-content">
+                  <strong>Linux</strong>
+                  <span>Ubuntu and similar</span>
+                </span>
+              </label>
+              <label class="choice-card">
+                <input type="radio" name="device" value="windows">
+                <span class="choice-content">
+                  <strong>Windows</strong>
+                  <span>PowerShell setup</span>
+                </span>
+              </label>
+            </div>
+            <p class="field-error" role="alert" data-error-for="device"></p>
+            <div class="wizard-actions">
+              <span></span>
+              <button class="button button-primary" type="button" data-next-step>Continue</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="wizard-step" data-wizard-step="2" hidden>
+            <legend class="wizard-heading" tabindex="-1">
+              <span class="section-kicker">Step 2</span>
+              <span class="wizard-title">Where will you talk to AI?</span>
+              <span class="wizard-description">Choose the app that should receive the Cookidoo tools.</span>
+            </legend>
+            <div class="choice-grid">
+              <label class="choice-card">
+                <input type="radio" name="client" value="codex">
+                <span class="choice-content">
+                  <strong>Codex</strong>
+                  <span>App, CLI, or IDE extension</span>
+                </span>
+              </label>
+              <label class="choice-card">
+                <input type="radio" name="client" value="claude">
+                <span class="choice-content">
+                  <strong>Claude Desktop</strong>
+                  <span>Desktop app configuration</span>
+                </span>
+              </label>
+              <label class="choice-card">
+                <input type="radio" name="client" value="vscode">
+                <span class="choice-content">
+                  <strong>VS Code</strong>
+                  <span>Chat and Agent mode</span>
+                </span>
+              </label>
+            </div>
+            <p class="field-error" role="alert" data-error-for="client"></p>
+            <div class="wizard-actions">
+              <button class="button button-secondary" type="button" data-previous-step>Back</button>
+              <button class="button button-primary" type="button" data-next-step>Continue</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="wizard-step" data-wizard-step="3" hidden>
+            <legend class="wizard-heading" tabindex="-1">
+              <span class="section-kicker">Step 3</span>
+              <span class="wizard-title">Choose your private file.</span>
+              <span class="wizard-description">Use an absolute path so your AI app can find the file from anywhere.</span>
+            </legend>
+            <div class="wizard-field">
+              <label for="env-file-path">Absolute path for the private environment file</label>
+              <input
+                id="env-file-path"
+                name="env-file-path"
+                type="text"
+                autocomplete="off"
+                spellcheck="false"
+                aria-describedby="env-path-help env-path-error"
+                data-env-path
+              >
+              <p class="field-help" id="env-path-help">
+                This is only a file location. Do not type your Cookidoo login or password here.
+              </p>
+              <p class="field-error" id="env-path-error" role="alert" data-error-for="env-path"></p>
+            </div>
+            <div class="callout callout-herb">
+              <strong>The generated file contains placeholders only</strong>
+              <p>You will add your real login directly in a local text editor. Nothing entered in this wizard is submitted or saved.</p>
+            </div>
+            <div class="wizard-actions">
+              <button class="button button-secondary" type="button" data-previous-step>Back</button>
+              <button class="button button-primary" type="button" data-next-step>Build my setup</button>
+            </div>
+          </fieldset>
+
+          <section class="wizard-step wizard-result" data-wizard-step="4" hidden aria-labelledby="setup-result-title">
+            <div class="wizard-heading" tabindex="-1">
+              <span class="section-kicker">Step 4</span>
+              <h2 class="wizard-title" id="setup-result-title">Your setup is ready to copy.</h2>
+              <p class="wizard-description" data-result-summary></p>
+            </div>
+
+            <ol class="result-steps">
+              <li>
+                <div class="result-number">1</div>
+                <div>
+                  <h3>Install the small command runner</h3>
+                  <p><code>uv</code> runs Cookidoo MCP in its own isolated environment.</p>
+                  <div class="code-shell"><pre><code data-install-command></code></pre></div>
+                  <p class="source-note">
+                    From the <a href="https://docs.astral.sh/uv/getting-started/installation/">official uv installation guide</a>.
+                    You may use one of its package-manager alternatives instead.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <div class="result-number">2</div>
+                <div>
+                  <h3>Create and open the private file</h3>
+                  <div class="code-shell"><pre><code data-file-command></code></pre></div>
+                  <p>Paste these settings into that file and replace the login placeholders there:</p>
+                  <div class="code-shell"><pre><code>COOKIDOO_EMAIL=your-login
+COOKIDOO_PASSWORD=your-password
+COOKIDOO_COUNTRY=ro
+COOKIDOO_LANGUAGE=en</code></pre></div>
+                  <p>
+                    The <code>ro</code>/<code>en</code> locale defaults match
+                    the project’s existing international setup. Change both
+                    values together only to a valid Cookidoo
+                    country/language pairing for your account.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <div class="result-number">3</div>
+                <div>
+                  <h3 data-client-config-title>Connect your AI app</h3>
+                  <p data-client-instruction></p>
+                  <div class="code-shell"><pre><code data-client-config></code></pre></div>
+                  <p class="source-note" data-client-source></p>
+                </div>
+              </li>
+              <li>
+                <div class="result-number">4</div>
+                <div>
+                  <h3>Restart and check the connection</h3>
+                  <p data-verify-instruction></p>
+                  <div class="code-shell" data-verify-shell><pre><code data-verify-command></code></pre></div>
+                </div>
+              </li>
+            </ol>
+
+            <div class="verification-note" data-platform-note></div>
+
+            <div class="wizard-actions">
+              <button class="button button-secondary" type="button" data-previous-step>Back</button>
+              <a class="button button-primary" href="../docs/">Read the full documentation</a>
+            </div>
+          </section>
+        </form>
+      </div>
+
+      <section class="container setup-sources" aria-labelledby="source-title">
+        <p class="section-kicker">What was verified</p>
+        <h2 id="source-title">Primary documentation, with boundaries shown.</h2>
+        <div class="source-grid">
+          <article>
+            <h3>Codex</h3>
+            <p>STDIO MCP configuration, the <code>codex mcp add</code> command, and shared app/CLI/IDE configuration follow the current <a href="https://developers.openai.com/codex/mcp/">OpenAI Codex MCP documentation</a>.</p>
+          </article>
+          <article>
+            <h3>Claude Desktop</h3>
+            <p>The <code>mcpServers</code> JSON format and configuration locations follow the <a href="https://modelcontextprotocol.io/docs/develop/connect-local-servers">official MCP local-server guide</a>.</p>
+          </article>
+          <article>
+            <h3>VS Code</h3>
+            <p>The <code>servers</code> JSON format, user configuration command, and STDIO fields follow the <a href="https://code.visualstudio.com/docs/agents/reference/mcp-configuration">official VS Code MCP reference</a>.</p>
+          </article>
+        </div>
+        <div class="callout">
+          <strong>Windows status</strong>
+          <p>
+            Package installation, the command launcher, and private-file
+            loading run on a real <code>windows-latest</code> CI machine for
+            every change. Client configuration formats come from current
+            primary documentation; individual app screens may still vary by
+            client version.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <p class="footer-copy">Cookidoo MCP setup · Credentials stay in your private local file</p>
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="../docs/">Documentation</a>
+          <a href="../raw/setup.md">Plain guide</a>
+          <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

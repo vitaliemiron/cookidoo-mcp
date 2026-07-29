@@ -121,7 +121,11 @@ repository link instead of requesting new permissions solely for a star.
   - Official MCP Registry metadata for
     `io.github.vitaliemiron/cookidoo-mcp`.
 - `.github/workflows/release.yml`
-  - Tag-gated PyPI, MCP Registry, and GitHub Release publication.
+  - Tag-gated PyPI, MCP Registry, provenance/SBOM attestation, and GitHub
+    Release publication.
+- `scripts/verify_registry_publication.py`
+  - Confirms that the tagged version is active in the public MCP Registry
+    after publication.
 - `ruff.toml`, `pytest.ini`
   - Stable lint and test configuration.
 - `prompt.md`, `prompt_FR.md`
@@ -145,7 +149,13 @@ Fill these variables locally:
 ```dotenv
 COOKIDOO_EMAIL=your-login
 COOKIDOO_PASSWORD=your-password
+COOKIDOO_COUNTRY=ro
+COOKIDOO_LANGUAGE=en
 ```
+
+`COOKIDOO_COUNTRY` and `COOKIDOO_LANGUAGE` are optional. The established
+default is `ro` + `en`. The service normalizes values such as `US` + `en_us`
+and validates the exact pair against Cookidoo before creating a session.
 
 Run the MCP server:
 
@@ -188,9 +198,12 @@ python -m twine check --strict dist/*
 
 Pushing a semantic tag such as `v1.0.0` starts
 `.github/workflows/release.yml`. It first runs the offline suite and validates
-the distributions, then publishes to PyPI using Trusted Publishing, publishes
-`server.json` to the official MCP Registry using GitHub OIDC, and creates a
-GitHub Release with the wheel and source archive.
+the distributions, generates a CycloneDX SBOM, and records GitHub build
+provenance and SBOM attestations for the wheel and source archive. It then
+publishes to PyPI using Trusted Publishing, validates and publishes
+`server.json` to the official MCP Registry using GitHub OIDC, verifies the
+published registry version through the public API, and creates a GitHub Release
+with the wheel, source archive, and SBOM.
 
 Before the first tag, PyPI must have a pending Trusted Publisher for project
 `cookidoo-mcp`, owner `vitaliemiron`, repository `cookidoo-mcp`, workflow
@@ -289,17 +302,19 @@ exposed to untrusted pull-request code or forks.
 
 `CookidooService.login()`:
 
-1. creates one `aiohttp.ClientSession`;
-2. resolves localization with
-   `get_localization_options(country="ro", language="en")`;
-3. creates `CookidooConfig`;
-4. logs in through `cookidoo-api`;
-5. reuses the same cookie-authenticated session for all library and direct HTTP
+1. reads `COOKIDOO_COUNTRY` and `COOKIDOO_LANGUAGE`, defaulting to `ro` +
+   `en`;
+2. normalizes and resolves the exact pair with
+   `get_localization_options(country=..., language=...)`;
+3. creates one `aiohttp.ClientSession`;
+4. creates `CookidooConfig`;
+5. logs in through `cookidoo-api`;
+6. reuses the same cookie-authenticated session for all library and direct HTTP
    calls.
 
-The tested localization resolves to Cookidoo International English. Cookidoo
-does not expose every country/language combination. Before changing it, call
-`get_localization_options()` and verify that the pair exists.
+The default localization resolves to Cookidoo International English. Cookidoo
+does not expose every country/language combination. Invalid pairs fail with a
+list of the selected country's supported languages before authentication.
 
 Modern `cookidoo-api` authenticates with session cookies. Do not restore the
 obsolete `auth_data.access_token` pattern. Direct endpoint calls must reuse:
@@ -345,6 +360,28 @@ Shopping and planning:
 
 Most tools return a human-readable string. Tools returning structured data
 serialize it with `json.dumps(..., ensure_ascii=False, indent=2)`.
+
+### Mutation previews
+
+Every MCP tool that creates or changes account data accepts
+`dry_run: bool = False`:
+
+- `copy_recipe_to_custom`;
+- `upload_custom_recipe`;
+- `update_custom_recipe_steps`;
+- `update_custom_recipe_ingredients`;
+- `upload_custom_recipe_image`;
+- `add_recipes_to_meal_plan`;
+- `remove_recipe_from_meal_plan`;
+- `move_recipe_in_meal_plan`.
+
+Call a mutation with `dry_run=true` first. The tool validates the inputs and
+returns JSON containing `will_mutate: false`, the target, the exact planned
+changes, notes, and an apply instruction. Recipe and calendar previews do not
+require an authenticated session. Image previews read and normalize the local
+file in memory to verify its format and size, but do not upload or PATCH it.
+Apply only after reviewing the preview by repeating the same call with
+`dry_run=false`.
 
 ## Official recipe limitation and copy workflow
 

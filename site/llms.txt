@@ -6,6 +6,7 @@ Cookidoo MCP connects an AI assistant to a user's own Cookidoo account. It can i
 
 ## Start here
 
+- [Setup wizard](https://vitaliemiron.github.io/cookidoo-mcp/setup/): copy-ready configuration for Codex, Claude Desktop, or VS Code on macOS, Linux, or Windows
 - [Documentation](https://vitaliemiron.github.io/cookidoo-mcp/docs/): overview and quick start
 - [Practical use cases](https://vitaliemiron.github.io/cookidoo-mcp/use-cases/): task-focused guides for recipe translation, guided cooking, planning, shopping, and API research
 - [Tool reference](https://vitaliemiron.github.io/cookidoo-mcp/docs/tools/): all 16 MCP tools and signatures
@@ -18,6 +19,7 @@ Cookidoo MCP connects an AI assistant to a user's own Cookidoo account. It can i
 
 ## Raw Markdown
 
+- [Setup](https://vitaliemiron.github.io/cookidoo-mcp/raw/setup.md)
 - [Overview](https://vitaliemiron.github.io/cookidoo-mcp/raw/overview.md)
 - [Use-case index](https://vitaliemiron.github.io/cookidoo-mcp/raw/use-cases/index.md)
 - [Translate a Cookidoo recipe](https://vitaliemiron.github.io/cookidoo-mcp/raw/use-cases/translate-cookidoo-recipe.md)

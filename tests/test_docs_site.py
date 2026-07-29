@@ -119,6 +119,7 @@ def test_ai_resources_cover_every_documentation_area() -> None:
     full = (SITE / "llms-full.txt").read_text(encoding="utf-8")
 
     for path in (
+        "/setup/",
         "/docs/",
         "/docs/tools/",
         "/docs/guided-cooking/",
@@ -205,7 +206,7 @@ def test_sitemap_pages_exist() -> None:
     namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
     urls = [node.text for node in tree.findall("s:url/s:loc", namespace)]
 
-    assert len(urls) == 14
+    assert len(urls) == 15
     for url in urls:
         assert url is not None
         parsed = urlparse(url)
@@ -245,3 +246,34 @@ def test_homepage_contains_google_search_console_verification() -> None:
         '<meta name="google-site-verification" '
         'content="zUXNAhs4gOSJq1AA2QkBhj57cO892lJTUyS6bfln_70">'
     ) in homepage
+
+
+def test_setup_wizard_is_accessible_and_never_collects_secrets() -> None:
+    setup = (SITE / "setup" / "index.html").read_text(encoding="utf-8")
+    script = (SITE / "assets" / "site.js").read_text(encoding="utf-8")
+    raw = (SITE / "raw" / "setup.md").read_text(encoding="utf-8")
+
+    assert 'role="progressbar"' in setup
+    assert 'aria-live="polite"' in setup
+    assert setup.count('data-wizard-step="') == 4
+    assert setup.count('name="device"') == 3
+    assert setup.count('name="client"') == 3
+    assert 'type="password"' not in setup
+    assert 'name="email"' not in setup
+    assert "sends no form data" in setup
+    assert "validatePath" in script
+    assert "JSON.stringify" in script
+    assert "windows-latest" in setup
+    assert "windows-latest" in raw
+    assert "documentation-verified" in raw
+    for variable in (
+        "COOKIDOO_EMAIL",
+        "COOKIDOO_PASSWORD",
+        "COOKIDOO_COUNTRY=ro",
+        "COOKIDOO_LANGUAGE=en",
+    ):
+        assert variable in setup
+        assert variable in raw
+    for client in ("Codex", "Claude Desktop", "VS Code"):
+        assert client in setup
+        assert client in raw

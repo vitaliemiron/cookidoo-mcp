@@ -39,8 +39,8 @@
               <li><div><strong>Connect to the account.</strong><p>Authentication uses the configured Cookidoo login stored outside the repository.</p></div></li>
               <li><div><strong>Read the relevant window.</strong><p>Inspect every day, recipe ID, name, and source before proposing a change.</p></div></li>
               <li><div><strong>Resolve the user’s intent.</strong><p>Translate a phrase such as “move the curry to Friday” into one exact source date, target date, and recipe ID.</p></div></li>
-              <li><div><strong>Show the proposed change.</strong><p>For example: “Move private recipe 01K… from 2026-07-30 to 2026-08-01.”</p></div></li>
-              <li><div><strong>Apply one scoped operation.</strong><p>Use the add, remove, or move tool. Keep <code>recipe_source="auto"</code> unless the ID cannot be inferred safely.</p></div></li>
+              <li><div><strong>Preview the exact change.</strong><p>Call the add, remove, or move tool with <code>dry_run=true</code>. Show the validated target and operation order returned with <code>will_mutate: false</code>.</p></div></li>
+              <li><div><strong>Apply one scoped operation.</strong><p>Repeat the same call with <code>dry_run=false</code>. Keep <code>recipe_source="auto"</code> unless the ID cannot be inferred safely.</p></div></li>
               <li><div><strong>Read the window again.</strong><p>Confirm the target contains the recipe and, for a move, the source no longer does.</p></div></li>
             </ol>
           </section>
@@ -50,9 +50,9 @@
               <thead><tr><th>Goal</th><th>Tool</th><th>Safety behavior</th></tr></thead>
               <tbody>
                 <tr><td>Read a window</td><td><code>get_meal_plan_week</code></td><td>Returns all seven dates and resolves private recipe details where possible.</td></tr>
-                <tr><td>Add one or more</td><td><code>add_recipes_to_meal_plan</code></td><td>Partitions mixed official and private IDs into the correct API calls.</td></tr>
-                <tr><td>Remove one</td><td><code>remove_recipe_from_meal_plan</code></td><td>Uses the exact date, ID, and inferred or explicit source.</td></tr>
-                <tr><td>Move one</td><td><code>move_recipe_in_meal_plan</code></td><td>Adds to the target before removing from the source and rolls back the new target entry if removal fails.</td></tr>
+                <tr><td>Add one or more</td><td><code>add_recipes_to_meal_plan</code></td><td>With <code>dry_run=true</code>, previews the partitioned official and private IDs before either API call.</td></tr>
+                <tr><td>Remove one</td><td><code>remove_recipe_from_meal_plan</code></td><td>Previews or applies the exact date, ID, and inferred or explicit source.</td></tr>
+                <tr><td>Move one</td><td><code>move_recipe_in_meal_plan</code></td><td>Previews both operations; apply adds to the target first and rolls back if source removal fails.</td></tr>
               </tbody>
             </table>
             <p>Official IDs normally look like <code>r460132</code>. Private customer recipe IDs are 26-character ULIDs. The default <code>auto</code> source recognizes those verified forms.</p>

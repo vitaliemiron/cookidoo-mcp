@@ -14,8 +14,8 @@ Empty days are filled by the service.
 1. Connect to Cookidoo.
 2. Read the relevant seven-day window.
 3. Resolve the exact recipe ID, source date, and target date.
-4. Show the proposed change.
-5. Apply one scoped operation.
+4. Call the mutation with `dry_run=true` and show its validated preview.
+5. Repeat the same scoped operation with `dry_run=false`.
 6. Read the window again and confirm the result.
 
 Available operations:

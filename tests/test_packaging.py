@@ -78,17 +78,25 @@ def test_registry_manifest_has_secure_required_credentials() -> None:
     assert package["registryType"] == "pypi"
     assert package["identifier"] == "cookidoo-mcp"
     assert package["transport"] == {"type": "stdio"}
-    assert set(variables) == {"COOKIDOO_EMAIL", "COOKIDOO_PASSWORD"}
+    assert set(variables) == {
+        "COOKIDOO_EMAIL",
+        "COOKIDOO_PASSWORD",
+        "COOKIDOO_COUNTRY",
+        "COOKIDOO_LANGUAGE",
+    }
     assert all(not variable["isRequired"] for variable in variables.values())
-    assert all(variable["isSecret"] for variable in variables.values())
+    assert variables["COOKIDOO_EMAIL"]["isSecret"] is True
+    assert variables["COOKIDOO_PASSWORD"]["isSecret"] is True
+    assert variables["COOKIDOO_COUNTRY"]["isSecret"] is False
+    assert variables["COOKIDOO_LANGUAGE"]["isSecret"] is False
     assert all("value" not in variable for variable in variables.values())
     assert package["packageArguments"] == [
         {
             "type": "named",
             "name": "--env-file",
             "description": (
-                "Optional local .env file containing the Cookidoo login "
-                "and password."
+                "Optional local .env file containing Cookidoo credentials "
+                "and locale settings."
             ),
             "format": "filepath",
             "isRequired": False,
