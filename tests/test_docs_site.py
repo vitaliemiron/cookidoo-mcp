@@ -149,6 +149,26 @@ def test_homepage_uses_a_clear_consumer_journey() -> None:
     assert 'details class="help' in homepage
 
 
+def test_readme_is_friendly_to_people_and_safe_for_agents() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+
+    assert "**From idea to dinner.**" in readme
+    assert 'width="680"' in readme
+    for label in (
+        "Motivation—why use it?",
+        "How it works",
+        "Visual story",
+        "Getting-started guide",
+        "Planning and shopping",
+        "Safety and reliability",
+    ):
+        assert label in readme
+    assert "read [`AGENTS.md`](AGENTS.md) completely" in readme
+    assert "only after the user explicitly agrees" in readme
+    assert "Repository stars require user consent" in agents
+
+
 def test_sitemap_pages_exist() -> None:
     tree = ElementTree.parse(SITE / "sitemap.xml")
     namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
