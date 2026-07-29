@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#020617">
+    <meta name="description" content="Cookidoo MCP unit tests, authenticated API contracts, GitHub Actions monitoring, and cleanup rules.">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/docs/testing/">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Testing and API monitoring — Cookidoo MCP">
+    <meta property="og:description" content="How the project detects changes in Cookidoo’s unofficial API.">
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/docs/testing/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Testing and monitoring — Cookidoo MCP</title>
+    <script>
+      document.documentElement.classList.add("js");
+      try {
+        const saved = localStorage.getItem("cookidoo-mcp-theme");
+        if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+      } catch {}
+    </script>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script defer src="../../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to testing documentation</a>
+    <header class="site-header"><div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Cookidoo MCP home"><span class="brand-mark" aria-hidden="true">CM</span><span class="brand-name">Cookidoo MCP</span></a>
+      <nav class="primary-nav" data-navigation aria-label="Primary navigation"><a href="../../">Home</a><a href="../../presentation/">Story</a><a href="../" aria-current="page">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a></nav>
+      <div class="header-actions"><button class="nav-button" type="button" data-theme-toggle aria-label="Switch to light theme">Light</button><button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button></div>
+    </div></header>
+    <main id="main">
+      <div class="container docs-hero"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../">Home</a><span aria-hidden="true">/</span><a href="../">Documentation</a><span aria-hidden="true">/</span><span>Testing</span></nav></div>
+      <div class="container docs-shell">
+        <aside class="docs-sidebar" aria-label="Documentation sections"><strong>Documentation</strong><a href="../">Overview</a><a href="../tools/">Tool reference</a><a href="../guided-cooking/">Guided cooking</a><a href="../automation/">Automations</a><a href="./" aria-current="page">Testing</a><a href="../../llms.txt">AI index</a></aside>
+        <article class="docs-content">
+          <p class="eyebrow">Reliability / Testing</p>
+          <h1>Undocumented APIs need observable failure.</h1>
+          <p class="lead">Offline tests protect our logic. Five authenticated contracts reveal when Cookidoo changes the system around it.</p>
+
+          <section id="unit">
+            <p class="section-kicker">Offline tests</p>
+            <h2>Fast feedback on every pull request.</h2>
+            <p>Unit tests use fakes and mocks for schemas, shopping-list grouping, meal planning, image preparation, credentials, and documentation integrity.</p>
+            <div class="code-shell"><pre><code>python -m pip install -r requirements-dev.txt
+ruff check cookidoo_service.py schemas.py server.py tests
+python -m pytest -m "not live" --strict-markers -q</code></pre></div>
+            <p>GitHub Actions runs the suite on Python 3.12 and 3.14 for pull requests, pushes to <code>main</code>, and manual dispatch.</p>
+          </section>
+
+          <section id="live">
+            <p class="section-kicker">Authenticated contracts</p>
+            <h2>Five checks against the real service.</h2>
+            <ol>
+              <li>Session-cookie authentication and official recipe parsing.</li>
+              <li>Shopping-list response contract, including valid empty state.</li>
+              <li>Rolling seven-day meal-plan response contract.</li>
+              <li>Short-lived customer-image signature generation.</li>
+              <li>Temporary recipe copy, GET, ingredient PATCH, instruction PATCH, and DELETE.</li>
+            </ol>
+            <div class="code-shell"><pre><code>set -a
+source .env
+set +a
+COOKIDOO_LIVE_TESTS=1 \
+COOKIDOO_LIVE_MUTATIONS=1 \
+python -m pytest tests/live -m live --strict-markers -v</code></pre></div>
+            <div class="callout"><strong>Live writes always clean up</strong><p>The mutation check stores the created recipe ID and deletes it in <code>finally</code>. Never add a scheduled mutation without an equivalent cleanup guarantee.</p></div>
+          </section>
+
+          <section id="monitor">
+            <p class="section-kicker">Daily monitoring</p>
+            <h2>A failed contract becomes an issue.</h2>
+            <p>The <code>Cookidoo live API</code> workflow runs daily at 04:37 UTC, manually, and after relevant API changes reach <code>main</code>.</p>
+            <ul>
+              <li>Encrypted secrets: <code>COOKIDOO_EMAIL</code> and <code>COOKIDOO_PASSWORD</code>.</li>
+              <li>Serialized workflow: a newer run cannot cancel cleanup in progress.</li>
+              <li>Failure: open or update <code>Cookidoo live API regression</code>.</li>
+              <li>Recovery: close the open regression issue automatically.</li>
+            </ul>
+            <div class="callout callout-herb"><strong>Never run secrets on pull-request code</strong><p>The live workflow is intentionally absent from pull-request events and must remain that way.</p></div>
+          </section>
+
+          <section id="diagnose">
+            <p class="section-kicker">Regression workflow</p>
+            <h2>Understand the contract before changing the assertion.</h2>
+            <ol>
+              <li>Open the workflow run linked from the regression issue.</li>
+              <li>Classify the failure: login, endpoint status, parsing, or response shape.</li>
+              <li>Reproduce with the narrowest live test.</li>
+              <li>Inspect the current upstream package version and changelog.</li>
+              <li>Capture the current authenticated web request when necessary.</li>
+              <li>Update service code and add a unit fixture for the new shape.</li>
+              <li>Run offline and live tests, then verify cleanup.</li>
+            </ol>
+            <p>Do not weaken an assertion merely to restore a green badge.</p>
+            <div class="actions"><a class="button button-primary" href="../../raw/testing.md">Raw Markdown <span aria-hidden="true">→</span></a><a class="button button-secondary" href="https://github.com/vitaliemiron/cookidoo-mcp/actions">View workflow runs</a></div>
+          </section>
+        </article>
+      </div>
+    </main>
+    <footer class="site-footer"><div class="container footer-grid"><p class="footer-copy">Cookidoo MCP testing and monitoring</p><nav class="footer-links" aria-label="Footer navigation"><a href="../">Docs</a><a href="../automation/">Automations</a><a href="../../llms.txt">AI index</a></nav></div></footer>
+  </body>
+</html>

@@ -2,10 +2,16 @@
 
 [![Unit tests](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/unit-tests.yml)
 [![Cookidoo live API](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/live-api.yml/badge.svg)](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/live-api.yml)
+[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-f5b942)](https://vitaliemiron.github.io/cookidoo-mcp/)
 
 An MCP (Model Context Protocol) server for interacting with the Thermomix Cookidoo platform, built with `fastmcp`.
 
 > **Disclaimer:** This is an unofficial project. The developers are not affiliated with, endorsed by, or connected to Cookidoo, Vorwerk, Thermomix, or any of their subsidiaries or trademarks.
+
+Explore the [documentation and project story](https://vitaliemiron.github.io/cookidoo-mcp/),
+or jump directly to the [complete tool reference](https://vitaliemiron.github.io/cookidoo-mcp/docs/tools/).
+AI clients can start with [`llms.txt`](https://vitaliemiron.github.io/cookidoo-mcp/llms.txt)
+or the structured [`tools.json`](https://vitaliemiron.github.io/cookidoo-mcp/tools.json).
 
 ## Features
 

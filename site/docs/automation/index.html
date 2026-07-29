@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#020617">
+    <meta name="description" content="Cookidoo MCP shopping-list and seven-day meal-planning automation contracts.">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/docs/automation/">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Shopping and planning automation — Cookidoo MCP">
+    <meta property="og:description" content="Recipe-grouped shopping data and safe calendar add, remove, and move workflows.">
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/docs/automation/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Automations — Cookidoo MCP</title>
+    <script>
+      document.documentElement.classList.add("js");
+      try {
+        const saved = localStorage.getItem("cookidoo-mcp-theme");
+        if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+      } catch {}
+    </script>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script defer src="../../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to automation documentation</a>
+    <header class="site-header"><div class="container nav-shell">
+      <a class="brand" href="../../" aria-label="Cookidoo MCP home"><span class="brand-mark" aria-hidden="true">CM</span><span class="brand-name">Cookidoo MCP</span></a>
+      <nav class="primary-nav" data-navigation aria-label="Primary navigation"><a href="../../">Home</a><a href="../../presentation/">Story</a><a href="../" aria-current="page">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a></nav>
+      <div class="header-actions"><button class="nav-button" type="button" data-theme-toggle aria-label="Switch to light theme">Light</button><button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button></div>
+    </div></header>
+    <main id="main">
+      <div class="container docs-hero"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../">Home</a><span aria-hidden="true">/</span><a href="../">Documentation</a><span aria-hidden="true">/</span><span>Automations</span></nav></div>
+      <div class="container docs-shell">
+        <aside class="docs-sidebar" aria-label="Documentation sections"><strong>Documentation</strong><a href="../">Overview</a><a href="../tools/">Tool reference</a><a href="../guided-cooking/">Guided cooking</a><a href="./" aria-current="page">Automations</a><a href="../testing/">Testing</a><a href="../../llms.txt">AI index</a></aside>
+        <article class="docs-content">
+          <p class="eyebrow">Workflows / Shopping and planning</p>
+          <h1>Move from a recipe idea to an actionable week.</h1>
+          <p class="lead">The automation layer preserves recipe context while connecting shopping-list state and Cookidoo’s rolling seven-day planner.</p>
+
+          <section id="shopping">
+            <p class="section-kicker">Shopping list</p>
+            <h2>Ingredients remain connected to their recipes.</h2>
+            <p>The service reads three Cookidoo sources concurrently:</p>
+            <ul>
+              <li>recipes currently represented in the shopping list;</li>
+              <li>ingredient ownership state;</li>
+              <li>manually added items.</li>
+            </ul>
+            <p>The result includes recipe groups, a flat ingredient list, optional additional items, and summary counts. A valid account may have an empty shopping list; consumers must support empty arrays.</p>
+            <div class="code-shell"><pre><code>{
+  "recipes": [
+    {
+      "id": "r460132",
+      "name": "Recipe name",
+      "ingredient_count": 2,
+      "ingredients": [
+        {
+          "name": "Rice",
+          "description": "200 g rice",
+          "is_owned": false
+        }
+      ]
+    }
+  ],
+  "ingredients": [],
+  "additional_items": [],
+  "summary": {}
+}</code></pre></div>
+            <div class="callout"><strong>Quantity lives in <code>description</code></strong><p><code>CookidooIngredient</code> does not expose an <code>ingredient.quantity</code> field.</p></div>
+          </section>
+
+          <section id="planner">
+            <p class="section-kicker">Meal planner</p>
+            <h2>The requested date begins a rolling seven-day window.</h2>
+            <p>It is not a fixed Monday-to-Sunday calendar week. Empty days are omitted by Cookidoo and filled by the service.</p>
+            <div class="code-shell"><pre><code>get_meal_plan_week(date="2026-07-29")
+
+# Returns 2026-07-29 through 2026-08-04,
+# including explicit empty day objects.</code></pre></div>
+            <table class="reference-table">
+              <thead><tr><th>Recipe type</th><th>Identification and API behavior</th></tr></thead>
+              <tbody>
+                <tr><td>Official</td><td>IDs normally begin with <code>r</code>.</td></tr>
+                <tr><td>Customer</td><td>26-character ULIDs; may arrive only in <code>customerRecipeIds</code> and require a detail lookup.</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section id="writes">
+            <p class="section-kicker">Safe writes</p>
+            <h2>Add, remove, and move without losing state.</h2>
+            <h3>Add</h3>
+            <p>Mixed official and private IDs are de-duplicated, classified, and partitioned into Cookidoo’s source-specific calls.</p>
+            <h3>Remove</h3>
+            <p>The service uses a direct DELETE wrapper because deleting the final recipe from a day returns HTTP 200 with <code>content: null</code>, which the upstream library incorrectly tries to parse as a calendar day.</p>
+            <h3>Move</h3>
+            <p>The target is added first. The source is removed second. If source removal fails, the new target entry is rolled back.</p>
+            <div class="callout callout-herb"><strong>Read before writing</strong><p>For calendar workflows, fetch the relevant window first so the model understands existing day state and recipe sources.</p></div>
+          </section>
+
+          <section id="workflow">
+            <p class="section-kicker">Example automation</p>
+            <h2>From inspiration to a planned meal.</h2>
+            <ol>
+              <li>Read or copy the recipe.</li>
+              <li>Adapt and validate its content.</li>
+              <li>Read the target seven-day window.</li>
+              <li>Add the official or private recipe to the intended date.</li>
+              <li>Read shopping-list ingredients grouped by recipe.</li>
+              <li>Hand structured grocery data to the next authorized workflow.</li>
+            </ol>
+            <div class="actions"><a class="button button-primary" href="../../raw/automation.md">Raw Markdown <span aria-hidden="true">→</span></a><a class="button button-secondary" href="../tools/#get-meal-plan-week">Tool reference</a></div>
+          </section>
+        </article>
+      </div>
+    </main>
+    <footer class="site-footer"><div class="container footer-grid"><p class="footer-copy">Cookidoo MCP automation reference</p><nav class="footer-links" aria-label="Footer navigation"><a href="../">Docs</a><a href="../testing/">Testing</a><a href="../../llms.txt">AI index</a></nav></div></footer>
+  </body>
+</html>

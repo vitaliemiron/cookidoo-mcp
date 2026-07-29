@@ -1,0 +1,32 @@
+# Cookidoo MCP
+
+> An unofficial FastMCP server for Cookidoo recipe authoring, guided-cooking annotations, meal planning, and shopping-list automation.
+
+Cookidoo MCP connects an AI assistant to a user's own Cookidoo account. It can inspect and copy recipes, create or translate private recipes, add structured weighing and Thermomix actions, manage My Week, and read shopping-list ingredients.
+
+## Start here
+
+- [Documentation](https://vitaliemiron.github.io/cookidoo-mcp/docs/): overview and quick start
+- [Tool reference](https://vitaliemiron.github.io/cookidoo-mcp/docs/tools/): all 16 MCP tools and signatures
+- [Guided cooking](https://vitaliemiron.github.io/cookidoo-mcp/docs/guided-cooking/): TTS, INGREDIENT, VOLUME, MODE, and UTF-16 positions
+- [Planning and shopping](https://vitaliemiron.github.io/cookidoo-mcp/docs/automation/): seven-day plans and shopping-list data
+- [Testing and reliability](https://vitaliemiron.github.io/cookidoo-mcp/docs/testing/): unit tests, five live contracts, and daily monitoring
+- [Complete AI context](https://vitaliemiron.github.io/cookidoo-mcp/llms-full.txt): consolidated machine-readable documentation
+- [Tool catalog](https://vitaliemiron.github.io/cookidoo-mcp/tools.json): structured JSON tool inventory
+- [Source repository](https://github.com/vitaliemiron/cookidoo-mcp): code, setup, tests, and issue tracker
+
+## Raw Markdown
+
+- [Overview](https://vitaliemiron.github.io/cookidoo-mcp/raw/overview.md)
+- [Tools](https://vitaliemiron.github.io/cookidoo-mcp/raw/tools.md)
+- [Guided cooking](https://vitaliemiron.github.io/cookidoo-mcp/raw/guided-cooking.md)
+- [Planning and shopping](https://vitaliemiron.github.io/cookidoo-mcp/raw/automation.md)
+- [Testing](https://vitaliemiron.github.io/cookidoo-mcp/raw/testing.md)
+
+## Critical rule
+
+Ingredient handling and machine actions must always be separate steps. A weighing or adding step contains only INGREDIENT annotations. The following chopping, mixing, heating, kneading, or other Thermomix step contains its TTS or MODE annotation.
+
+## Boundary
+
+This project is unofficial and uses undocumented Cookidoo endpoints. It is not affiliated with or endorsed by Vorwerk. Exact capabilities can change when Cookidoo changes its private API.

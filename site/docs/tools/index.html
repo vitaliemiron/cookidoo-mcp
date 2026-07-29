@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#020617">
+    <meta name="description" content="Reference for all 16 Cookidoo MCP tools, parameters, behavior, and output.">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/docs/tools/">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cookidoo MCP tool reference">
+    <meta property="og:description" content="Every MCP tool for recipes, guided cooking, shopping, and meal planning.">
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/docs/tools/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Tool reference — Cookidoo MCP</title>
+    <script>
+      document.documentElement.classList.add("js");
+      try {
+        const saved = localStorage.getItem("cookidoo-mcp-theme");
+        if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+      } catch {}
+    </script>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script defer src="../../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to tool reference</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="../../" aria-label="Cookidoo MCP home"><span class="brand-mark" aria-hidden="true">CM</span><span class="brand-name">Cookidoo MCP</span></a>
+        <nav class="primary-nav" data-navigation aria-label="Primary navigation">
+          <a href="../../">Home</a><a href="../../presentation/">Story</a><a href="../" aria-current="page">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+        <div class="header-actions">
+          <button class="nav-button" type="button" data-theme-toggle aria-label="Switch to light theme">Light</button>
+          <button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="container docs-hero">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="../../">Home</a><span aria-hidden="true">/</span><a href="../">Documentation</a><span aria-hidden="true">/</span><span>Tools</span></nav>
+      </div>
+      <div class="container docs-shell">
+        <aside class="docs-sidebar" aria-label="Documentation sections">
+          <strong>Documentation</strong>
+          <a href="../">Overview</a>
+          <a href="./" aria-current="page">Tool reference</a>
+          <a href="../guided-cooking/">Guided cooking</a>
+          <a href="../automation/">Automations</a>
+          <a href="../testing/">Testing</a>
+          <a href="../../llms.txt">AI index</a>
+        </aside>
+
+        <article class="docs-content">
+          <p class="eyebrow">Reference / 16 tools</p>
+          <h1>Tool reference</h1>
+          <p class="lead">Authenticate once, then coordinate recipe reads, validated writes, shopping data, and calendar actions through purpose-built MCP calls.</p>
+
+          <div class="callout">
+            <strong>Connection is required</strong>
+            <p>Call <code>connect_to_cookidoo</code> before any tool that accesses Cookidoo. Most failures are returned as descriptive strings rather than raised through MCP.</p>
+          </div>
+
+          <nav class="tool-grid" aria-label="Tool reference index">
+            <a class="tool-card" href="#connect-to-cookidoo"><code>connect_to_cookidoo</code><span>Authentication</span></a>
+            <a class="tool-card" href="#get-recipe-details"><code>get_recipe_details</code><span>Official recipe metadata</span></a>
+            <a class="tool-card" href="#get-custom-recipe-details"><code>get_custom_recipe_details</code><span>Full private recipe</span></a>
+            <a class="tool-card" href="#get-shopping-list-ingredients"><code>get_shopping_list_ingredients</code><span>Recipe-grouped groceries</span></a>
+            <a class="tool-card" href="#get-meal-plan-week"><code>get_meal_plan_week</code><span>Seven-day window</span></a>
+            <a class="tool-card" href="#add-recipes-to-meal-plan"><code>add_recipes_to_meal_plan</code><span>Plan recipes</span></a>
+            <a class="tool-card" href="#remove-recipe-from-meal-plan"><code>remove_recipe_from_meal_plan</code><span>Remove planned recipe</span></a>
+            <a class="tool-card" href="#move-recipe-in-meal-plan"><code>move_recipe_in_meal_plan</code><span>Move with rollback</span></a>
+            <a class="tool-card" href="#copy-recipe-to-custom"><code>copy_recipe_to_custom</code><span>Obtain full steps</span></a>
+            <a class="tool-card" href="#generate-recipe-structure"><code>generate_recipe_structure</code><span>Validate a new recipe</span></a>
+            <a class="tool-card" href="#validate-guided-recipe-structure"><code>validate_guided_recipe_structure</code><span>Check annotation JSON</span></a>
+            <a class="tool-card" href="#calculate-annotation-position"><code>calculate_annotation_position</code><span>UTF-16 ranges</span></a>
+            <a class="tool-card" href="#update-custom-recipe-steps"><code>update_custom_recipe_steps</code><span>PATCH instructions</span></a>
+            <a class="tool-card" href="#update-custom-recipe-ingredients"><code>update_custom_recipe_ingredients</code><span>PATCH ingredients</span></a>
+            <a class="tool-card" href="#upload-custom-recipe-image"><code>upload_custom_recipe_image</code><span>Attach owned photo</span></a>
+            <a class="tool-card" href="#upload-custom-recipe"><code>upload_custom_recipe</code><span>Create private recipe</span></a>
+          </nav>
+
+          <section class="tool-reference" id="connect-to-cookidoo">
+            <p class="section-kicker">Authentication</p>
+            <h2>connect_to_cookidoo</h2>
+            <p><code class="signature">connect_to_cookidoo()</code></p>
+            <p>Loads <code>COOKIDOO_EMAIL</code> and <code>COOKIDOO_PASSWORD</code>, creates the shared cookie-authenticated session, and stores it for later tools.</p>
+            <p><strong>Returns:</strong> a success message containing the configured login identifier, or a configuration/authentication error.</p>
+          </section>
+
+          <section class="tool-reference" id="get-recipe-details">
+            <p class="section-kicker">Recipe read</p>
+            <h2>get_recipe_details</h2>
+            <p><code class="signature">get_recipe_details(recipe_id: str)</code></p>
+            <p>Reads an official recipe’s name, serving size, times, difficulty, ingredient descriptions, image, thumbnail, and URL.</p>
+            <table class="reference-table"><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>recipe_id</code></td><td>Official ID such as <code>r460132</code>.</td></tr></tbody></table>
+            <div class="callout"><strong>No preparation steps</strong><p>The official details endpoint genuinely omits instructions. Use <a href="#copy-recipe-to-custom"><code>copy_recipe_to_custom</code></a> when full steps are required.</p></div>
+          </section>
+
+          <section class="tool-reference" id="get-custom-recipe-details">
+            <p class="section-kicker">Recipe read</p>
+            <h2>get_custom_recipe_details</h2>
+            <p><code class="signature">get_custom_recipe_details(recipe_id: str)</code></p>
+            <p>Reads full ingredients, instructions, tools, timings, servings, image data, and URL from a customer recipe.</p>
+            <p><strong>Returns:</strong> formatted JSON with <code>ingredients</code> and <code>steps</code>.</p>
+          </section>
+
+          <section class="tool-reference" id="get-shopping-list-ingredients">
+            <p class="section-kicker">Shopping</p>
+            <h2>get_shopping_list_ingredients</h2>
+            <p><code class="signature">get_shopping_list_ingredients(recipe_id=None, include_owned=False, include_additional_items=True)</code></p>
+            <table class="reference-table">
+              <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>recipe_id</code></td><td>Optional exact shopping-list recipe ID.</td></tr>
+                <tr><td><code>include_owned</code></td><td>Include ingredients marked as already owned.</td></tr>
+                <tr><td><code>include_additional_items</code></td><td>Include manually added shopping items.</td></tr>
+              </tbody>
+            </table>
+            <p><strong>Returns:</strong> JSON containing recipe groups, a flat ingredient list, additional items, and summary counts.</p>
+          </section>
+
+          <section class="tool-reference" id="get-meal-plan-week">
+            <p class="section-kicker">Meal planning</p>
+            <h2>get_meal_plan_week</h2>
+            <p><code class="signature">get_meal_plan_week(date: str)</code></p>
+            <p>Reads the rolling seven-day window beginning on the supplied ISO date and resolves private recipe IDs to names and images.</p>
+            <p><strong>Example date:</strong> <code>2026-07-29</code>.</p>
+          </section>
+
+          <section class="tool-reference" id="add-recipes-to-meal-plan">
+            <p class="section-kicker">Meal planning</p>
+            <h2>add_recipes_to_meal_plan</h2>
+            <p><code class="signature">add_recipes_to_meal_plan(date, recipe_ids, recipe_source="auto")</code></p>
+            <table class="reference-table">
+              <thead><tr><th>Parameter</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>date</code></td><td>Target day in <code>YYYY-MM-DD</code> format.</td></tr>
+                <tr><td><code>recipe_ids</code></td><td>Comma, whitespace, or newline-separated IDs.</td></tr>
+                <tr><td><code>recipe_source</code></td><td><code>auto</code>, <code>official</code>, or <code>custom</code>.</td></tr>
+              </tbody>
+            </table>
+            <p>Mixed official and customer IDs are partitioned into the correct Cookidoo calls.</p>
+          </section>
+
+          <section class="tool-reference" id="remove-recipe-from-meal-plan">
+            <p class="section-kicker">Meal planning</p>
+            <h2>remove_recipe_from_meal_plan</h2>
+            <p><code class="signature">remove_recipe_from_meal_plan(date, recipe_id, recipe_source="auto")</code></p>
+            <p>Removes one official or customer recipe from one day and refreshes the resulting day state.</p>
+          </section>
+
+          <section class="tool-reference" id="move-recipe-in-meal-plan">
+            <p class="section-kicker">Meal planning</p>
+            <h2>move_recipe_in_meal_plan</h2>
+            <p><code class="signature">move_recipe_in_meal_plan(recipe_id, from_date, to_date, recipe_source="auto")</code></p>
+            <p>Adds to the target day first, removes from the source second, and rolls back a newly added target entry if source removal fails.</p>
+          </section>
+
+          <section class="tool-reference" id="copy-recipe-to-custom">
+            <p class="section-kicker">Recipe copy</p>
+            <h2>copy_recipe_to_custom</h2>
+            <p><code class="signature">copy_recipe_to_custom(recipe_id: str, servings: int = 4)</code></p>
+            <p>Copies an official recipe into the account’s private customer recipes. The returned copy includes full ingredients and instructions, making it the standard starting point for translation and guided-cooking enhancement.</p>
+            <div class="callout"><strong>This creates account data</strong><p>Delete temporary copies created only for inspection or testing.</p></div>
+          </section>
+
+          <section class="tool-reference" id="generate-recipe-structure">
+            <p class="section-kicker">Recipe generation</p>
+            <h2>generate_recipe_structure</h2>
+            <p><code class="signature">generate_recipe_structure(name, ingredients, steps, servings=4, prep_time=30, total_time=60, hints="")</code></p>
+            <p>Parses newline-separated ingredients and steps, creates a validated recipe model, and returns upload-ready JSON. Input times are minutes; Cookidoo request times are converted to seconds.</p>
+          </section>
+
+          <section class="tool-reference" id="validate-guided-recipe-structure">
+            <p class="section-kicker">Validation</p>
+            <h2>validate_guided_recipe_structure</h2>
+            <p><code class="signature">validate_guided_recipe_structure(recipe_json: str)</code></p>
+            <p>Validates the complete custom-recipe schema, annotation positions, allowed settings, and the mandatory separation between ingredient handling and machine actions.</p>
+          </section>
+
+          <section class="tool-reference" id="calculate-annotation-position">
+            <p class="section-kicker">Validation</p>
+            <h2>calculate_annotation_position</h2>
+            <p><code class="signature">calculate_annotation_position(text, marker, occurrence=1)</code></p>
+            <p>Finds the requested marker occurrence and returns the offset and length in JavaScript UTF-16 code units. Use it whenever emoji or other non-BMP characters may appear before an annotation.</p>
+          </section>
+
+          <section class="tool-reference" id="update-custom-recipe-steps">
+            <p class="section-kicker">Recipe write</p>
+            <h2>update_custom_recipe_steps</h2>
+            <p><code class="signature">update_custom_recipe_steps(recipe_id, steps_json)</code></p>
+            <p>Validates and replaces only the <code>instructions</code> array, preserving all unrelated customer-recipe fields.</p>
+          </section>
+
+          <section class="tool-reference" id="update-custom-recipe-ingredients">
+            <p class="section-kicker">Recipe write</p>
+            <h2>update_custom_recipe_ingredients</h2>
+            <p><code class="signature">update_custom_recipe_ingredients(recipe_id, ingredients_json)</code></p>
+            <p>Validates and replaces only the <code>ingredients</code> array, including supported structured amounts.</p>
+          </section>
+
+          <section class="tool-reference" id="upload-custom-recipe-image">
+            <p class="section-kicker">Image write</p>
+            <h2>upload_custom_recipe_image</h2>
+            <p><code class="signature">upload_custom_recipe_image(recipe_id, image_path)</code></p>
+            <p>Reads a local image, normalizes it to JPEG, obtains Cookidoo’s signed upload authorization, uploads it to the customer-recipe image namespace, and attaches it to the recipe.</p>
+            <div class="callout"><strong>Use an image you own</strong><p>Arbitrary external URLs and official stock-image URLs are not valid customer-recipe image values.</p></div>
+          </section>
+
+          <section class="tool-reference" id="upload-custom-recipe">
+            <p class="section-kicker">Recipe write</p>
+            <h2>upload_custom_recipe</h2>
+            <p><code class="signature">upload_custom_recipe(recipe_json: str)</code></p>
+            <p>Validates a complete recipe object and creates a private customer recipe in Cookidoo using the authenticated account.</p>
+          </section>
+
+          <section>
+            <p class="section-kicker">Machine-readable reference</p>
+            <h2>Use tools.json</h2>
+            <p>Agents and documentation generators can consume the same inventory as structured JSON.</p>
+            <div class="actions"><a class="button button-primary" href="../../tools.json">Open tools.json <span aria-hidden="true">→</span></a><a class="button button-secondary" href="../../raw/tools.md">Raw Markdown</a></div>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <footer class="site-footer"><div class="container footer-grid"><p class="footer-copy">Cookidoo MCP tool reference · Apache 2.0</p><nav class="footer-links" aria-label="Footer navigation"><a href="../">Docs</a><a href="../../llms.txt">AI index</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a></nav></div></footer>
+  </body>
+</html>

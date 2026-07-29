@@ -84,6 +84,17 @@ instead of leaving browser automation as the normal workflow.
   - Unit tests and lint on pull requests and `main`.
 - `.github/workflows/live-api.yml`
   - Scheduled and manually dispatched real-API monitoring.
+- `site/`
+  - Dependency-free GitHub Pages source.
+  - Contains the marketing homepage, presentation, human documentation,
+    `llms.txt`, `llms-full.txt`, raw Markdown, and `tools.json`.
+- `docs/brand-guidelines.md`
+  - Product positioning, messaging hierarchy, voice, and visual identity.
+- `design-system/cookidoo-mcp/MASTER.md`
+  - Generated UI tokens, layout direction, motion rules, and accessibility
+    guardrails for the documentation site.
+- `.github/workflows/pages.yml`
+  - Publishes `site/` to GitHub Pages after relevant changes reach `main`.
 - `requirements.txt`
   - Runtime dependencies.
 - `requirements-dev.txt`
@@ -118,6 +129,28 @@ Run the MCP server:
 ```bash
 venv/bin/fastmcp run server.py
 ```
+
+## Documentation site
+
+The public site is a static, dependency-free GitHub Pages project. Keep source
+files in `site/`; do not add a generated build directory. The deployment
+workflow uploads that directory directly.
+
+The site has two audiences:
+
+- humans use the marketing homepage, the scroll presentation, and the HTML
+  documentation under `site/docs/`;
+- AI clients use `site/llms.txt`, `site/llms-full.txt`, `site/tools.json`, and
+  the raw Markdown under `site/raw/`.
+
+When MCP tools change, update `site/tools.json`, the human tool reference, and
+the AI-readable resources in the same change. `tests/test_docs_site.py`
+compares the JSON catalog with the actual `@mcp.tool()` functions and checks
+local links, sitemap targets, and core accessibility landmarks.
+
+Preserve keyboard navigation, visible focus states, reduced-motion behavior,
+mobile layouts, and readable color contrast. Use semantic HTML and progressive
+enhancement; documentation must remain useful if JavaScript is unavailable.
 
 The process keeps authenticated state in module-level variables. After editing
 `server.py` or `cookidoo_service.py`, restart/reconnect the MCP server. A
