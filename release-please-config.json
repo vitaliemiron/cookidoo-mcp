@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "python",
+  "include-component-in-tag": false,
+  "bootstrap-sha": "638007502453b4cefc7b1dec81b4e57f1ada0f94",
+  "packages": {
+    ".": {
+      "package-name": "cookidoo-mcp",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "fastmcp.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "server.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "server.json",
+          "jsonpath": "$.packages[0].version"
+        }
+      ]
+    }
+  }
+}

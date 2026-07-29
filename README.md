@@ -217,6 +217,8 @@ and the [testing guide](https://vitaliemiron.github.io/cookidoo-mcp/docs/testing
 Tagged releases use PyPI Trusted Publishing. Each GitHub Release also includes
 a CycloneDX software bill of materials (SBOM), while GitHub records signed
 build-provenance and SBOM attestations for its wheel and source archive.
+Release Please prepares version and changelog pull requests from Conventional
+Commit titles; merging a release PR creates the tag that starts publication.
 
 ## Acknowledgments
 

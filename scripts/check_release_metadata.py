@@ -19,6 +19,9 @@ def declared_versions() -> dict[str, str]:
 
     registry = json.loads((ROOT / "server.json").read_text(encoding="utf-8"))
     fastmcp = json.loads((ROOT / "fastmcp.json").read_text(encoding="utf-8"))
+    release_manifest = json.loads(
+        (ROOT / ".release-please-manifest.json").read_text(encoding="utf-8")
+    )
 
     version_module = ast.parse(
         (ROOT / "cookidoo_mcp" / "__init__.py").read_text(encoding="utf-8")
@@ -39,6 +42,7 @@ def declared_versions() -> dict[str, str]:
         "fastmcp.json": fastmcp["version"],
         "server.json": registry["version"],
         "server.json package": registry["packages"][0]["version"],
+        ".release-please-manifest.json": release_manifest["."],
     }
 
 

@@ -61,6 +61,9 @@ leak data or mutate the wrong account should be reported privately.
   moderate-or-higher vulnerabilities.
 - Dependabot checks Python and GitHub Actions dependencies every week.
 - Workflow actions are pinned to immutable commit SHAs.
+- Release Please uses a repository secret to create release pull requests and
+  tags that trigger protected CI; the token is never exposed to pull-request
+  code.
 - Tagged wheel and source distributions receive GitHub build-provenance and
   CycloneDX SBOM attestations; the SBOM is also attached to the GitHub Release.
 - The `main` branch accepts changes through pull requests with required CI and
