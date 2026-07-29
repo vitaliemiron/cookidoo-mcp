@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fffaf2">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="Prata genom måltidsidéer med AI, skapa tydliga Cookidoo-recept, planera din vecka och förbereda ingredienslistor för nästa automatisering.">
+    <meta name="google-site-verification" content="zUXNAhs4gOSJq1AA2QkBhj57cO892lJTUyS6bfln_70">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/sv/">
+    <link rel="alternate" hreflang="en" href="https://vitaliemiron.github.io/cookidoo-mcp/">
+    <link rel="alternate" hreflang="de" href="https://vitaliemiron.github.io/cookidoo-mcp/de/">
+    <link rel="alternate" hreflang="sv" href="https://vitaliemiron.github.io/cookidoo-mcp/sv/">
+    <link rel="alternate" hreflang="ro" href="https://vitaliemiron.github.io/cookidoo-mcp/ro/">
+    <link rel="alternate" hreflang="ru" href="https://vitaliemiron.github.io/cookidoo-mcp/ru/">
+    <link rel="alternate" hreflang="x-default" href="https://vitaliemiron.github.io/cookidoo-mcp/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="sv_SE">
+    <meta property="og:title" content="Cookidoo MCP – från idé till middag">
+    <meta property="og:description" content="Diskutera recept med AI, spara dem till Cookidoo, planera din vecka och skicka ingredienslistor till din nästa automatisering.">
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/sv/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta property="og:image:alt" content="Fem steg från en AI måltid idé genom Cookidoo recept och vecka planering till en butik MCP order.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <title>Cookidoo MCP – från idé till middag</title>
+    <script>
+      document.documentElement.classList.add("js");
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      let initialTheme = systemTheme;
+      try {
+        const saved = localStorage.getItem("cookidoo-mcp-theme");
+        if (saved === "light" || saved === "dark") initialTheme = saved;
+      } catch {}
+      document.documentElement.dataset.theme = initialTheme;
+      document.querySelector('meta[name="theme-color"]').content =
+        initialTheme === "light" ? "#fffaf2" : "#020617";
+    </script>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script defer src="../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Hoppa till huvudinnehållet</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="./" aria-label="Cookidoo MCP startsida">
+          <span class="brand-mark" aria-hidden="true">CM</span>
+          <span class="brand-name">Cookidoo MCP</span>
+        </a>
+        <nav class="primary-nav" data-navigation aria-label="Huvudnavigering">
+          <a href="#how-it-works">Hur det fungerar</a>
+          <a href="../setup/">Setup</a>
+          <a href="../use-cases/">Guider</a>
+          <a href="presentation/">Vår historia</a>
+          <a href="../docs/">För utvecklare</a>
+          <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+        <div class="header-actions">
+          <details class="language-picker" data-language-picker>
+            <summary aria-label="Välj språk">
+              <span aria-hidden="true">SV</span>
+            </summary>
+            <div class="language-menu">
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/" lang="en" hreflang="en" data-language="en">English</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/de/" lang="de" hreflang="de" data-language="de">Deutsch</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/sv/" lang="sv" hreflang="sv" data-language="sv" aria-current="page">Svenska</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/ro/" lang="ro" hreflang="ro" data-language="ro">Română</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/ru/" lang="ru" hreflang="ru" data-language="ru">Русский</a>
+            </div>
+          </details>
+          <button class="nav-button" type="button" data-theme-toggle data-label-system="System" data-label-light="Ljust" data-label-dark="Mörkt" data-aria-template="Tema: {current}. Byt till {next}" data-title-system="Temat följer enhetens inställning" data-title-selected="Temat {current} är valt" aria-label="Temat följer enhetens inställning">System</button>
+          <button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Öppna navigeringen">Menyn</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <div class="eyebrow-row" data-reveal>
+              <p class="eyebrow">Din AI och Cookidoo – sammankopplade</p>
+              <details class="help">
+                <summary aria-label="Vad betyder ansluten?">?</summary>
+                <div class="help-panel">
+                  <strong>För tekniskt intresserade</strong>
+                  <p>En AI-klient kallar denna MCP-server verktyg för att arbeta med användarens Cookidoo-konto. Det är en inofficiell öppen källkod integration.</p>
+                </div>
+              </details>
+            </div>
+            <h1 data-reveal style="--reveal-delay: 60ms">Från idé till middag.</h1>
+            <p class="hero-copy" data-reveal style="--reveal-delay: 120ms">
+              Berätta vad du är sugen på. Låt AI göra det till ett tydligt Cookidoo-recept, lägga in det i veckan och förbereda ingredienslistan.
+            </p>
+            <div class="actions" data-reveal style="--reveal-delay: 180ms">
+              <a class="button button-primary" href="#how-it-works">Se hur det fungerar <span aria-hidden="true">↓</span></a>
+              <a class="button button-secondary" href="../setup/">Ställ in min assistent</a>
+            </div>
+            <p class="hero-note" data-reveal style="--reveal-delay: 220ms">
+              Du väljer maten och godkänner ändringarna. Assistenten hanterar repetitiva steg.
+            </p>
+          </div>
+
+          <div class="journey-card" id="how-it-works" data-reveal aria-labelledby="journey-title">
+            <div class="journey-heading">
+              <div>
+                <span class="journey-kicker">En konversation, tydliga steg</span>
+                <h2 id="journey-title">Hur din idé rör sig</h2>
+              </div>
+              <details class="help help-align-end">
+                <summary aria-label="Hur fungerar denna process tekniskt?">?</summary>
+                <div class="help-panel">
+                  <strong>Det här händer i bakgrunden</strong>
+                  <p>Steg 2–4 använder Cookidoo MCP-verktyg. Steg 5 är en handoff: en livsmedelsbutik MCP kan söka produkter och göra en beställning.</p>
+                </div>
+              </details>
+            </div>
+            <ol class="journey-stepper">
+              <li>
+                <span class="journey-number">1</span>
+                <div>
+                  <span class="journey-owner owner-ai">AI-samtal</span>
+                  <strong>Hitta en idé</strong>
+                  <p>Beskriv ett begär, ett mål eller dela en receptlänk.</p>
+                </div>
+              </li>
+              <li>
+                <span class="journey-number">2</span>
+                <div>
+                  <span class="journey-owner owner-cookidoo">Cookidoo MCP</span>
+                  <strong>Gör receptet ditt</strong>
+                  <p>Översätt det, gör stegen tydligare och spara den.</p>
+                </div>
+              </li>
+              <li>
+                <span class="journey-number">3</span>
+                <div>
+                  <span class="journey-owner owner-cookidoo">Cookidoo MCP</span>
+                  <strong>Planera din vecka</strong>
+                  <p>Lägg till måltiden till dagen som fungerar för dig.</p>
+                </div>
+              </li>
+              <li>
+                <span class="journey-number">4</span>
+                <div>
+                  <span class="journey-owner owner-cookidoo">Cookidoo MCP</span>
+                  <strong>Förbered listan</strong>
+                  <p>Samla ingredienserna samtidigt som du håller receptkontexten.</p>
+                </div>
+              </li>
+              <li class="journey-handoff">
+                <span class="journey-number">5</span>
+                <div>
+                  <span class="journey-owner owner-other">En annan MCP</span>
+                  <strong>Beställ när du är redo</strong>
+                  <p>Hantera listan till en automatisering av livsmedelsbutiker.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section aria-label="Projektmetri">
+        <div class="container metrics">
+          <div class="metric">
+            <span class="metric-value" data-counter="16">16</span>
+            <span class="metric-label">färdiga åtgärder för assistenten</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value" data-counter="5">5</span>
+            <span class="metric-label">verkliga anslutningskontroller</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value" data-counter="7" data-suffix=" dagar">7 dagar</span>
+            <span class="metric-label">Veckoplaneringsfönstret</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value" data-counter="1" data-suffix="×">1×</span>
+            <span class="metric-label">Automatisk hälsokontroll varje dag</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="why">
+        <div class="container split">
+          <div class="split-heading" data-reveal>
+            <p class="section-kicker">Varför det existerar</p>
+            <h2>En receptidé ska inte bli administrativt arbete.</h2>
+          </div>
+          <div class="split-content" data-reveal style="--reveal-delay: 90ms">
+            <p class="section-intro">
+              Den trevliga delen är att välja och laga mat. Kopiera detaljer, översätta steg, uppdatera en kalender och bygga en inköpslista bör inte ta över.
+            </p>
+            <ol class="problem-list">
+              <li>
+                <span class="index">01</span>
+                <span><strong>Idéer kommer överallt.</strong>Cookidoo, bloggar, skärmdumpar, vänner och andra språk.</span>
+              </li>
+              <li>
+                <span class="index">02</span>
+                <span><strong>Användbara recept behöver tydliga steg.</strong>Speciellt när du lagar något för första gången.</span>
+              </li>
+              <li>
+                <span class="index">03</span>
+                <span><strong>En idé är ännu inte en plan.</strong>Måltiden behöver fortfarande en dag och en komplett ingredienslista.</span>
+              </li>
+              <li>
+                <span class="index">04</span>
+                <span><strong>Anslutningar kan förändras.</strong>Dagliga kontroller hjälper till att fånga problem innan de överraskar dig.</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="automations">
+        <div class="container">
+          <p class="section-kicker" data-reveal>Vad det kan göra</p>
+          <h2 class="reading" data-reveal>Mindre kopiering. Mer matlagning.</h2>
+          <p class="section-intro" data-reveal>
+            Du håller besluten. Assistenten hjälper till att bära dem från en idé till Cookidoo, din veckoplan och din ingredienslista.
+          </p>
+
+          <div class="bento">
+            <article class="card card-wide card-accent" data-reveal>
+              <span class="card-number">01 / Inspiration</span>
+              <h3>Förvandla "det ser bra ut" till något du faktiskt kan laga.</h3>
+              <p>
+                Ta med ett recept från Cookidoo eller en annan källa, översätt det och anpassa det till dina preferenser.
+              </p>
+            </article>
+            <article class="card" data-reveal style="--reveal-delay: 40ms">
+              <span class="card-number">02 / Klaritet</span>
+              <h3>Gör varje steg enklare för en nybörjare.</h3>
+              <p>Separat lägga till ingredienser från blandning eller matlagning, så varje åtgärd är lätt att följa.</p>
+            </article>
+            <article class="card" data-reveal>
+              <span class="card-number">03 / Hälsa</span>
+              <h3>Flytta hälsosamma avsikter till en praktisk vecka.</h3>
+              <p>Förvandla goda avsikter till måltider du kan se på en riktig veckoplan.</p>
+            </article>
+            <article class="card card-wide" data-reveal style="--reveal-delay: 40ms">
+              <span class="card-number">04 / Gratis tid</span>
+              <h3>Sluta flytta samma information från plats till plats.</h3>
+              <p>
+                Diskutera, anpassa, spara, schemalägga och samla ingredienser från en konversation. Exakt tid sparad beror på din rutin.
+              </p>
+            </article>
+            <article class="card card-wide" data-reveal>
+              <span class="card-number">05 / GUIDAD MATLAGNING</span>
+              <h3>Håll Thermomix-inställningar kopplade till rätt steg.</h3>
+              <p>Tid, temperatur, hastighet, omvänd, vägning och stödda matlagningslägen förblir explicit.</p>
+            </article>
+            <article class="card" data-reveal style="--reveal-delay: 40ms">
+              <span class="card-number">06 / OWNERSHIP</span>
+              <h3>Lägg till bilden som gör ett personligt recept känns komplett.</h3>
+              <p>Lägg till ett foto du äger, så ett personligt recept är lätt att känna igen senare.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <p class="section-kicker" data-reveal>Cookidoo delen</p>
+          <h2 class="reading" data-reveal>En hjälpare för hela veckan.</h2>
+          <p class="section-intro" data-reveal>
+            Använd bara det steg du behöver, eller låt assistenten ansluta dem till ett flöde.
+          </p>
+          <div class="workflow">
+            <article class="workflow-step" data-reveal>
+              <h3>Diskutera</h3>
+              <p>Börja med vad du känner för att äta eller ett recept du hittade.</p>
+            </article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 40ms">
+              <h3>Skapa</h3>
+              <p>Översätt, ändra storlek, klargöra och spara receptet.</p>
+            </article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 80ms">
+              <h3>Prepare</h3>
+              <p>Gör stegen och Thermomix inställningarna lätt att följa.</p>
+            </article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 120ms">
+              <h3>Planplan</h3>
+              <p>Placera måltiden på dagen som passar ditt schema.</p>
+            </article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 160ms">
+              <h3>Hand Off</h3>
+              <p>Förbered ingredienser för en shopping eller beställning automation.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="reliability">
+        <div class="container">
+          <p class="section-kicker" data-reveal>Säker och förutsägbar</p>
+          <h2 class="reading" data-reveal>Du behåller kontrollen.</h2>
+          <div class="trust-grid">
+            <article class="trust-item" data-reveal>
+              <h3>Din inloggning är privat.</h3>
+              <p>Den lagras i din miljö, aldrig i projektkoden.</p>
+              <details class="help">
+                <summary aria-label="Hur skyddas inloggningen?">?</summary>
+                <div class="help-panel"><strong>Teknisk detalj</strong><p>Lokal användning läser miljövariabler. Automatiserade tester använder krypterade GitHub Secrets.</p></div>
+              </details>
+            </article>
+            <article class="trust-item" data-reveal style="--reveal-delay: 50ms">
+              <h3>Förändringar kontrolleras innan du sparar.</h3>
+              <p>Receptsteg valideras så att åtgärder inte blandas ihop.</p>
+              <details class="help">
+                <summary aria-label="Hur valideras receptförändringar?">?</summary>
+                <div class="help-panel"><strong>Teknisk detalj</strong><p>Pydantic kontrollerar annoteringsintervall, UTF-16 positioner och ingrediens/action separation.</p></div>
+              </details>
+            </article>
+            <article class="trust-item" data-reveal style="--reveal-delay: 100ms">
+              <h3>Dagliga kontroller letar efter brutna anslutningar.</h3>
+              <p>Om Cookidoo ändras får underhållarna en tydlig varning.</p>
+              <details class="help help-align-end">
+                <summary aria-label="Hur identifieras Cookidoo förändringar?">?</summary>
+                <div class="help-panel"><strong>Teknisk detalj</strong><p>Fem autentiserade API-kontrakt löper dagligen och öppnar en regressionsfråga om misslyckande.</p></div>
+              </details>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="cta-panel" data-reveal>
+            <div>
+              <p class="section-kicker">Börja med en idé</p>
+              <h2>Vad vill du laga mat?</h2>
+            </div>
+            <div class="actions">
+              <a class="button button-primary" href="../setup/">Ställ in assistenten <span aria-hidden="true">→</span></a>
+              <a class="button button-secondary" href="presentation/">Se hela historien</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="./">
+            <span class="brand-mark" aria-hidden="true">CM</span>
+            <span>Cookidoo MCP</span>
+          </a>
+          <p class="footer-copy">
+            Ett inofficiellt open-source-projekt. Inte ansluten till eller godkänd av Vorwerk, Thermomix eller Cookidoo.
+          </p>
+        </div>
+        <nav class="footer-links" aria-label="Sidfotsnavigering">
+          <a href="../setup/">Setup guide</a>
+          <a href="../docs/">Dokumentation</a>
+          <a href="../use-cases/">Praktiska guider</a>
+          <a href="presentation/">Presentation</a>
+          <a href="../llms.txt">llms.txt</a>
+          <a href="../tools.json">tools.json</a>
+          <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

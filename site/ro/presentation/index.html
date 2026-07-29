@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fffaf2">
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="Povestea din spatele Cookidoo MCP: mai puțină administrare bucătărie, mai mult loc pentru alimente sănătoase, inspirație, și timp.">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/ro/presentation/">
+    <link rel="alternate" hreflang="en" href="https://vitaliemiron.github.io/cookidoo-mcp/presentation/">
+    <link rel="alternate" hreflang="de" href="https://vitaliemiron.github.io/cookidoo-mcp/de/presentation/">
+    <link rel="alternate" hreflang="sv" href="https://vitaliemiron.github.io/cookidoo-mcp/sv/presentation/">
+    <link rel="alternate" hreflang="ro" href="https://vitaliemiron.github.io/cookidoo-mcp/ro/presentation/">
+    <link rel="alternate" hreflang="ru" href="https://vitaliemiron.github.io/cookidoo-mcp/ru/presentation/">
+    <link rel="alternate" hreflang="x-default" href="https://vitaliemiron.github.io/cookidoo-mcp/presentation/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ro_RO">
+    <meta property="og:title" content="De ce există Cookidoo MCP">
+    <meta property="og:description" content="O poveste vizuală despre conectarea inspirației, gătit, planificare și cumpărături.">
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/ro/presentation/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta property="og:image:alt" content="Cinci pași de la o idee de masă AI prin rețeta Cookidoo și planificarea săptămânii la o comandă magazin MCP.">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>De ce există Cookidoo MCP – o poveste vizuală</title>
+    <script>
+      document.documentElement.classList.add("js");
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      let initialTheme = systemTheme;
+      try {
+        const saved = localStorage.getItem("cookidoo-mcp-theme");
+        if (saved === "light" || saved === "dark") initialTheme = saved;
+      } catch {}
+      document.documentElement.dataset.theme = initialTheme;
+      document.querySelector('meta[name="theme-color"]').content =
+        initialTheme === "light" ? "#fffaf2" : "#020617";
+    </script>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script defer src="../../assets/site.js"></script>
+  </head>
+  <body class="presentation-body">
+    <a class="skip-link" href="#main">Sari la conținutul prezentării</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="../" aria-label="Pagina principală Cookidoo MCP">
+          <span class="brand-mark" aria-hidden="true">CM</span>
+          <span class="brand-name">Cookidoo MCP</span>
+        </a>
+        <nav class="primary-nav" data-navigation aria-label="Navigare principală">
+          <a href="../">Acasã</a>
+          <a href="./" aria-current="page">Poveste</a>
+          <a href="../../docs/">Docuri</a>
+          <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+        <div class="header-actions">
+          <details class="language-picker" data-language-picker>
+            <summary aria-label="Alege limba">
+              <span aria-hidden="true">RO</span>
+            </summary>
+            <div class="language-menu">
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/presentation/" lang="en" hreflang="en" data-language="en">English</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/de/presentation/" lang="de" hreflang="de" data-language="de">Deutsch</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/sv/presentation/" lang="sv" hreflang="sv" data-language="sv">Svenska</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/ro/presentation/" lang="ro" hreflang="ro" data-language="ro" aria-current="page">Română</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/ru/presentation/" lang="ru" hreflang="ru" data-language="ru">Русский</a>
+            </div>
+          </details>
+          <button class="nav-button" type="button" data-theme-toggle data-label-system="Sistem" data-label-light="Luminos" data-label-dark="Întunecat" data-aria-template="Temă: {current}. Comută la {next}" data-title-system="Tema urmează setarea dispozitivului" data-title-selected="Tema {current} este selectată" aria-label="Tema urmează setarea dispozitivului">Sistem</button>
+          <button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Deschide navigarea">Meniu</button>
+        </div>
+      </div>
+    </header>
+
+    <nav class="presentation-progress" data-story-progress aria-label="Progresul prezentării">
+      <a href="#opening" aria-label="Du-te la diapozitiv 1" aria-current="step"></a>
+      <a href="#friction" aria-label="Du-te la diapozitiv 2"></a>
+      <a href="#principle" aria-label="Du-te la diapozitiv 3"></a>
+      <a href="#system" aria-label="Du-te la diapozitiv 4"></a>
+      <a href="#outcomes" aria-label="Du-te la alunecare 5"></a>
+      <a href="#proof" aria-label="Du-te la diapozitiv 6"></a>
+      <a href="#reliability" aria-label="Du-te la diapozitiv 7"></a>
+      <a href="#finale" aria-label="Du-te la diapozitiv 8"></a>
+    </nav>
+
+    <main id="main" class="story">
+      <section class="story-frame story-frame-accent is-active" id="opening">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>01 / Întrebarea</p>
+            <h1 data-reveal style="--reveal-delay: 70ms">Cum ar fi dacă întrebarea „ce gătim la cină?” nu ar începe cu muncă administrativă digitală?</h1>
+            <p data-reveal style="--reveal-delay: 140ms">
+              Gătitul poate fi creativ, sănătos, reconfortant sau pur şi simplu necesar. Copierea datelor între rețete, calendare, și liste este nici unul dintre aceste lucruri.
+            </p>
+            <div class="actions" data-reveal style="--reveal-delay: 210ms">
+              <a class="button button-primary" href="#friction">Începe povestea <span aria-hidden="true">↓</span></a>
+              <a class="button button-secondary" href="../../docs/">Vezi documentația</a>
+            </div>
+          </div>
+          <div class="story-aside" aria-hidden="true">
+            <div class="story-number">?</div>
+            <p class="story-caption">Folosește tastele săgeată sau defilează</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-sky" id="friction">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>02 / Fracţiunea</p>
+            <h2 data-reveal>Inspiraţia trăieşte peste tot. Execuţia trăieşte în detalii.</h2>
+            <p data-reveal>
+              O rețetă promițătoare poate veni de la Cookidoo, o altă limbă, un blog de sănătate, sau o captură de ecran. Făcând-o utilizabilă înseamnă a transporta intenţii prin fiecare predare.
+            </p>
+          </div>
+          <div class="story-aside" data-reveal>
+            <ol class="story-list">
+              <li><strong>Caută</strong><span>ideea</span></li>
+              <li><strong>Copiază</strong><span>Rețeta completă</span></li>
+              <li><strong>Adaptare</strong><span>limbă și porțiuni</span></li>
+              <li><strong>Structura</strong><span>acțiuni ghidate</span></li>
+              <li><strong>Plan</strong><span>Ziua potrivită</span></li>
+              <li><strong>Colectează</strong><span>ce să cumpere</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame" id="principle">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>03 / Principiul</p>
+            <h2 data-reveal>Automatizează transferurile. Păstrează deciziile la om.</h2>
+            <p data-reveal>
+              Scopul nu este de a elimina alegerea de la gătit. Este de a elimina copierea repetată, reformarea și navigarea care se află între o idee bună și o masă.
+            </p>
+          </div>
+          <div class="story-aside" data-reveal>
+            <div class="story-number">1</div>
+            <p class="story-caption">Conversație conectată pe parcursul fluxului de lucru</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-accent" id="system">
+        <div class="container">
+          <p class="eyebrow" data-reveal>04 / Sistemul</p>
+          <h2 class="reading" data-reveal>Cinci etape. Un pod deschis.</h2>
+          <div class="workflow">
+            <article class="workflow-step" data-reveal><h3>Descoperă</h3><p>Începe cu o reţetă sau inspiraţie.</p></article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 40ms"><h3>Adaptare</h3><p>Tradu, redimensionează şi clarifică.</p></article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 80ms"><h3>Cook</h3><p>Model setările ghidate precis.</p></article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 120ms"><h3>Plan</h3><p>Coordonează calendarul de şapte zile.</p></article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 160ms"><h3>Comerţ</h3><p>Citiți ingrediente în contextul rețetei.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-sky" id="outcomes">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>05 / Rezultatele</p>
+            <h2 data-reveal>Timpul este doar un lucru pe care automatizarea îl poate da înapoi.</h2>
+            <p data-reveal>
+              Acelaşi flux de lucru conectat poate susţine intenţii mai sănătoase, instrucţiuni mai clare şi mai mult spaţiu pentru a încerca ceva nefamiliar.
+            </p>
+          </div>
+          <div class="story-aside">
+            <div class="outcome-grid">
+              <article class="outcome" data-reveal><span>TIMP</span><h3>Mai puține oferte repetitive</h3><p>Coordonați sarcinile fără a muta aceleași informații manual.</p></article>
+              <article class="outcome" data-reveal style="--reveal-delay: 40ms"><span>Sănătate</span><h3>Intenţia devine un plan.</h3><p>Mutați rețete utile într-o săptămână vizibilă și lista de ingrediente.</p></article>
+              <article class="outcome" data-reveal style="--reveal-delay: 80ms"><span>CLARITY</span><h3>Pașii predau în timp ce ghidează</h3><p>Separat de manipulare ingredient de fiecare acțiune mașină.</p></article>
+              <article class="outcome" data-reveal style="--reveal-delay: 120ms"><span>INSPIRATIE</span><h3>Ideile călătoresc mai departe</h3><p>Adaptați rețete din alte limbi și surse.</p></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame" id="proof">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>06 / Dovada</p>
+            <h2 data-reveal>Numere mici, concrete. Capacitati reale.</h2>
+            <p data-reveal>
+              Acestea sunt date despre depozit, nu statistici despre impact. Timpul personal salvat depinde de modul în care fiecare persoană găteşte şi planifică.
+            </p>
+          </div>
+          <div class="story-aside" data-reveal>
+            <ol class="story-list">
+              <li><strong>16</strong><span>Unelte MCP</span></li>
+              <li><strong>5</strong><span>contracte API în viață</span></li>
+              <li><strong>7</strong><span>zile în fiecare fereastră de planificare</span></li>
+              <li><strong>1×</strong><span>monitor de regresie zilnică</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-sky" id="reliability">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>07 / Responsabilitatea</p>
+            <h2 data-reveal>Când un API neoficial se schimbă, tăcerea nu este fiabilitate.</h2>
+            <p data-reveal>
+              Cookidoo se poate modifica fără preaviz. Proiectul efectuează teste contractuale autentificate în fiecare zi, creează o problemă de regresie a eșecului și îl închide după recuperare.
+            </p>
+          </div>
+          <div class="story-aside" data-reveal>
+            <div class="story-number">24h</div>
+            <p class="story-caption">ritm de monitorizare, cu acreditări CI criptate</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-accent" id="finale">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>08 / Invitația</p>
+            <h2 data-reveal>Adu preferințele, restricțiile și ideile tale. Lasă fluxul de lucru să lege singur pașii.</h2>
+            <p data-reveal>
+              Cookidoo MCP este open source, explicit despre limitele sale, și gata să fie extinse de oameni care doresc un flux de lucru mai capabil bucătărie.
+            </p>
+            <div class="actions" data-reveal>
+              <a class="button button-primary" href="../../docs/">Construiește cu MCP <span aria-hidden="true">→</span></a>
+              <a class="button button-secondary" href="https://github.com/vitaliemiron/cookidoo-mcp">Explorează sursa</a>
+            </div>
+          </div>
+          <div class="story-aside" data-reveal>
+            <div class="story-number">→</div>
+            <p class="story-caption">de la intenția de a o masă puteți face</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

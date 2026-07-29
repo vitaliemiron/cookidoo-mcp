@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fffaf2">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="Sprechen Sie mit AI über Essensideen, erstellen Sie klare Cookidoo-Rezepte, planen Sie Ihre Woche und erstellen Sie Zutatenlisten für die nächste Automatisierung.">
+    <meta name="google-site-verification" content="zUXNAhs4gOSJq1AA2QkBhj57cO892lJTUyS6bfln_70">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/de/">
+    <link rel="alternate" hreflang="en" href="https://vitaliemiron.github.io/cookidoo-mcp/">
+    <link rel="alternate" hreflang="de" href="https://vitaliemiron.github.io/cookidoo-mcp/de/">
+    <link rel="alternate" hreflang="sv" href="https://vitaliemiron.github.io/cookidoo-mcp/sv/">
+    <link rel="alternate" hreflang="ro" href="https://vitaliemiron.github.io/cookidoo-mcp/ro/">
+    <link rel="alternate" hreflang="ru" href="https://vitaliemiron.github.io/cookidoo-mcp/ru/">
+    <link rel="alternate" hreflang="x-default" href="https://vitaliemiron.github.io/cookidoo-mcp/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:title" content="Cookidoo MCP – von der Idee zum Abendessen">
+    <meta property="og:description" content="Besprechen Sie Rezepte mit KI, speichern Sie sie in Cookidoo, planen Sie Ihre Woche und übergeben Sie Zutatenlisten an Ihre nächste Automatisierung.">
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/de/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta property="og:image:alt" content="Fünf Schritte von einer KI-Mahlzeitidee über das Cookidoo-Rezept und die Wochenplanung bis hin zu einer MCP-Bestellung.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <title>Cookidoo MCP – von der Idee zum Abendessen</title>
+    <script>
+      document.documentElement.classList.add("js");
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      let initialTheme = systemTheme;
+      try {
+        const saved = localStorage.getItem("cookidoo-mcp-theme");
+        if (saved === "light" || saved === "dark") initialTheme = saved;
+      } catch {}
+      document.documentElement.dataset.theme = initialTheme;
+      document.querySelector('meta[name="theme-color"]').content =
+        initialTheme === "light" ? "#fffaf2" : "#020617";
+    </script>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script defer src="../assets/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Zum Hauptinhalt springen</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="./" aria-label="Cookidoo-MCP-Startseite">
+          <span class="brand-mark" aria-hidden="true">CM</span>
+          <span class="brand-name">Cookidoo MCP</span>
+        </a>
+        <nav class="primary-nav" data-navigation aria-label="Hauptnavigation">
+          <a href="#how-it-works">Wie es funktioniert</a>
+          <a href="../setup/">Einrichtung</a>
+          <a href="../use-cases/">Leitfäden</a>
+          <a href="presentation/">Unsere Geschichte</a>
+          <a href="../docs/">für Entwickler</a>
+          <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+        <div class="header-actions">
+          <details class="language-picker" data-language-picker>
+            <summary aria-label="Sprache auswählen">
+              <span aria-hidden="true">DE</span>
+            </summary>
+            <div class="language-menu">
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/" lang="en" hreflang="en" data-language="en">English</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/de/" lang="de" hreflang="de" data-language="de" aria-current="page">Deutsch</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/sv/" lang="sv" hreflang="sv" data-language="sv">Svenska</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/ro/" lang="ro" hreflang="ro" data-language="ro">Română</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/ru/" lang="ru" hreflang="ru" data-language="ru">Русский</a>
+            </div>
+          </details>
+          <button class="nav-button" type="button" data-theme-toggle data-label-system="System" data-label-light="Hell" data-label-dark="Dunkel" data-aria-template="Darstellung: {current}. Zu {next} wechseln" data-title-system="Darstellung folgt dem Gerät" data-title-selected="Darstellung {current} ausgewählt" aria-label="Darstellung folgt dem Gerät">System</button>
+          <button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Navigation öffnen">Menü</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <div class="eyebrow-row" data-reveal>
+              <p class="eyebrow">KI und Cookidoo – miteinander verbunden</p>
+              <details class="help">
+                <summary aria-label="Was bedeutet Connected?">?</summary>
+                <div class="help-panel">
+                  <strong>Für technisch Interessierte</strong>
+                  <p>Ein KI-Client ruft die Tools dieses MCP-Servers auf, um mit dem Cookidoo-Konto des Benutzers zu arbeiten. Es ist eine inoffizielle Open-Source-Integration.</p>
+                </div>
+              </details>
+            </div>
+            <h1 data-reveal style="--reveal-delay: 60ms">Von der Idee zum Abendessen.</h1>
+            <p class="hero-copy" data-reveal style="--reveal-delay: 120ms">
+              Sag, worauf du Appetit hast. Die KI macht daraus ein klares Cookidoo-Rezept, plant es in deiner Woche ein und bereitet die Zutatenliste vor.
+            </p>
+            <div class="actions" data-reveal style="--reveal-delay: 180ms">
+              <a class="button button-primary" href="#how-it-works">Sehen Sie, wie es funktioniert <span aria-hidden="true">↓</span></a>
+              <a class="button button-secondary" href="../setup/">Meinen Assistenten einrichten</a>
+            </div>
+            <p class="hero-note" data-reveal style="--reveal-delay: 220ms">
+              Sie wählen das Essen und genehmigen die Änderungen. Der Assistent übernimmt die sich wiederholenden Schritte.
+            </p>
+          </div>
+
+          <div class="journey-card" id="how-it-works" data-reveal aria-labelledby="journey-title">
+            <div class="journey-heading">
+              <div>
+                <span class="journey-kicker">Ein Gespräch, klare Schritte</span>
+                <h2 id="journey-title">Wie sich Ihre Idee bewegt</h2>
+              </div>
+              <details class="help help-align-end">
+                <summary aria-label="Wie funktioniert dieser Prozess technisch?">?</summary>
+                <div class="help-panel">
+                  <strong>Was im Hintergrund passiert</strong>
+                  <p>In den Schritten 2-4 werden Cookidoo MCP-Tools verwendet. Schritt 5 ist eine Übergabe: Ein Lebensmittelgeschäft MCP kann Produkte durchsuchen und eine Bestellung aufgeben.</p>
+                </div>
+              </details>
+            </div>
+            <ol class="journey-stepper">
+              <li>
+                <span class="journey-number">1</span>
+                <div>
+                  <span class="journey-owner owner-ai">KI-Gespräch</span>
+                  <strong>Finde eine Idee</strong>
+                  <p>Beschreiben Sie ein Verlangen, ein Ziel oder teilen Sie einen Rezeptlink.</p>
+                </div>
+              </li>
+              <li>
+                <span class="journey-number">2</span>
+                <div>
+                  <span class="journey-owner owner-cookidoo">Cookidoo MCP</span>
+                  <strong>Machen Sie das Rezept Ihr</strong>
+                  <p>Übersetzen Sie es, machen Sie die Schritte klarer und speichern Sie es.</p>
+                </div>
+              </li>
+              <li>
+                <span class="journey-number">3</span>
+                <div>
+                  <span class="journey-owner owner-cookidoo">Cookidoo MCP</span>
+                  <strong>Planen Sie Ihre Woche</strong>
+                  <p>Fügen Sie die Mahlzeit zu dem Tag hinzu, der für Sie arbeitet.</p>
+                </div>
+              </li>
+              <li>
+                <span class="journey-number">4</span>
+                <div>
+                  <span class="journey-owner owner-cookidoo">Cookidoo MCP</span>
+                  <strong>Erstellung der Liste</strong>
+                  <p>Sammeln Sie die Zutaten, während Sie den Rezeptkontext beibehalten.</p>
+                </div>
+              </li>
+              <li class="journey-handoff">
+                <span class="journey-number">5</span>
+                <div>
+                  <span class="journey-owner owner-other">Weitere MCP</span>
+                  <strong>Bestellen, wenn Sie bereit sind</strong>
+                  <p>Geben Sie die Liste einer Automatisierung für Lebensmittelgeschäfte.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section aria-label="Projektmetriken">
+        <div class="container metrics">
+          <div class="metric">
+            <span class="metric-value" data-counter="16">16</span>
+            <span class="metric-label">fertige Aktionen für den Assistenten</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value" data-counter="5">5</span>
+            <span class="metric-label">Reale Anschlussprüfungen</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value" data-counter="7" data-suffix=" Tage">7 Tage</span>
+            <span class="metric-label">Wochenplanungsfenster</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value" data-counter="1" data-suffix="×">1×</span>
+            <span class="metric-label">automatischer Gesundheitscheck jeden Tag</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="why">
+        <div class="container split">
+          <div class="split-heading" data-reveal>
+            <p class="section-kicker">Warum es existiert</p>
+            <h2>Eine Rezeptidee sollte nicht in Verwaltungsaufwand enden.</h2>
+          </div>
+          <div class="split-content" data-reveal style="--reveal-delay: 90ms">
+            <p class="section-intro">
+              Der angenehme Teil ist die Auswahl und das Kochen von Speisen. Das Kopieren von Details, das Übersetzen von Schritten, das Aktualisieren eines Kalenders und das Wiederaufbauen einer Einkaufsliste sollten nicht übernommen werden.
+            </p>
+            <ol class="problem-list">
+              <li>
+                <span class="index">01</span>
+                <span><strong>Ideen kommen von überall her.</strong>Cookidoo, Blogs, Screenshots, Freunde und andere Sprachen.</span>
+              </li>
+              <li>
+                <span class="index">02</span>
+                <span><strong>Nützliche Rezepte brauchen klare Schritte.</strong>Vor allem, wenn man zum ersten Mal etwas kocht.</span>
+              </li>
+              <li>
+                <span class="index">03</span>
+                <span><strong>Eine Idee ist noch kein Plan.</strong>Die Mahlzeit braucht noch einen Tag und eine vollständige Zutatenliste.</span>
+              </li>
+              <li>
+                <span class="index">04</span>
+                <span><strong>Verbindungen können sich ändern.</strong>Tägliche Kontrollen helfen, Probleme zu erkennen, bevor sie Sie überraschen.</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="automations">
+        <div class="container">
+          <p class="section-kicker" data-reveal>Was sie tun kann</p>
+          <h2 class="reading" data-reveal>Weniger kopieren. Mehr kochen.</h2>
+          <p class="section-intro" data-reveal>
+            Sie halten die Entscheidungen. Der Assistent hilft, sie von einer Idee in Cookidoo, Ihren Wochenplan und Ihre Zutatenliste zu tragen.
+          </p>
+
+          <div class="bento">
+            <article class="card card-wide card-accent" data-reveal>
+              <span class="card-number">01/INSPIRATION</span>
+              <h3>Verwandeln Sie "das sieht gut aus" in etwas, das Sie tatsächlich kochen können.</h3>
+              <p>
+                Bringen Sie ein Rezept aus Cookidoo oder einer anderen Quelle mit, übersetzen Sie es und passen Sie es Ihren Vorlieben an.
+              </p>
+            </article>
+            <article class="card" data-reveal style="--reveal-delay: 40ms">
+              <span class="card-number">02/KLARITÄT</span>
+              <h3>Machen Sie jeden Schritt einfacher für einen Anfänger.</h3>
+              <p>Trennen Sie das Hinzufügen von Zutaten vom Mischen oder Kochen, so dass jede Aktion leicht zu befolgen ist.</p>
+            </article>
+            <article class="card" data-reveal>
+              <span class="card-number">03 / HEALTH</span>
+              <h3>Bewegen Sie gesunde Absichten in eine praktische Woche.</h3>
+              <p>Verwandeln Sie gute Absichten in Mahlzeiten, die Sie auf einem echten Wochenplan sehen können.</p>
+            </article>
+            <article class="card card-wide" data-reveal style="--reveal-delay: 40ms">
+              <span class="card-number">04 / FREI ZEIT</span>
+              <h3>Hören Sie auf, die gleichen Informationen von Ort zu Ort zu bewegen.</h3>
+              <p>
+                Besprechen, anpassen, speichern, planen und sammeln Sie Zutaten aus einem Gespräch. Genaue Zeit gespart hängt von Ihrer Routine.
+              </p>
+            </article>
+            <article class="card card-wide" data-reveal>
+              <span class="card-number">05 / GEFÜHRTES KOCHEN</span>
+              <h3>Halten Sie die Thermomix-Einstellungen an den richtigen Schritt gebunden.</h3>
+              <p>Zeit, Temperatur, Geschwindigkeit, Rückwärtsbewegung, Wiegen und unterstützte Kochmodi bleiben explizit.</p>
+            </article>
+            <article class="card" data-reveal style="--reveal-delay: 40ms">
+              <span class="card-number">06 / EIGENTUM</span>
+              <h3>Fügen Sie das Bild hinzu, mit dem sich ein persönliches Rezept vollständig anfühlt.</h3>
+              <p>Fügen Sie ein Foto hinzu, das Sie besitzen, so dass ein persönliches Rezept später leicht zu erkennen ist.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <p class="section-kicker" data-reveal>Der Cookidoo Teil</p>
+          <h2 class="reading" data-reveal>Ein Helfer für die ganze Woche.</h2>
+          <p class="section-intro" data-reveal>
+            Verwenden Sie nur den Schritt, den Sie benötigen, oder lassen Sie den Assistenten sie in einem Fluss verbinden.
+          </p>
+          <div class="workflow">
+            <article class="workflow-step" data-reveal>
+              <h3>Diskussion</h3>
+              <p>Beginnen Sie mit dem, was Sie essen möchten, oder einem Rezept, das Sie gefunden haben.</p>
+            </article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 40ms">
+              <h3>Schaffen</h3>
+              <p>Übersetzen, Größe ändern, klären und speichern Sie das Rezept.</p>
+            </article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 80ms">
+              <h3>Zubereitung</h3>
+              <p>Machen Sie die Schritte und Thermomix Einstellungen einfach zu folgen.</p>
+            </article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 120ms">
+              <h3>Plan</h3>
+              <p>Legen Sie die Mahlzeit an dem Tag, der Ihrem Zeitplan entspricht.</p>
+            </article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 160ms">
+              <h3>Hand weg</h3>
+              <p>Bereiten Sie Zutaten für eine Einkaufs- oder Bestellautomatisierung vor.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="reliability">
+        <div class="container">
+          <p class="section-kicker" data-reveal>Sicher und berechenbar</p>
+          <h2 class="reading" data-reveal>Du behältst die Kontrolle.</h2>
+          <div class="trust-grid">
+            <article class="trust-item" data-reveal>
+              <h3>Ihr Login bleibt privat.</h3>
+              <p>Es wird in Ihrer Umgebung gespeichert, niemals im Projektcode.</p>
+              <details class="help">
+                <summary aria-label="Wie ist das Login geschützt?">?</summary>
+                <div class="help-panel"><strong>Technische Details</strong><p>Lokale Nutzung liest Umgebungsvariablen. Automatisierte Tests verwenden verschlüsselte GitHub Secrets.</p></div>
+              </details>
+            </article>
+            <article class="trust-item" data-reveal style="--reveal-delay: 50ms">
+              <h3>Änderungen werden vor dem Speichern überprüft.</h3>
+              <p>Rezeptschritte werden validiert, so dass Aktionen nicht miteinander vermischt werden.</p>
+              <details class="help">
+                <summary aria-label="Wie werden Rezeptänderungen validiert?">?</summary>
+                <div class="help-panel"><strong>Technische Details</strong><p>Pydantic prüft Annotationsbereiche, UTF-16-Positionen und Inhaltsstoff/Aktionstrennung.</p></div>
+              </details>
+            </article>
+            <article class="trust-item" data-reveal style="--reveal-delay: 100ms">
+              <h3>Tägliche Kontrollen suchen nach unterbrochenen Verbindungen.</h3>
+              <p>Wenn sich Cookidoo ändert, erhalten Maintainer eine klare Warnung.</p>
+              <details class="help help-align-end">
+                <summary aria-label="Wie werden Cookidoo-Änderungen erkannt?">?</summary>
+                <div class="help-panel"><strong>Technische Details</strong><p>Fünf authentifizierte API-Verträge laufen täglich und eröffnen ein Regressionsproblem beim Ausfall.</p></div>
+              </details>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="cta-panel" data-reveal>
+            <div>
+              <p class="section-kicker">Beginnen Sie mit einer Idee</p>
+              <h2>Was würdest du gerne kochen?</h2>
+            </div>
+            <div class="actions">
+              <a class="button button-primary" href="../setup/">Den Assistenten einrichten <span aria-hidden="true">→</span></a>
+              <a class="button button-secondary" href="presentation/">Sehen Sie die ganze Geschichte</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="brand" href="./">
+            <span class="brand-mark" aria-hidden="true">CM</span>
+            <span>Cookidoo MCP</span>
+          </a>
+          <p class="footer-copy">
+            Ein inoffizielles Open Source Projekt. Nicht angeschlossen oder unterstützt von Vorwerk, Thermomix oder Cookidoo.
+          </p>
+        </div>
+        <nav class="footer-links" aria-label="Navigation im Seitenfuß">
+          <a href="../setup/">Wizard einrichten</a>
+          <a href="../docs/">Dokumentation</a>
+          <a href="../use-cases/">Praktische Anleitungen</a>
+          <a href="presentation/">Aufmachung</a>
+          <a href="../llms.txt">llms.txt</a>
+          <a href="../tools.json">tools.json</a>
+          <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

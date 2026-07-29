@@ -45,6 +45,11 @@ the next automation for product search or ordering.
 
 ## Explore
 
+- **Choose your language:** [English](https://vitaliemiron.github.io/cookidoo-mcp/),
+  [Deutsch](https://vitaliemiron.github.io/cookidoo-mcp/de/),
+  [Svenska](https://vitaliemiron.github.io/cookidoo-mcp/sv/),
+  [Română](https://vitaliemiron.github.io/cookidoo-mcp/ro/), or
+  [Русский](https://vitaliemiron.github.io/cookidoo-mcp/ru/).
 - **[Setup wizard](https://vitaliemiron.github.io/cookidoo-mcp/setup/)**
   builds a private, copy-ready configuration for Codex, Claude Desktop, or
   VS Code on macOS, Linux, and Windows.

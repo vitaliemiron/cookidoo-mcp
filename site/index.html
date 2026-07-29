@@ -11,7 +11,14 @@
     >
     <meta name="google-site-verification" content="zUXNAhs4gOSJq1AA2QkBhj57cO892lJTUyS6bfln_70">
     <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/">
+    <link rel="alternate" hreflang="en" href="https://vitaliemiron.github.io/cookidoo-mcp/">
+    <link rel="alternate" hreflang="de" href="https://vitaliemiron.github.io/cookidoo-mcp/de/">
+    <link rel="alternate" hreflang="sv" href="https://vitaliemiron.github.io/cookidoo-mcp/sv/">
+    <link rel="alternate" hreflang="ro" href="https://vitaliemiron.github.io/cookidoo-mcp/ro/">
+    <link rel="alternate" hreflang="ru" href="https://vitaliemiron.github.io/cookidoo-mcp/ru/">
+    <link rel="alternate" hreflang="x-default" href="https://vitaliemiron.github.io/cookidoo-mcp/">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
     <meta property="og:title" content="Cookidoo MCP — From idea to dinner">
     <meta
       property="og:description"
@@ -55,7 +62,30 @@
           <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
         </nav>
         <div class="header-actions">
-          <button class="nav-button" type="button" data-theme-toggle aria-label="Theme follows this device">System</button>
+          <details class="language-picker" data-language-picker>
+            <summary aria-label="Choose language">
+              <span aria-hidden="true">EN</span>
+            </summary>
+            <div class="language-menu">
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/" lang="en" hreflang="en" data-language="en" aria-current="page">English</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/de/" lang="de" hreflang="de" data-language="de">Deutsch</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/sv/" lang="sv" hreflang="sv" data-language="sv">Svenska</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/ro/" lang="ro" hreflang="ro" data-language="ro">Română</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/ru/" lang="ru" hreflang="ru" data-language="ru">Русский</a>
+            </div>
+          </details>
+          <button
+            class="nav-button"
+            type="button"
+            data-theme-toggle
+            data-label-system="System"
+            data-label-light="Light"
+            data-label-dark="Dark"
+            data-aria-template="Theme: {current}. Switch to {next} theme"
+            data-title-system="Theme follows this device"
+            data-title-selected="{current} theme selected"
+            aria-label="Theme follows this device"
+          >System</button>
           <button
             class="nav-button menu-toggle"
             type="button"
