@@ -2,6 +2,8 @@
 
 [![Unit tests](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/unit-tests.yml)
 [![Cookidoo live API](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/live-api.yml/badge.svg)](https://github.com/vitaliemiron/cookidoo-mcp/actions/workflows/live-api.yml)
+[![PyPI](https://img.shields.io/pypi/v/cookidoo-mcp?color=256c59)](https://pypi.org/project/cookidoo-mcp/)
+[![MCP Registry](https://img.shields.io/badge/MCP_Registry-listed-c44b1c)](https://registry.modelcontextprotocol.io/v0/servers?search=cookidoo-mcp)
 [![Documentation](https://img.shields.io/badge/guide-open-f5b942)](https://vitaliemiron.github.io/cookidoo-mcp/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-047857)](LICENSE)
 
@@ -58,6 +60,10 @@ the next automation for product search or ordering.
   explains the weekly calendar and ingredient-list workflow.
 - **[Safety and reliability](https://vitaliemiron.github.io/cookidoo-mcp/docs/testing/)**
   explains how daily real-API checks detect Cookidoo changes.
+- **[Install from PyPI](https://pypi.org/project/cookidoo-mcp/)** provides the
+  signed versioned package used by the one-command setup below.
+- **[Official MCP Registry entry](https://registry.modelcontextprotocol.io/v0/servers?search=cookidoo-mcp)**
+  exposes machine-readable installation and configuration metadata.
 
 ## How the journey works
 
