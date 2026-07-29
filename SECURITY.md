@@ -52,3 +52,14 @@ unauthorized actions.
 Cookidoo MCP uses undocumented third-party endpoints. A service change or
 outage is not automatically a security vulnerability, but behavior that could
 leak data or mutate the wrong account should be reported privately.
+
+## Automated repository protections
+
+- CodeQL analyzes Python changes on pull requests, pushes to `main`, and a
+  weekly schedule.
+- Dependency review blocks newly introduced dependencies with known
+  moderate-or-higher vulnerabilities.
+- Dependabot checks Python and GitHub Actions dependencies every week.
+- Workflow actions are pinned to immutable commit SHAs.
+- The `main` branch accepts changes through pull requests with required CI and
+  security checks.

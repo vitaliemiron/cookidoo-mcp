@@ -94,6 +94,10 @@ repository link instead of requesting new permissions solely for a star.
   - Authenticated contract tests against the real Cookidoo API.
 - `.github/workflows/unit-tests.yml`
   - Unit tests and lint on pull requests and `main`.
+- `.github/workflows/codeql.yml`, `.github/workflows/dependency-review.yml`
+  - Static security analysis and pull-request dependency policy.
+- `.github/dependabot.yml`
+  - Weekly Python and GitHub Actions dependency maintenance.
 - `.github/workflows/live-api.yml`
   - Scheduled and manually dispatched real-API monitoring.
 - `site/`
@@ -255,11 +259,18 @@ temporary private copy, and removes it in `finally`.
 
 ## GitHub Actions monitoring
 
-The repository contains two CI levels:
+The repository contains four CI and security levels:
 
 1. `Unit tests` runs on pull requests, pushes to `main`, and manual dispatch.
 2. `Cookidoo live API` runs daily at `04:37 UTC`, on manual dispatch, and after
    relevant API code reaches `main`.
+3. `Dependency review` rejects pull requests that introduce dependencies with
+   known moderate-or-higher vulnerabilities.
+4. `CodeQL` analyzes Python changes on pull requests and `main`, and also runs
+   every Tuesday.
+
+All third-party workflow actions are pinned to full commit SHAs. Dependabot
+keeps the pinned revisions current. Do not replace a SHA with a floating tag.
 
 The live workflow requires encrypted repository secrets:
 
