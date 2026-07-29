@@ -6,6 +6,14 @@ The format is based on [Keep a
 Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0](https://github.com/vitaliemiron/cookidoo-mcp/compare/v1.1.1...v1.2.0) (2026-07-29)
+
+
+### Features
+
+* **site:** add localized marketing pages ([#25](https://github.com/vitaliemiron/cookidoo-mcp/issues/25)) ([719f4f8](https://github.com/vitaliemiron/cookidoo-mcp/commit/719f4f8702303d474180bc2edc40cc0bb89cd37a))
+* **site:** follow the browser language ([#27](https://github.com/vitaliemiron/cookidoo-mcp/issues/27)) ([844f7cf](https://github.com/vitaliemiron/cookidoo-mcp/commit/844f7cfbedf7e9b7e94f37ebf1dd4f25218b5239))
+
 ## [1.1.1](https://github.com/vitaliemiron/cookidoo-mcp/compare/v1.1.0...v1.1.1) (2026-07-29)
 
 
