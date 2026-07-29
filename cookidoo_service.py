@@ -87,7 +87,7 @@ class CookidooService:
         try:
             # Create aiohttp ClientSession with a timeout
             self._session = ClientSession(
-                connector=aiohttp.TCPConnector(verify_ssl=False)
+                connector=aiohttp.TCPConnector(ssl=False)
             )
 
             # Create CookidooConfig with credentials
