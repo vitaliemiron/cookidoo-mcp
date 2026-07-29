@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,10 +16,15 @@
     <title>Tool reference — Cookidoo MCP</title>
     <script>
       document.documentElement.classList.add("js");
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      let initialTheme = systemTheme;
       try {
         const saved = localStorage.getItem("cookidoo-mcp-theme");
-        if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+        if (saved === "light" || saved === "dark") initialTheme = saved;
       } catch {}
+      document.documentElement.dataset.theme = initialTheme;
+      document.querySelector('meta[name="theme-color"]').content =
+        initialTheme === "light" ? "#fffaf2" : "#020617";
     </script>
     <link rel="stylesheet" href="../../assets/styles.css">
     <script defer src="../../assets/site.js"></script>
@@ -33,7 +38,7 @@
           <a href="../../">Home</a><a href="../../presentation/">Story</a><a href="../" aria-current="page">Docs</a><a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
         </nav>
         <div class="header-actions">
-          <button class="nav-button" type="button" data-theme-toggle aria-label="Switch to light theme">Light</button>
+          <button class="nav-button" type="button" data-theme-toggle aria-label="Theme follows this device">System</button>
           <button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Open navigation">Menu</button>
         </div>
       </div>

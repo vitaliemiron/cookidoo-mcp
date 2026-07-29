@@ -169,6 +169,25 @@ def test_readme_is_friendly_to_people_and_safe_for_agents() -> None:
     assert "Repository stars require user consent" in agents
 
 
+def test_theme_follows_the_device_until_the_user_overrides_it() -> None:
+    pages = sorted(SITE.rglob("*.html"))
+    interactive_pages = [page for page in pages if page.name != "404.html"]
+    script = (SITE / "assets/site.js").read_text(encoding="utf-8")
+
+    for page in pages:
+        html = page.read_text(encoding="utf-8")
+        assert 'prefers-color-scheme: dark' in html
+        assert '<html lang="en" data-theme=' not in html
+    for page in interactive_pages:
+        html = page.read_text(encoding="utf-8")
+        assert 'data-theme-toggle' in html
+        assert '>System</button>' in html
+
+    assert 'const themeCycle = ["system", "light", "dark"]' in script
+    assert 'localStorage.removeItem(storageKey)' in script
+    assert 'systemThemeQuery.addEventListener("change"' in script
+
+
 def test_sitemap_pages_exist() -> None:
     tree = ElementTree.parse(SITE / "sitemap.xml")
     namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
