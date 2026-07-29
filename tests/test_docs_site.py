@@ -6,6 +6,8 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 from xml.etree import ElementTree
 
+from scripts.build_localized_site import build as build_localized_site
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
@@ -194,7 +196,10 @@ def test_theme_follows_the_device_until_the_user_overrides_it() -> None:
     for page in interactive_pages:
         html = page.read_text(encoding="utf-8")
         assert 'data-theme-toggle' in html
-        assert '>System</button>' in html
+        if any(part in {"de", "sv", "ro", "ru"} for part in page.parts):
+            assert "data-label-system" in html
+        else:
+            assert ">System</button>" in html
 
     assert 'const themeCycle = ["system", "light", "dark"]' in script
     assert 'localStorage.removeItem(storageKey)' in script
@@ -206,7 +211,7 @@ def test_sitemap_pages_exist() -> None:
     namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
     urls = [node.text for node in tree.findall("s:url/s:loc", namespace)]
 
-    assert len(urls) == 15
+    assert len(urls) == 23
     for url in urls:
         assert url is not None
         parsed = urlparse(url)
@@ -216,6 +221,27 @@ def test_sitemap_pages_exist() -> None:
         if parsed.path.endswith("/"):
             target /= "index.html"
         assert target.exists(), f"sitemap target does not exist: {url}"
+
+
+def test_localized_marketing_pages_are_complete_and_current() -> None:
+    build_localized_site(check=True)
+    locale_codes = {"de": "DE", "sv": "SV", "ro": "RO", "ru": "RU"}
+
+    for locale, code in locale_codes.items():
+        for relative in ("index.html", "presentation/index.html"):
+            page = SITE / locale / relative
+            html = page.read_text(encoding="utf-8")
+            assert f'<html lang="{locale}">' in html
+            assert f'aria-hidden="true">{code}</span>' in html
+            assert (
+                f'data-language="{locale}" aria-current="page"'
+                in html
+            )
+            assert html.count('rel="alternate" hreflang=') == 6
+            assert f'property="og:locale" content="{locale}_' in html
+            assert "ZXQ" not in html
+
+    assert not (SITE / "se").exists()
 
 
 def test_use_case_pages_have_search_and_authorship_metadata() -> None:

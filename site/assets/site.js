@@ -34,23 +34,41 @@ function setThemePreference(preference, persist = true) {
 
   const toggle = document.querySelector("[data-theme-toggle]");
   if (toggle) {
+    const labels = {
+      system: toggle.dataset.labelSystem ?? "System",
+      light: toggle.dataset.labelLight ?? "Light",
+      dark: toggle.dataset.labelDark ?? "Dark",
+    };
     const currentLabel =
       preference === "system"
-        ? "System"
+        ? labels.system
         : theme === "light"
-          ? "Light"
-          : "Dark";
+          ? labels.light
+          : labels.dark;
     const currentIndex = themeCycle.indexOf(preference);
     const nextPreference = themeCycle[(currentIndex + 1) % themeCycle.length];
+    const nextTheme = resolveTheme(nextPreference);
+    const nextLabel =
+      nextPreference === "system"
+        ? labels.system
+        : nextTheme === "light"
+          ? labels.light
+          : labels.dark;
     toggle.textContent = currentLabel;
     toggle.setAttribute(
       "aria-label",
-      `Theme: ${currentLabel.toLowerCase()}. Switch to ${nextPreference} theme`,
+      (toggle.dataset.ariaTemplate ??
+        "Theme: {current}. Switch to {next} theme")
+        .replace("{current}", currentLabel)
+        .replace("{next}", nextLabel),
     );
     toggle.title =
       preference === "system"
-        ? "Theme follows this device"
-        : `${currentLabel} theme selected`;
+        ? (toggle.dataset.titleSystem ?? "Theme follows this device")
+        : (toggle.dataset.titleSelected ?? "{current} theme selected").replace(
+            "{current}",
+            currentLabel,
+          );
   }
 }
 
@@ -115,6 +133,19 @@ document.addEventListener("keydown", (event) => {
   if (!openDisclosure) return;
   openDisclosure.open = false;
   openDisclosure.querySelector("summary")?.focus();
+});
+
+const languagePicker = document.querySelector("[data-language-picker]");
+document.addEventListener("click", (event) => {
+  if (languagePicker?.open && !languagePicker.contains(event.target)) {
+    languagePicker.open = false;
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape" || !languagePicker?.open) return;
+  languagePicker.open = false;
+  languagePicker.querySelector("summary")?.focus();
 });
 
 const reducedMotion = window.matchMedia(

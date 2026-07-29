@@ -249,6 +249,82 @@ code {
   gap: 0.2rem;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.language-picker {
+  position: relative;
+}
+
+.language-picker summary {
+  display: grid;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  place-items: center;
+  padding: 0.6rem;
+  color: var(--color-muted);
+  border: 1px solid transparent;
+  border-radius: 0.7rem;
+  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  list-style: none;
+  letter-spacing: 0.04em;
+  transition:
+    color 180ms var(--ease-out),
+    background-color 180ms var(--ease-out),
+    border-color 180ms var(--ease-out);
+}
+
+.language-picker summary::-webkit-details-marker {
+  display: none;
+}
+
+.language-picker summary:hover,
+.language-picker[open] summary {
+  color: var(--color-foreground);
+  background: var(--color-surface-soft);
+  border-color: var(--color-border);
+}
+
+.language-menu {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  z-index: 120;
+  display: grid;
+  min-width: 11rem;
+  padding: 0.45rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.language-menu a {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  padding: 0.65rem 0.8rem;
+  color: var(--color-muted);
+  border-radius: 0.6rem;
+  text-decoration: none;
+}
+
+.language-menu a:hover,
+.language-menu a:focus-visible {
+  color: var(--color-foreground);
+  background: var(--color-surface-soft);
+}
+
+.language-menu a[aria-current="page"] {
+  color: var(--color-on-accent);
+  background: var(--color-accent);
+}
+
 .primary-nav a,
 .nav-button {
   min-height: 2.75rem;

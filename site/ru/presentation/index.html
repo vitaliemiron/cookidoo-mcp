@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fffaf2">
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="История Cookidoo MCP: меньше управления кухней, больше места для здоровой пищи, вдохновения и времени.">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/ru/presentation/">
+    <link rel="alternate" hreflang="en" href="https://vitaliemiron.github.io/cookidoo-mcp/presentation/">
+    <link rel="alternate" hreflang="de" href="https://vitaliemiron.github.io/cookidoo-mcp/de/presentation/">
+    <link rel="alternate" hreflang="sv" href="https://vitaliemiron.github.io/cookidoo-mcp/sv/presentation/">
+    <link rel="alternate" hreflang="ro" href="https://vitaliemiron.github.io/cookidoo-mcp/ro/presentation/">
+    <link rel="alternate" hreflang="ru" href="https://vitaliemiron.github.io/cookidoo-mcp/ru/presentation/">
+    <link rel="alternate" hreflang="x-default" href="https://vitaliemiron.github.io/cookidoo-mcp/presentation/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:title" content="Почему Cookidoo MCP существует">
+    <meta property="og:description" content="Визуальная история о соединении вдохновения, приготовления пищи, планирования и покупок.">
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/ru/presentation/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta property="og:image:alt" content="Пять шагов от идеи искусственного интеллекта через рецепт Cookidoo и планирование недели до заказа магазина MCP.">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Зачем существует Cookidoo MCP — наглядная история</title>
+    <script>
+      document.documentElement.classList.add("js");
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      let initialTheme = systemTheme;
+      try {
+        const saved = localStorage.getItem("cookidoo-mcp-theme");
+        if (saved === "light" || saved === "dark") initialTheme = saved;
+      } catch {}
+      document.documentElement.dataset.theme = initialTheme;
+      document.querySelector('meta[name="theme-color"]').content =
+        initialTheme === "light" ? "#fffaf2" : "#020617";
+    </script>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script defer src="../../assets/site.js"></script>
+  </head>
+  <body class="presentation-body">
+    <a class="skip-link" href="#main">Перейти к содержанию презентации</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="../" aria-label="Главная Cookidoo MCP">
+          <span class="brand-mark" aria-hidden="true">CM</span>
+          <span class="brand-name">Cookidoo MCP</span>
+        </a>
+        <nav class="primary-nav" data-navigation aria-label="Основная навигация">
+          <a href="../">Домой</a>
+          <a href="./" aria-current="page">История</a>
+          <a href="../../docs/">Докс</a>
+          <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+        <div class="header-actions">
+          <details class="language-picker" data-language-picker>
+            <summary aria-label="Выбрать язык">
+              <span aria-hidden="true">RU</span>
+            </summary>
+            <div class="language-menu">
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/presentation/" lang="en" hreflang="en" data-language="en">English</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/de/presentation/" lang="de" hreflang="de" data-language="de">Deutsch</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/sv/presentation/" lang="sv" hreflang="sv" data-language="sv">Svenska</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/ro/presentation/" lang="ro" hreflang="ro" data-language="ro">Română</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/ru/presentation/" lang="ru" hreflang="ru" data-language="ru" aria-current="page">Русский</a>
+            </div>
+          </details>
+          <button class="nav-button" type="button" data-theme-toggle data-label-system="Системная" data-label-light="Светлая" data-label-dark="Тёмная" data-aria-template="Тема: {current}. Переключить на {next}" data-title-system="Тема соответствует настройкам устройства" data-title-selected="Выбрана тема: {current}" aria-label="Тема соответствует настройкам устройства">Системная</button>
+          <button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Открыть навигацию">Меню</button>
+        </div>
+      </div>
+    </header>
+
+    <nav class="presentation-progress" data-story-progress aria-label="Ход презентации">
+      <a href="#opening" aria-label="Перейти на слайд 1" aria-current="step"></a>
+      <a href="#friction" aria-label="Перейти к слайду 2"></a>
+      <a href="#principle" aria-label="Посмотреть слайд 3"></a>
+      <a href="#system" aria-label="Перейти к слайду 4"></a>
+      <a href="#outcomes" aria-label="Скачайте 5"></a>
+      <a href="#proof" aria-label="Перейти к слайду 6"></a>
+      <a href="#reliability" aria-label="Скачайте 7"></a>
+      <a href="#finale" aria-label="Скачайте 8"></a>
+    </nav>
+
+    <main id="main" class="story">
+      <section class="story-frame story-frame-accent is-active" id="opening">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>01 / Вопрос</p>
+            <h1 data-reveal style="--reveal-delay: 70ms">Что, если бы вопрос «что приготовить на ужин?» не начинался с цифровой рутины?</h1>
+            <p data-reveal style="--reveal-delay: 140ms">
+              Приготовление пищи может быть творческим, здоровым, утешительным или просто необходимым. Копирование данных между рецептами, календарями и списками не является ни одной из этих вещей.
+            </p>
+            <div class="actions" data-reveal style="--reveal-delay: 210ms">
+              <a class="button button-primary" href="#friction">Начните историю <span aria-hidden="true">↓</span></a>
+              <a class="button button-secondary" href="../../docs/">Открыть документацию</a>
+            </div>
+          </div>
+          <div class="story-aside" aria-hidden="true">
+            <div class="story-number">?</div>
+            <p class="story-caption">Используйте клавиши стрелок или прокрутку</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-sky" id="friction">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>02 / Трение</p>
+            <h2 data-reveal>Вдохновение живет везде. Казнь живет в деталях.</h2>
+            <p data-reveal>
+              Перспективный рецепт может быть получен из Cookidoo, другого языка, блога о здоровье или скриншота. Сделать его пригодным для использования означает нести намерение через каждую передачу.
+            </p>
+          </div>
+          <div class="story-aside" data-reveal>
+            <ol class="story-list">
+              <li><strong>Найти</strong><span>идея</span></li>
+              <li><strong>Копия</strong><span>Полный рецепт</span></li>
+              <li><strong>Адаптация</strong><span>Язык и части</span></li>
+              <li><strong>Структура</strong><span>Руководящие действия</span></li>
+              <li><strong>Запланировать</strong><span>Правильный день</span></li>
+              <li><strong>собирать</strong><span>Что купить</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame" id="principle">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>03 / Принцип</p>
+            <h2 data-reveal>Автоматизируйте передачу данных. Оставьте решения человеку.</h2>
+            <p data-reveal>
+              Цель состоит не в том, чтобы исключить выбор из кулинарии. Это устранение повторного копирования, переформатирования и навигации, которые стоят между хорошей идеей и едой.
+            </p>
+          </div>
+          <div class="story-aside" data-reveal>
+            <div class="story-number">1</div>
+            <p class="story-caption">Связанный разговор через рабочий процесс</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-accent" id="system">
+        <div class="container">
+          <p class="eyebrow" data-reveal>04 / Система</p>
+          <h2 class="reading" data-reveal>Пять этапов. Один открытый мост.</h2>
+          <div class="workflow">
+            <article class="workflow-step" data-reveal><h3>Открытие</h3><p>Начните с рецепта или вдохновения.</p></article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 40ms"><h3>Адаптация</h3><p>Перевести, изменить размер и уточнить.</p></article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 80ms"><h3>готовить</h3><p>Точное руководство моделью.</p></article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 120ms"><h3>Запланировать</h3><p>Координируйте семидневный календарь.</p></article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 160ms"><h3>Магазин</h3><p>Прочитайте ингредиенты в контексте рецепта.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-sky" id="outcomes">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>05 / Результаты</p>
+            <h2 data-reveal>Время — это только одна вещь, которую может дать автоматизация.</h2>
+            <p data-reveal>
+              Один и тот же рабочий процесс может поддерживать более здоровые намерения, более четкие инструкции и больше возможностей попробовать что-то незнакомое.
+            </p>
+          </div>
+          <div class="story-aside">
+            <div class="outcome-grid">
+              <article class="outcome" data-reveal><span>Время</span><h3>Меньше повторяющихся подачек</h3><p>Координируйте задачи, не перемещая одну и ту же информацию вручную.</p></article>
+              <article class="outcome" data-reveal style="--reveal-delay: 40ms"><span>Здоровья</span><h3>Цель становится планом</h3><p>Переместите полезные рецепты в видимую неделю и список ингредиентов.</p></article>
+              <article class="outcome" data-reveal style="--reveal-delay: 80ms"><span>Ясность</span><h3>Шаги учат, как они ведут</h3><p>Отдельная обработка ингредиентов от каждого действия машины.</p></article>
+              <article class="outcome" data-reveal style="--reveal-delay: 120ms"><span>Вдохновение</span><h3>Идеи путешествуют дальше</h3><p>Адаптация рецептов из других языков и источников.</p></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame" id="proof">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>06 / Доказательство</p>
+            <h2 data-reveal>Небольшие, конкретные цифры. Реальные возможности.</h2>
+            <p data-reveal>
+              Это факты хранилища, а не прогнозируемая статистика воздействия. Сэкономленное личное время зависит от того, как каждый человек готовит и планирует.
+            </p>
+          </div>
+          <div class="story-aside" data-reveal>
+            <ol class="story-list">
+              <li><strong>16</strong><span>Инструменты MCP</span></li>
+              <li><strong>5</strong><span>Live API контракты</span></li>
+              <li><strong>7</strong><span>Дни в каждом окне планирования</span></li>
+              <li><strong>1×</strong><span>ежедневный регрессионный монитор</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-sky" id="reliability">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>07 / Ответственность</p>
+            <h2 data-reveal>Когда неофициальный API меняется, тишина не является надежностью.</h2>
+            <p data-reveal>
+              Cookidoo может изменяться без предварительного уведомления. Проект ежедневно проводит аутентифицированные тесты контрактов, создает проблему регрессии при отказе и закрывает ее после восстановления.
+            </p>
+          </div>
+          <div class="story-aside" data-reveal>
+            <div class="story-number">24h</div>
+            <p class="story-caption">мониторинг ритма, с зашифрованными учетными данными CI</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-accent" id="finale">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>08 / Приглашение</p>
+            <h2 data-reveal>Добавьте свои вкусы, ограничения и идеи. Пусть этапы свяжутся сами.</h2>
+            <p data-reveal>
+              Cookidoo MCP с открытым исходным кодом, четко о своих границах и готов к расширению людьми, которые хотят более способного кухонного рабочего процесса.
+            </p>
+            <div class="actions" data-reveal>
+              <a class="button button-primary" href="../../docs/">Разработчик: MCP <span aria-hidden="true">→</span></a>
+              <a class="button button-secondary" href="https://github.com/vitaliemiron/cookidoo-mcp">Исследуйте источник</a>
+            </div>
+          </div>
+          <div class="story-aside" data-reveal>
+            <div class="story-number">→</div>
+            <p class="story-caption">От намерения до еды, которую вы можете приготовить</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fffaf2">
+    <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+    <meta name="description" content="Historien bakom Cookidoo MCP: mindre köksadministration, mer utrymme för hälsosam mat, inspiration och tid.">
+    <link rel="canonical" href="https://vitaliemiron.github.io/cookidoo-mcp/sv/presentation/">
+    <link rel="alternate" hreflang="en" href="https://vitaliemiron.github.io/cookidoo-mcp/presentation/">
+    <link rel="alternate" hreflang="de" href="https://vitaliemiron.github.io/cookidoo-mcp/de/presentation/">
+    <link rel="alternate" hreflang="sv" href="https://vitaliemiron.github.io/cookidoo-mcp/sv/presentation/">
+    <link rel="alternate" hreflang="ro" href="https://vitaliemiron.github.io/cookidoo-mcp/ro/presentation/">
+    <link rel="alternate" hreflang="ru" href="https://vitaliemiron.github.io/cookidoo-mcp/ru/presentation/">
+    <link rel="alternate" hreflang="x-default" href="https://vitaliemiron.github.io/cookidoo-mcp/presentation/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="sv_SE">
+    <meta property="og:title" content="Varför Cookidoo MCP finns">
+    <meta property="og:description" content="En visuell historia om att ansluta inspiration, matlagning, planering och shopping.">
+    <meta property="og:url" content="https://vitaliemiron.github.io/cookidoo-mcp/sv/presentation/">
+    <meta property="og:image" content="https://vitaliemiron.github.io/cookidoo-mcp/assets/og-cookidoo-mcp.png">
+    <meta property="og:image:alt" content="Fem steg från en AI måltid idé genom Cookidoo recept och vecka planering till en butik MCP order.">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Varför Cookidoo MCP finns – en visuell berättelse</title>
+    <script>
+      document.documentElement.classList.add("js");
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      let initialTheme = systemTheme;
+      try {
+        const saved = localStorage.getItem("cookidoo-mcp-theme");
+        if (saved === "light" || saved === "dark") initialTheme = saved;
+      } catch {}
+      document.documentElement.dataset.theme = initialTheme;
+      document.querySelector('meta[name="theme-color"]').content =
+        initialTheme === "light" ? "#fffaf2" : "#020617";
+    </script>
+    <link rel="stylesheet" href="../../assets/styles.css">
+    <script defer src="../../assets/site.js"></script>
+  </head>
+  <body class="presentation-body">
+    <a class="skip-link" href="#main">Hoppa till presentationens innehåll</a>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="../" aria-label="Cookidoo MCP startsida">
+          <span class="brand-mark" aria-hidden="true">CM</span>
+          <span class="brand-name">Cookidoo MCP</span>
+        </a>
+        <nav class="primary-nav" data-navigation aria-label="Huvudnavigering">
+          <a href="../">Hem</a>
+          <a href="./" aria-current="page">Berättelse</a>
+          <a href="../../docs/">Docs</a>
+          <a href="https://github.com/vitaliemiron/cookidoo-mcp">GitHub</a>
+        </nav>
+        <div class="header-actions">
+          <details class="language-picker" data-language-picker>
+            <summary aria-label="Välj språk">
+              <span aria-hidden="true">SV</span>
+            </summary>
+            <div class="language-menu">
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/presentation/" lang="en" hreflang="en" data-language="en">English</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/de/presentation/" lang="de" hreflang="de" data-language="de">Deutsch</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/sv/presentation/" lang="sv" hreflang="sv" data-language="sv" aria-current="page">Svenska</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/ro/presentation/" lang="ro" hreflang="ro" data-language="ro">Română</a>
+              <a href="https://vitaliemiron.github.io/cookidoo-mcp/ru/presentation/" lang="ru" hreflang="ru" data-language="ru">Русский</a>
+            </div>
+          </details>
+          <button class="nav-button" type="button" data-theme-toggle data-label-system="System" data-label-light="Ljust" data-label-dark="Mörkt" data-aria-template="Tema: {current}. Byt till {next}" data-title-system="Temat följer enhetens inställning" data-title-selected="Temat {current} är valt" aria-label="Temat följer enhetens inställning">System</button>
+          <button class="nav-button menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-label="Öppna navigeringen">Menyn</button>
+        </div>
+      </div>
+    </header>
+
+    <nav class="presentation-progress" data-story-progress aria-label="Presentationens förlopp">
+      <a href="#opening" aria-label="Gå till glid 1" aria-current="step"></a>
+      <a href="#friction" aria-label="Gå till Slide 2"></a>
+      <a href="#principle" aria-label="Gå till Slide 3"></a>
+      <a href="#system" aria-label="Gå till Slide 4"></a>
+      <a href="#outcomes" aria-label="Gå till Slide 5"></a>
+      <a href="#proof" aria-label="Gå till Slide 6"></a>
+      <a href="#reliability" aria-label="Gå till Slide 7"></a>
+      <a href="#finale" aria-label="Gå till Slide 8"></a>
+    </nav>
+
+    <main id="main" class="story">
+      <section class="story-frame story-frame-accent is-active" id="opening">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>01 / Frågan</p>
+            <h1 data-reveal style="--reveal-delay: 70ms">Tänk om frågan ”vad blir det till middag?” inte började med digital administration?</h1>
+            <p data-reveal style="--reveal-delay: 140ms">
+              Matlagning kan vara kreativ, hälsosam, tröstande eller helt enkelt nödvändig. Kopiera data mellan recept, kalendrar och listor är inget av dessa saker.
+            </p>
+            <div class="actions" data-reveal style="--reveal-delay: 210ms">
+              <a class="button button-primary" href="#friction">Börja historien <span aria-hidden="true">↓</span></a>
+              <a class="button button-secondary" href="../../docs/">Läs dokumentationen</a>
+            </div>
+          </div>
+          <div class="story-aside" aria-hidden="true">
+            <div class="story-number">?</div>
+            <p class="story-caption">Använd piltangenter eller scroll</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-sky" id="friction">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>02 / Friktion</p>
+            <h2 data-reveal>Inspiration lever överallt. Utförande lever i detaljer.</h2>
+            <p data-reveal>
+              Ett lovande recept kan komma från Cookidoo, ett annat språk, en hälsoblogg eller en skärmdump. Gör det användbart innebär att bära avsikt genom varje handoff.
+            </p>
+          </div>
+          <div class="story-aside" data-reveal>
+            <ol class="story-list">
+              <li><strong>Hitta</strong><span>idén</span></li>
+              <li><strong>Kopiera</strong><span>hela receptet</span></li>
+              <li><strong>Adapt</strong><span>språk och portioner</span></li>
+              <li><strong>Struktur</strong><span>guidade handlingar</span></li>
+              <li><strong>Planplan</strong><span>rätt dag</span></li>
+              <li><strong>Samla</strong><span>Vad man ska köpa</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame" id="principle">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>03 / Principen</p>
+            <h2 data-reveal>Automatisera överlämningarna. Behåll det mänskliga omdömet.</h2>
+            <p data-reveal>
+              Målet är inte att ta bort valet från matlagning. Det är att ta bort upprepad kopiering, reformatting och navigering som står mellan en bra idé och en måltid.
+            </p>
+          </div>
+          <div class="story-aside" data-reveal>
+            <div class="story-number">1</div>
+            <p class="story-caption">Ansluten konversation över arbetsflödet</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-accent" id="system">
+        <div class="container">
+          <p class="eyebrow" data-reveal>04 / Systemet</p>
+          <h2 class="reading" data-reveal>Fem steg. En öppen bro.</h2>
+          <div class="workflow">
+            <article class="workflow-step" data-reveal><h3>upptäcka</h3><p>Börja med ett recept eller inspiration.</p></article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 40ms"><h3>Adapt</h3><p>Översätt, ändra storlek och klargöra.</p></article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 80ms"><h3>Cook</h3><p>Modellguidade inställningar exakt.</p></article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 120ms"><h3>Planplan</h3><p>Samordna sju dagars kalender.</p></article>
+            <article class="workflow-step" data-reveal style="--reveal-delay: 160ms"><h3>Shopping Shop</h3><p>Läs ingredienser i receptkontext.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-sky" id="outcomes">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>05 / Resultaten</p>
+            <h2 data-reveal>Tiden är bara en sak automatisering kan ge tillbaka.</h2>
+            <p data-reveal>
+              Samma uppkopplade arbetsflöde kan stödja hälsosammare avsikter, tydligare instruktioner och mer utrymme för att prova något obekant.
+            </p>
+          </div>
+          <div class="story-aside">
+            <div class="outcome-grid">
+              <article class="outcome" data-reveal><span>Tid</span><h3>Färre repetitiva handoffs</h3><p>Samordna uppgifter utan att flytta samma information för hand.</p></article>
+              <article class="outcome" data-reveal style="--reveal-delay: 40ms"><span>Hälsa</span><h3>Avsikten blir en plan</h3><p>Flytta användbara recept i en synlig vecka och ingredienslista.</p></article>
+              <article class="outcome" data-reveal style="--reveal-delay: 80ms"><span>Klaritet</span><h3>Steg undervisar när de vägleder</h3><p>Separat ingredienshantering från alla maskiner.</p></article>
+              <article class="outcome" data-reveal style="--reveal-delay: 120ms"><span>Inspiration</span><h3>Idéer reser längre</h3><p>Anpassa recept från andra språk och källor.</p></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame" id="proof">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>06 / Beviset</p>
+            <h2 data-reveal>Små, konkreta siffror. Verkliga möjligheter.</h2>
+            <p data-reveal>
+              Dessa är förvarsfakta, inte projicerad konsekvensstatistik. Personlig sparad tid beror på hur varje person lagar och planer.
+            </p>
+          </div>
+          <div class="story-aside" data-reveal>
+            <ol class="story-list">
+              <li><strong>16</strong><span>MCP verktyg</span></li>
+              <li><strong>5</strong><span>Levande API-kontrakt</span></li>
+              <li><strong>7</strong><span>dagar i varje planeringsfönster</span></li>
+              <li><strong>1×</strong><span>Daglig regressionsövervakning</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-sky" id="reliability">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>07 / Ansvaret</p>
+            <h2 data-reveal>När en inofficiell API förändras är tystnad inte tillförlitlighet.</h2>
+            <p data-reveal>
+              Cookidoo kan ändras utan förvarning. Projektet genomför autentiserade kontraktstest varje dag, skapar en regressionsfråga om misslyckande och stänger den efter återhämtning.
+            </p>
+          </div>
+          <div class="story-aside" data-reveal>
+            <div class="story-number">24h</div>
+            <p class="story-caption">övervakning av rytm, med krypterade CI-uppgifter</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-frame story-frame-accent" id="finale">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow" data-reveal>08 / Inbjudan</p>
+            <h2 data-reveal>Ta med aptit, behov och idéer. Låt arbetsflödet knyta ihop stegen.</h2>
+            <p data-reveal>
+              Cookidoo MCP är öppen källkod, explicit om dess gränser, och redo att utökas av människor som vill ha ett mer kapabelt kök arbetsflöde.
+            </p>
+            <div class="actions" data-reveal>
+              <a class="button button-primary" href="../../docs/">Bygg med MCP <span aria-hidden="true">→</span></a>
+              <a class="button button-secondary" href="https://github.com/vitaliemiron/cookidoo-mcp">Utforska källan</a>
+            </div>
+          </div>
+          <div class="story-aside" data-reveal>
+            <div class="story-number">→</div>
+            <p class="story-caption">Från avsikt till en måltid kan du göra</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
