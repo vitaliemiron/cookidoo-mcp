@@ -6,7 +6,13 @@ The format is based on [Keep a
 Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.1.0](https://github.com/vitaliemiron/cookidoo-mcp/compare/v1.0.0...v1.1.0) (2026-07-29)
+
+
+### Features
+
+* improve setup safety and release trust ([#20](https://github.com/vitaliemiron/cookidoo-mcp/issues/20)) ([eee0602](https://github.com/vitaliemiron/cookidoo-mcp/commit/eee06023453a0f9e43a83723db91d5ffa373d235))
+* **release:** automate versioned releases ([#21](https://github.com/vitaliemiron/cookidoo-mcp/issues/21)) ([d0db602](https://github.com/vitaliemiron/cookidoo-mcp/commit/d0db6021b5b52826536cb7f659e98f2ad947157a))
 
 ## [1.0.0] - 2026-07-29
 
@@ -32,5 +38,4 @@ Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow
 - Contribution, support, security, roadmap, issue-form, and pull-request
   guidance for the public community.
 
-[Unreleased]: https://github.com/vitaliemiron/cookidoo-mcp/commits/main
 [1.0.0]: https://github.com/vitaliemiron/cookidoo-mcp/releases/tag/v1.0.0
