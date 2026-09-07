@@ -38,7 +38,7 @@ classifiers = [
 ]
 dependencies = [
   "cookidoo-api>=0.17.2,<0.18",
-  "fastmcp>=3.4.5,<4",
+  "fastmcp>=3.4.5,<5",
   "Pillow>=10.0.0,<13",
   "pydantic>=2.0.0,<3",
   "python-dotenv>=1.0.0,<2",
