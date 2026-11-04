@@ -83,6 +83,21 @@ def _require_recipe_id(value: str) -> str:
     return recipe_id
 
 
+def _format_duration(seconds: Any) -> str:
+    """Format a Cookidoo duration, which the API reports in seconds."""
+
+    try:
+        total_minutes = round(float(seconds) / 60)
+    except (TypeError, ValueError):
+        return "unknown"
+    hours, minutes = divmod(total_minutes, 60)
+    if hours and minutes:
+        return f"{hours} h {minutes} min"
+    if hours:
+        return f"{hours} h"
+    return f"{minutes} min"
+
+
 def _jsonable_recipe_items(
     values: list[str | RecipeIngredient | RecipeStep],
 ) -> list[str | dict[str, Any]]:
@@ -225,7 +240,7 @@ async def get_recipe_details(recipe_id: str) -> str:
             result += f"Servings: {recipe.serving_size}\n"
 
         if hasattr(recipe, "total_time"):
-            result += f"Total Time: {recipe.total_time} minutes\n"
+            result += f"Total Time: {_format_duration(recipe.total_time)}\n"
 
         if hasattr(recipe, "difficulty"):
             result += f"Difficulty: {recipe.difficulty}\n"
